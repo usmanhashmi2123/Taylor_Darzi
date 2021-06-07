@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Taylor/درزی</string>
+    <string name="login">لاگ ان</string>
+    <string name="or">یا</string>
+    <string name="create_aac">اکاؤنٹ بنائیں</string>
+    <string name="user_name">نام/نمبر</string>
+    <string name="user_pass">پاسورڈ</string>
+    <string name="forgotten_pass">پاسورڈ بھول گے؟</string>
+</resources>

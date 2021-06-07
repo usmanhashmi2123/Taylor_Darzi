@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1029384681701",
+    "project_id": "taylor-a58b5",
+    "storage_bucket": "taylor-a58b5.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1029384681701:android:109518ab49e5741e793c0c",
+        "android_client_info": {
+          "package_name": "pk.taylor_darzi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1029384681701-r5oidnrarq602qejvbr9iuvi6vt55lp9.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "pk.taylor_darzi",
+            "certificate_hash": "f52f4d6d936f6e64a762b5e02526b93b9652559b"
+          }
+        },
+        {
+          "client_id": "1029384681701-ig7rok2af3dvap3hqm59d2f011q0tlte.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC_HusVHboi_uxEUakHwnNI1LlzXlgsyyk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1029384681701-ig7rok2af3dvap3hqm59d2f011q0tlte.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

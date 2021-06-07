@@ -1,0 +1,130 @@
+<resources>
+
+    <style name="popupMenuStyle" parent="Widget.AppCompat.PopupMenu">
+        <item name="android:popupBackground">@drawable/rounded_corner_black</item>
+        <item name="android:textSize">@dimen/_10ssp</item>
+        <item name="android:textColor">@color/white</item>
+    </style>
+
+    <style name="MyProgressBar" parent="Widget.AppCompat.ProgressBar">
+    </style>
+    <style name="MyProgressDialog" parent="android:Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowIsFloating">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="android:windowTitleStyle">@null</item>
+        <item name="android:windowAnimationStyle">@android:style/Animation.Dialog</item>
+        <item name="android:windowSoftInputMode">stateUnspecified|adjustPan</item>
+        <item name="android:backgroundDimEnabled">false</item>
+        <item name="android:color">@color/gray</item>
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="AlertDialogCustom" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColorPrimary">@color/white</item>
+        <!-- Used for the background -->
+        <item name="android:background">@drawable/rounded_corner_black</item>
+    </style>
+
+    <style name="AppBottomSheetDialogTheme"
+        parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowSoftInputMode">adjustResize</item>
+        <item name="bottomSheetStyle">@style/AppModalStyle</item>
+    </style>
+    <style name="AppModalStyle"
+        parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@drawable/rounded_corner_white_small</item>
+    </style>
+
+    <style name="bold_12">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+
+    <style name="bold_14">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+    <style name="bold_16">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+    </style>
+
+    <style name="bold_18">
+        <item name="android:textStyle">bold</item>
+        <item name="fontFamily">@font/roboto_bold</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_18sdp</item>
+    </style>
+    <style name="black_18">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_18sdp</item>
+    </style>
+
+    <style name="black_14">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+    <style name="black_12">
+        <item name="fontFamily">@font/roboto_black</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+    <style name="medium_10">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="medium_12">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+    <style name="medium_14">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+    <style name="medium_16">
+        <item name="fontFamily">@font/roboto_medium</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+    </style>
+
+    <style name="regular_10">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_10sdp</item>
+    </style>
+    <style name="regular_12">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_12sdp</item>
+    </style>
+
+    <style name="regular_14">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_14sdp</item>
+    </style>
+
+    <style name="regular_16">
+        <item name="fontFamily">@font/roboto_regular</item>
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/_16sdp</item>
+    </style>
+
+
+</resources>
