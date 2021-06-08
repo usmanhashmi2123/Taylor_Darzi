@@ -3,9 +3,14 @@
     <string name="login">LOGIN</string>
     <string name="or">OR</string>
     <string name="create_aac">Create Account </string>
-    <string name="user_name">Email/Phone Number</string>
+    <string name="email_phone">Email/Phone Number</string>
+    <string name="user_name">Name</string>
     <string name="user_pass">Password</string>
+    <string name="re_pass">Re enter Password</string>
     <string name="forgotten_pass">Forgot Password?</string>
+    <string name="inavlid_data">inavlid data</string>
+
+
     <string name="english" translatable="false">English</string>
     <string name="urdu" translatable="false">‎اردو</string>
     <string name="select_lang_eng" translatable="false">Select language</string>

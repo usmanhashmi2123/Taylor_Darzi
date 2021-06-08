@@ -3,7 +3,10 @@
     <string name="login">لاگ ان</string>
     <string name="or">یا</string>
     <string name="create_aac">اکاؤنٹ بنائیں</string>
-    <string name="user_name">نام/نمبر</string>
+    <string name="email_phone">نام/نمبر</string>
+    <string name="user_name">نام</string>
     <string name="user_pass">پاسورڈ</string>
+    <string name="re_pass">پاس ورڈ دوبارہ درج کریں</string>
     <string name="forgotten_pass">پاسورڈ بھول گے؟</string>
+    <string name="inavlid_data">غلط ڈیٹا</string>
 </resources>
