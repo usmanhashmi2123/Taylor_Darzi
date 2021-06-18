@@ -1,0 +1,312 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    tools:context=".fragments.CustomersFragnment">
+
+    <ImageView
+        android:id="@+id/back_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/back_arrow_svg"
+        app:layout_constraintBottom_toTopOf="@+id/name_phone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/edit_pencil"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:src="@drawable/edit_selector"
+        app:layout_constraintBottom_toTopOf="@id/name_phone"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/_5sdp"
+        android:foregroundGravity="center_vertical"
+        android:src="@drawable/delete_svg"
+        app:layout_constraintBottom_toTopOf="@id/name_phone"
+        app:layout_constraintRight_toLeftOf="@id/edit_pencil"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/name_phone"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_5sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/rounded_corner_doubleshade"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/back_button">
+
+        <TextView
+            android:id="@+id/name_user"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:text="@string/user_name"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/name_user_Val"
+            style="@style/regular_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:inputType="textPersonName"
+            android:minWidth="@dimen/_120sdp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/name_user" />
+
+        <TextView
+            android:id="@+id/phone_user"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="start|center_vertical"
+            android:layout_marginHorizontal="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:text="@string/phone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/phone_user_Val"
+            style="@style/regular_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:inputType="phone"
+            android:minWidth="@dimen/_120sdp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/phone_user" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/no_const"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/rounded_corner_doubleshade"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/name_phone">
+
+        <TextView
+            android:id="@+id/no_"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="start|center_vertical"
+            android:text="@string/naap_no"
+            app:layout_constraintEnd_toStartOf="@id/no_Val"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/no_Val"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/_80sdp"
+            android:gravity="center_vertical"
+            android:text=""
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/wasool_const"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/rounded_corner_doubleshade"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/no_const">
+
+        <TextView
+            android:id="@+id/wasool"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="start|center_vertical"
+            android:text="@string/recovery"
+            app:layout_constraintEnd_toStartOf="@id/wasool_Val"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/wasool_Val"
+            style="@style/regular_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:hint="00"
+            android:inputType="numberDecimal"
+            android:minWidth="@dimen/_50sdp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/rem_const"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_10sdp"
+        android:background="@drawable/rounded_corner_doubleshade"
+        android:gravity="center|center_vertical"
+        android:orientation="horizontal"
+        android:padding="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/wasool_const">
+
+        <TextView
+            android:id="@+id/rem"
+            style="@style/bold_12"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="start|center_vertical"
+            android:text="@string/outstanding"
+            app:layout_constraintEnd_toStartOf="@id/rem_Val"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/rem_Val"
+            style="@style/regular_10"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_vertical"
+            android:hint="00"
+            android:inputType="numberDecimal"
+            android:minWidth="@dimen/_50sdp"
+            android:singleLine="true"
+            android:textColorHint="@color/gray"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <Button
+        android:id="@+id/shirt_naap"
+        style="@style/medium_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_15sdp"
+        android:background="@drawable/button_background"
+        android:elevation="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:shadowColor="@color/gray"
+        android:text="@string/naap_Q"
+        app:layout_constraintBottom_toTopOf="@id/shirt_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rem_const" />
+
+    <include
+        android:id="@+id/shirt_layout"
+        layout="@layout/shirt_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shirt_naap" />
+
+    <Button
+        android:id="@+id/trouser_naap"
+        style="@style/medium_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_15sdp"
+        android:background="@drawable/button_background"
+        android:elevation="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:shadowColor="@color/gray"
+        android:text="@string/naap_S"
+        app:layout_constraintBottom_toTopOf="@id/trouser_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/shirt_layout" />
+
+    <include
+        android:id="@+id/trouser_layout"
+        layout="@layout/trouser_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/trouser_naap" />
+
+    <Button
+        android:id="@+id/extra_info"
+        style="@style/medium_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_15sdp"
+        android:layout_marginVertical="@dimen/_15sdp"
+        android:background="@drawable/button_background"
+        android:elevation="@dimen/_10sdp"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:shadowColor="@color/gray"
+        android:text="@string/details"
+        app:layout_constraintBottom_toTopOf="@id/extrainfo_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/trouser_layout" />
+
+    <include
+        android:id="@+id/extrainfo_layout"
+        layout="@layout/extrainfo_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/extra_info" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

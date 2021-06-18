@@ -7,6 +7,7 @@ import android.content.SharedPreferences.Editor
 import pk.taylor_darzi.TaylorDarzi
 
 class Preferences private constructor() {
+    val PREF_USER_EMAIL = "pref_user_e"
     val PREF_USER_ID = "pref_user_id"
     val PREF_USER_PASS = "pref_user_pass"
     val PREF_LOGINED = "pref_user_login"
@@ -18,12 +19,14 @@ class Preferences private constructor() {
     private val mPrefs: SharedPreferences
     private val mEdit: Editor
 
-    val userEmailId: String?
-        get() = instance!!.mPrefs.getString(PREF_USER_ID, "")
+    val userEmailId: String
+        get() = instance!!.mPrefs.getString(PREF_USER_EMAIL, "").toString()
+    val userAuthId: String
+        get() = instance!!.mPrefs.getString(PREF_USER_ID, "").toString()
+    val userPass: String
+        get() = instance!!.mPrefs.getString(PREF_USER_PASS, "").toString()
     val token: String?
         get() = instance!!.mPrefs.getString(PREF_TOKEN, "")
-    val isLoginON: Boolean
-        get() = instance!!.mPrefs.getBoolean(PREF_LOGINED , false)
     val isAlertsOn: Boolean
         get() = instance!!.mPrefs.getBoolean(PREF_ALERTS, true)
 
@@ -32,8 +35,8 @@ class Preferences private constructor() {
     }
 
     val language: String?
-        get() = instance!!.mPrefs.getString(PREF_LANG, "")
-    val isDanish: Boolean
+        get() = instance!!.mPrefs.getString(PREF_LANG, "English")
+    val isEnglish: Boolean
         get() = !instance!!.mPrefs.getString(PREF_LANG, "")!!.contains("Eng")
 
     fun getIntPrefrence(key: String?): Int {

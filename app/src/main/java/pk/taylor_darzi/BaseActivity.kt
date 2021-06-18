@@ -1,6 +1,5 @@
 package pk.taylor_darzi
 
-import android.app.Activity
 import android.content.Context
 import android.os.Build
 import androidx.fragment.app.FragmentActivity
@@ -10,11 +9,13 @@ import java.util.*
 
 abstract class BaseActivity : FragmentActivity() {
     protected var language: String? = null
-    protected var mActivity: Activity? = null
+    protected var mActivity: FragmentActivity? = null
     protected var resumed = false
 
     override fun attachBaseContext(base: Context) {
         super.attachBaseContext(updateBaseContextLocale(base))
+        Config.getFirebaseAuth
+        Config.getFirebaseFirestore
     }
 
     override fun onPause() {
@@ -23,8 +24,8 @@ abstract class BaseActivity : FragmentActivity() {
     }
 
     fun updateBaseContextLocale(context: Context): Context? {
-        language = Preferences.instance!!.getStringPrefrence(Preferences.instance!!.PREF_LANG) // Helper method to get saved language from SharedPreferences
-        if (language!!.contains("eng"))
+        language = Preferences.instance!!.language// Helper method to get saved language from SharedPreferences
+        if (language!!.contains("Eng"))
             Config.locale = Locale("en", "US")
         else
             Config.locale = Locale("ur", "PK")
@@ -55,4 +56,5 @@ abstract class BaseActivity : FragmentActivity() {
         }
         return context
     }
+
 }

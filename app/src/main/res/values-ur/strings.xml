@@ -1,12 +1,56 @@
 <resources>
-    <string name="app_name">Taylor/درزی</string>
+    <string name="app_name">Tailor/درزی</string>
     <string name="login">لاگ ان</string>
+    <string name="add_customer">گاہک شامل کریں</string>
     <string name="or">یا</string>
     <string name="create_aac">اکاؤنٹ بنائیں</string>
-    <string name="email_phone">نام/نمبر</string>
+    <string name="signup">رجسٹر کریں</string>
+    <string name="save">محفوظ کریں</string>
+    <string name="email_phone">ای میل</string>
     <string name="user_name">نام</string>
+    <string name="phone">فون نمبر</string>
     <string name="user_pass">پاسورڈ</string>
     <string name="re_pass">پاس ورڈ دوبارہ درج کریں</string>
     <string name="forgotten_pass">پاسورڈ بھول گے؟</string>
     <string name="inavlid_data">غلط ڈیٹا</string>
+    <string name="search">تلاش کریں</string>
+    <string name="inch">انچ</string>
+    <string name="naap">ناپ</string>
+    <string name="naap_no">ناپ نمبر</string>
+
+    <string name="naap_Q">ناپ قمیض</string>
+    <string name="length_Q">لمبائی قمیض</string>
+    <string name="length_b">لمبائی بازو</string>
+    <string name="shoulder">تیرہ</string>
+    <string name="colar">کالر</string>
+    <string name="chest">سینہ</string>
+    <string name="waist">کمر</string>
+    <string name="hip">گھیرا</string>
+    <string name="side_pocket">سايڑ جیب</string>
+    <string name="front_pocket">سامنے جیب</string>
+
+    <string name="naap_S">ناپ شلوار</string>
+    <string name="length_S">لمبائی شلوار</string>
+    <string name="pancha">پائنچہ</string>
+    <string name="down_pocket">جیب</string>
+    <string name="embroidery">نمبر کڑھائ</string>
+    <string name="wapsi">واپسی کی تاریخ</string>
+
+    <string name="details">دیگر تفصیل</string>
+
+    <string name="recovery">وصول</string>
+    <string name="outstanding">بقایا</string>
+    <string name="check_interent">براہ کرم اپنا انٹرنٹ کنکشن چیک کریں۔</string>
+    <string name="delete_acc">کھاتہ مٹا دو</string>
+    <string name="updated">ڈیٹا اپ ڈیٹ</string>
+    <string name="added">ڈیٹا شامل</string>
+    <string name="deleted">ڈیٹا حذف ہوگیا</string>
+    <string name="update_available">نئ ایپ اپڈیٹ دستیاب ہے</string>
+    <string name="update">اپ ڈیٹ</string>
+    <string name="update_btn">اپ ڈیٹ کریں</string>
+    <string name="cancel">منسوخ کریں</string>
+    <string name="deliver">پہنچا دیا</string>
+    <string name="remains">بقیاجات</string>
+    <string name="orders">آرڈرز</string>
+    <string name="customer">گاہک</string>
 </resources>

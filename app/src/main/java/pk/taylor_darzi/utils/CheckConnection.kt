@@ -18,8 +18,6 @@ class CheckConnection(private val context: Context) {
                         val nc = connectivity.getNetworkCapabilities(activeNetwork)
                         if (nc != null) isConected = nc.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) || nc.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
                     }
-                //if (!isConected)
-                    //Utility.appToast(context, context.getString(R.string.check_interent));
 
                 return isConected
             } catch (e: Exception) {

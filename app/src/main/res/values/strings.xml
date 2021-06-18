@@ -1,18 +1,66 @@
 <resources>
-    <string name="app_name">Taylor/درزی</string>
+    <string name="app_name">Tailor/درزی</string>
     <string name="login">LOGIN</string>
+    <string name="add_customer">Add customer</string>
     <string name="or">OR</string>
     <string name="create_aac">Create Account </string>
-    <string name="email_phone">Email/Phone Number</string>
+    <string name="signup">Sign Up</string>
+    <string name="save">Save</string>
+    <string name="email_phone">Email</string>
+    <string name="phone">phone</string>
     <string name="user_name">Name</string>
     <string name="user_pass">Password</string>
     <string name="re_pass">Re enter Password</string>
     <string name="forgotten_pass">Forgot Password?</string>
     <string name="inavlid_data">inavlid data</string>
+    <string name="search">Search</string>
+    <string name="inch">Inch</string>
+    <string name="naap">Measurements</string>
+    <string name="naap_no">Measurement no</string>
+
+    <string name="naap_Q">Measurement shirt</string>
+    <string name="length_Q">Shirt length</string>
+    <string name="length_b">Arm length</string>
+    <string name="shoulder">Shoulder</string>
+    <string name="colar">Colar</string>
+    <string name="chest">Chest</string>
+    <string name="waist">Waist</string>
+    <string name="hip">Hip</string>
+    <string name="side_pocket">Side pocket</string>
+    <string name="front_pocket">Front pocket</string>
+
+    <string name="naap_S">Measurement Trouser</string>
+    <string name="length_S">Trouser length</string>
+    <string name="pancha">Trouser Opening</string>
+    <string name="down_pocket">Pocket</string>
+    <string name="embroidery">Embroidery no</string>
+    <string name="wapsi">Return date</string>
+    <string name="details">Other details</string>
+    <string name="recovery">Recovery</string>
+    <string name="updated">Data updated</string>
+    <string name="added">Data added</string>
+    <string name="deleted">Data deleted</string>
+    <string name="outstanding">Outstanding</string>
+    <string name="update_available">Latest App update available</string>
+    <string name="update">App Update</string>
+    <string name="update_btn">Update</string>
+    <string name="cancel">Cancel</string>
+    <string name="check_interent">Please check your internt connection.</string>
+
 
 
     <string name="english" translatable="false">English</string>
     <string name="urdu" translatable="false">‎اردو</string>
     <string name="select_lang_eng" translatable="false">Select language</string>
     <string name="select_lang_urdu" translatable="false">زبان منتخب کریں</string>
+    <string name="language" translatable="false">Language/زبان</string>
+    <string name="delete_acc">Delete account</string>
+    <string name="deliver">Delivered</string>
+    <string name="remains">Oustanding Amount</string>
+    <string name="orders">Orders</string>
+    <string name="customer">Customers</string>
+    <string-array name="lang_array" translatable="false">
+        <item>English</item>
+        <item>‎اردو</item>
+    </string-array>
 </resources>
