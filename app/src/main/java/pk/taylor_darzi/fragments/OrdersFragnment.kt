@@ -17,6 +17,7 @@ import kotlinx.android.synthetic.main.orders_fragment.*
 import kotlinx.android.synthetic.main.shirt_layout.*
 import kotlinx.android.synthetic.main.trouser_layout.*
 import pk.taylor_darzi.R
+import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.OrdersRecyclerViewAdapter
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.interfaces.fragmentbackEvents
@@ -60,20 +61,24 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     {
         try{
             docRef?.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Config.appToast(requireActivity(), e.message)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
-                    selectedCustomer = null
-                    back_button.callOnClick()
-                    var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
-                    customersList?.clear()
-                    if(!list.isNullOrEmpty()) customersList?.addAll(list)
+                if(Utils.curentActivity is DashBoard)
+                {
+                    if (e != null) {
+                        Config.appToast(requireActivity(), e.message)
+                        return@addSnapshotListener
+                    }
+                    if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
+                        selectedCustomer = null
+                        back_button.callOnClick()
+                        var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
+                        customersList?.clear()
+                        if(!list.isNullOrEmpty()) customersList?.addAll(list)
 
+                    }
+                    else Config.appToast(requireActivity(), "Current data: null")
+                    filterList()
                 }
-                else Config.appToast(requireActivity(), "Current data: null")
-                filterList()
+
             }
         }
         catch (ex: Exception)
@@ -219,7 +224,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     }
     private fun updateCustomer()
     {
-        addData()
+
 
         docRef!!.update(Config.Customers, customersList)
             .addOnCompleteListener(requireActivity()) { task1 ->
@@ -333,6 +338,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                 scrollview_orders.visibility = View.GONE
             }
             R.id.save -> {
+                addData()
                 updateCustomer()
             }
             R.id.wapsi_Val, R.id.wapsi_const -> {

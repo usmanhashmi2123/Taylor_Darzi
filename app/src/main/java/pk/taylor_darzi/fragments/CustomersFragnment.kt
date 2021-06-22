@@ -23,6 +23,7 @@ import kotlinx.android.synthetic.main.extrainfo_layout.*
 import kotlinx.android.synthetic.main.shirt_layout.*
 import kotlinx.android.synthetic.main.trouser_layout.*
 import pk.taylor_darzi.R
+import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.CustomersRecyclerViewAdapter
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.interfaces.fragmentbackEvents
@@ -309,25 +310,29 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
     {
         try{
             docRef?.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Config.appToast(requireActivity(), e.message)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
-                    selectedCustomer = null
-                    back_button.callOnClick()
-                    var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
-                    customersList?.clear()
-                    if(!list.isNullOrEmpty())
-                    {
-                        customersList?.addAll(list)
-                        customers = customersList!!.size
+                if(Utils.curentActivity is DashBoard)
+                {
+                    if (e != null) {
+                        Config.appToast(requireActivity(), e.message)
+                        return@addSnapshotListener
                     }
-                    else customers =-1
+                    if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
+                        selectedCustomer = null
+                        back_button.callOnClick()
+                        var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
+                        customersList?.clear()
+                        if(!list.isNullOrEmpty())
+                        {
+                            customersList?.addAll(list)
+                            customers = customersList!!.size
+                        }
+                        else customers =-1
 
+                    }
+                    else Config.appToast(requireActivity(), "Current data: null")
+                    showList()
                 }
-                else Config.appToast(requireActivity(), "Current data: null")
-                showList()
+
             }
         }
         catch (ex: Exception)

@@ -40,23 +40,27 @@ class HomeFragnment : ParentFragnment() {
     {
         try{
             docRef?.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Config.appToast(requireActivity(), e.message)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
-
-                    var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
-                    customersList?.clear()
-                    if(!list.isNullOrEmpty())
-                    {
-                        customersList?.addAll(list)
-                        customers = customersList!!.size
+                if(Utils.curentActivity is DashBoard)
+                {
+                    if (e != null) {
+                        Config.appToast(requireActivity(), e.message)
+                        return@addSnapshotListener
                     }
-                    else customers =-1
-                    filterList()
+                    if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
+
+                        var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
+                        customersList?.clear()
+                        if(!list.isNullOrEmpty())
+                        {
+                            customersList?.addAll(list)
+                            customers = customersList!!.size
+                        }
+                        else customers =-1
+                        filterList()
+                    }
+                    else Config.appToast(requireActivity(), "Current data: null")
                 }
-                else Config.appToast(requireActivity(), "Current data: null")
+
 
             }
         }
