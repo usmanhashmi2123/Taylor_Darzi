@@ -4,12 +4,9 @@ import android.content.Context
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
-import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import kotlinx.android.synthetic.main.customer_data_layout.*
 import pk.taylor_darzi.dataModels.Customer
-import pk.taylor_darzi.dataModels.CustomersList
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -65,32 +62,4 @@ object Config {
             return firebaseDb as FirebaseFirestore
         }
 
-    private fun getData(docRef: DocumentReference)
-    {
-        try{
-            docRef.addSnapshotListener { snapshot, e ->
-                if (e != null) {
-                    Config.appToast(Utils.curentActivity, e.message)
-                    return@addSnapshotListener
-                }
-                if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
-
-
-                    var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
-                    customersList?.clear()
-                    if(!list.isNullOrEmpty()) {
-                        customersList?.addAll(list)
-
-                    }
-                } else Config.appToast(Utils.curentActivity, "Current data: null")
-
-            }
-        }
-        catch (ex: Exception)
-        {
-            ex.printStackTrace()
-            Config.appToast(Utils.curentActivity, ex.message)
-
-        }
-    }
 }

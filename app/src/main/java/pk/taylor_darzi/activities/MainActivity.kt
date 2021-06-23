@@ -2,47 +2,44 @@ package pk.taylor_darzi.activities
 
 import android.os.Bundle
 import android.view.View
-import android.widget.LinearLayout
 import android.widget.RadioGroup
 import androidx.appcompat.widget.AppCompatRadioButton
-import kotlinx.android.synthetic.main.activity_login.*
 import pk.taylor_darzi.BaseActivity
-import pk.taylor_darzi.R
+import pk.taylor_darzi.databinding.ActivityMainBinding
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.LoadingProgressDialog
 import pk.taylor_darzi.utils.Preferences
 import pk.taylor_darzi.utils.Utils
 
 class MainActivity : BaseActivity() {
-    var linearLayout: LinearLayout? = null
-
+    private lateinit var binding: ActivityMainBinding
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mActivity = this
         Utils.setCurrentActivity (mActivity as MainActivity)
 
-        linearLayout= findViewById(R.id.language_group)
-        findViewById<RadioGroup>(R.id.languages).setOnCheckedChangeListener(radioChangeListener)
+        binding.languages.setOnCheckedChangeListener(radioChangeListener)
     }
 
     override fun onResume()
     {
         super.onResume()
-        if(Preferences.instance!!.userEmailId.isBlank()) linearLayout!!.visibility = View.VISIBLE
+        if(Preferences.instance!!.userEmailId.isBlank()) binding.languageGroup.visibility = View.VISIBLE
         else  signIn()
 
     }
     fun signIn()
     {
 
-            progress_circular.visibility = View.VISIBLE
+        binding.progressCircular.visibility = View.VISIBLE
             Config.auth!!.signInWithEmailAndPassword(
                 Preferences.instance!!.userEmailId,
                 Preferences.instance!!.userPass
             )
                 .addOnCompleteListener(this) { task ->
-                    progress_circular.visibility = View.GONE
+                    binding.progressCircular.visibility = View.GONE
                     if (task.isSuccessful) {
                         Config.currentUser = Config.auth!!.currentUser
                         Preferences.instance!!.saveStringPrefValue(Preferences.instance!!.PREF_USER_ID, Config.currentUser?.uid)
@@ -57,11 +54,11 @@ class MainActivity : BaseActivity() {
                             finish()
 
                         }
-                        else linearLayout!!.visibility = View.VISIBLE
+                        else binding.languageGroup.visibility = View.VISIBLE
                     }
                 }
                 .addOnFailureListener(this){ task2 ->
-                    linearLayout!!.visibility = View.VISIBLE
+                    binding.languageGroup.visibility = View.VISIBLE
                 }
         /*else
         {
@@ -98,5 +95,6 @@ class MainActivity : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         LoadingProgressDialog.destroy(mActivity)
+
     }
 }

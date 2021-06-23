@@ -11,15 +11,11 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.firestore.FieldValue
-import kotlinx.android.synthetic.main.customer_data_layout.*
-import kotlinx.android.synthetic.main.extrainfo_layout.*
-import kotlinx.android.synthetic.main.orders_fragment.*
-import kotlinx.android.synthetic.main.shirt_layout.*
-import kotlinx.android.synthetic.main.trouser_layout.*
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.OrdersRecyclerViewAdapter
 import pk.taylor_darzi.dataModels.*
+import pk.taylor_darzi.databinding.OrdersFragmentBinding
 import pk.taylor_darzi.interfaces.fragmentbackEvents
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Utils
@@ -27,29 +23,30 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
-    private var customerId = ""
+    private lateinit var binding: OrdersFragmentBinding
+            private var customerId = ""
     var selectedCustomer: Customer? =null
     private var resumed = false
     var customersAdapter: OrdersRecyclerViewAdapter?= null
     val date_Cal = Calendar.getInstance()
     private var ordersList: ArrayList<Customer> = ArrayList<Customer>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.orders_fragment, container, false)
-        return view
+        binding= OrdersFragmentBinding.inflate(layoutInflater, container, false)
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         resumed = true
-        shirt_naap.setOnClickListener(clickListener)
-        trouser_naap.setOnClickListener(clickListener)
-        back_button.setOnClickListener(clickListener)
-        edit_pencil.setOnClickListener(clickListener)
-        delete.setOnClickListener(clickListener)
-        save.setOnClickListener(clickListener)
-        wapsi_Val.setOnClickListener(clickListener)
-        wapsi_const.setOnClickListener(clickListener)
-        if (orders_data_show.isVisible)
+        binding.customerDataI.shirtNaap.setOnClickListener(clickListener)
+        binding.customerDataI.trouserNaap.setOnClickListener(clickListener)
+        binding.customerDataI.backButton.setOnClickListener(clickListener)
+        binding.customerDataI.editPencil.setOnClickListener(clickListener)
+        binding.customerDataI.delete.setOnClickListener(clickListener)
+        binding.customerDataI.extrainfoLayoutI.save.setOnClickListener(clickListener)
+        binding.customerDataI.extrainfoLayoutI.wapsiVal.setOnClickListener(clickListener)
+        binding.customerDataI.extrainfoLayoutI.wapsiConst.setOnClickListener(clickListener)
+        if (binding.ordersDataShow.isVisible)
             getData()
     }
     override fun onPause() {
@@ -69,7 +66,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                     }
                     if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
                         selectedCustomer = null
-                        back_button.callOnClick()
+                        binding.customerDataI.backButton.callOnClick()
                         var list: List<Customer>? = snapshot.toObject(CustomersList::class.java)?.customers
                         customersList?.clear()
                         if(!list.isNullOrEmpty()) customersList?.addAll(list)
@@ -110,15 +107,15 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         }
 
         showList()
-        total_Val.text = baqaya.toString()
+        binding.totalVal.text = baqaya.toString()
     }
 
     fun showList()
     {
         if(ordersList.isNullOrEmpty()) Config.appToast(requireActivity(), "No data to show")
-        orders_data_show.visibility=View.VISIBLE
-        scrollview_orders.visibility = View.GONE
-        recyclerView_orders.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL,
+        binding.ordersDataShow.visibility=View.VISIBLE
+        binding.scrollviewOrders.visibility = View.GONE
+        binding.recyclerViewOrders.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL,
             false)
         if(customersAdapter== null)
         {
@@ -126,15 +123,15 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
 
         }
         customersAdapter?.setData(ordersList)
-        recyclerView_orders.adapter = customersAdapter
+        binding.recyclerViewOrders.adapter = customersAdapter
         customersAdapter?.notifyDataSetChanged()
     }
 
     private fun adapterOnClick(customer: Customer) {
         selectedCustomer = customer
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
-        orders_data_show.visibility=View.GONE
-        scrollview_orders.visibility = View.VISIBLE
+        binding.ordersDataShow.visibility=View.GONE
+        binding.scrollviewOrders.visibility = View.VISIBLE
         enableDisable(false)
         showCustomerInfo(selectedCustomer!!)
 
@@ -150,77 +147,62 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     }
     private fun enableDisable(enable: Boolean)
     {
-        name_user_Val.isEnabled = enable
-        phone_user_Val.isEnabled = enable
-        wasool_Val.isEnabled = enable
-        rem_Val.isEnabled = enable
-        length_q_Val.isEnabled = enable
-        length_b_Val.isEnabled = enable
-        shoulder_Val.isEnabled = enable
-        colar_Val.isEnabled = enable
-        chest_Val.isEnabled = enable
-        waist_Val.isEnabled = enable
-        hip_Val.isEnabled = enable
-        length_s_Val.isEnabled = enable
-        pancha_Val.isEnabled = enable
-        tpocket_checkbox.isEnabled = enable
-        emb_Val.isEnabled = enable
-        spocket_checkbox.isEnabled = enable
-        fpocket_checkbox.isEnabled = enable
-        notes_Val.isEnabled = enable
-        edit_pencil.isSelected = enable
+        binding.customerDataI.nameUserVal.isEnabled = enable
+        binding.customerDataI.phoneUserVal.isEnabled = enable
+        binding.customerDataI.wasoolVal.isEnabled = enable
+        binding.customerDataI.remVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.lengthQVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.lengthBVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.shoulderVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.colarVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.chestVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.waistVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.hipVal.isEnabled = enable
+        binding.customerDataI.trouserLayoutI.lengthSVal.isEnabled = enable
+        binding.customerDataI.trouserLayoutI.panchaVal.isEnabled = enable
+        binding.customerDataI.trouserLayoutI.tpocketCheckbox.isEnabled = enable
+        binding.customerDataI.extrainfoLayoutI.embVal.isEnabled = enable
+        binding.customerDataI.extrainfoLayoutI.spocketCheckbox.isEnabled = enable
+        binding.customerDataI.extrainfoLayoutI.fpocketCheckbox.isEnabled = enable
+        binding.customerDataI.extrainfoLayoutI.notesVal.isEnabled = enable
+        binding.customerDataI.editPencil.isSelected = enable
         if(enable)
-            save.visibility = View.VISIBLE
+            binding.customerDataI.extrainfoLayoutI.save.visibility = View.VISIBLE
         else
-            save.visibility = View.GONE
+            binding.customerDataI.extrainfoLayoutI.save.visibility = View.GONE
 
     }
 
-
     private fun showCustomerInfo(customer: Customer)
     {
-        name_user_Val.setText(customer.name)
-        phone_user_Val.setText(customer.phone)
+        binding.customerDataI.nameUserVal.setText(customer.name)
+        binding.customerDataI.phoneUserVal.setText(customer.phone)
 
-        no_Val.text = customer.no.toString()
+        binding.customerDataI.noVal.text = customer.no.toString()
         var naapQameez: NaapQameez = customer.naapQameez!!
-        if(naapQameez!= null)
-        {
-            length_q_Val.setText(naapQameez.shirtLength)
-            length_b_Val.setText(naapQameez.armLength)
-            shoulder_Val.setText(naapQameez.shoulderLength)
-            colar_Val.setText(naapQameez.colarSize)
-            chest_Val.setText(naapQameez.chest)
-            waist_Val.setText(naapQameez.waist)
-            hip_Val.setText(naapQameez.ghera)
-        }
+        binding.customerDataI.shirtLayoutI.lengthQVal.setText(naapQameez.shirtLength)
+        binding.customerDataI.shirtLayoutI.lengthBVal.setText(naapQameez.armLength)
+        binding.customerDataI.shirtLayoutI.shoulderVal.setText(naapQameez.shoulderLength)
+        binding.customerDataI.shirtLayoutI.colarVal.setText(naapQameez.colarSize)
+        binding.customerDataI.shirtLayoutI.chestVal.setText(naapQameez.chest)
+        binding.customerDataI.shirtLayoutI.waistVal.setText(naapQameez.waist)
+        binding.customerDataI.shirtLayoutI.hipVal.setText(naapQameez.ghera)
         var naapShalwar: NaapShalwar = customer.naapShalwar!!
-        if(naapShalwar!= null)
-        {
-            length_s_Val.setText(naapShalwar.shalwarLength)
-            pancha_Val.setText(naapShalwar.pancha)
-            tpocket_checkbox.isChecked =naapShalwar.pocket
+        binding.customerDataI.trouserLayoutI.lengthSVal.setText(naapShalwar.shalwarLength)
+        binding.customerDataI.trouserLayoutI.panchaVal.setText(naapShalwar.pancha)
+        binding.customerDataI.trouserLayoutI.tpocketCheckbox.isChecked =naapShalwar.pocket
 
-        }
         var order: Order = customer.order!!
-        if(order!= null)
-        {
-            wasool_Val.setText(order.amountRcvd)
-            rem_Val.setText(order.amountRemaining)
-            wapsi_Val.text = order.deliveryDate
+        binding.customerDataI.wasoolVal.setText(order.amountRcvd)
+        binding.customerDataI.remVal.setText(order.amountRemaining)
+        binding.customerDataI.extrainfoLayoutI.wapsiVal.text = order.deliveryDate
 
-        }
         var extraInfo: ExtraInfo = customer.extraInfo!!
-        if(extraInfo!= null)
-        {
-            emb_Val.setText(extraInfo.karhaiNo)
-            fpocket_checkbox.isChecked =extraInfo.pocketFront
-            spocket_checkbox.isChecked = extraInfo.pocketSide
-            notes_Val.setText(extraInfo.notes)
-        }
-        shirt_layout.visibility = View.GONE
-        trouser_layout.visibility = View.GONE
-        scrollview_orders.fullScroll(ScrollView.FOCUS_UP)
+        binding.customerDataI.extrainfoLayoutI.embVal.setText(extraInfo.karhaiNo)
+        binding.customerDataI.extrainfoLayoutI.fpocketCheckbox.isChecked =extraInfo.pocketFront
+        binding.customerDataI.extrainfoLayoutI.spocketCheckbox.isChecked = extraInfo.pocketSide
+        binding.customerDataI.extrainfoLayoutI.notesVal.setText(extraInfo.notes)
+        binding.scrollviewOrders.fullScroll(ScrollView.FOCUS_UP)
     }
     private fun updateCustomer()
     {
@@ -231,7 +213,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                 if (task1.isSuccessful) {
                     Config.appToast(requireActivity(), getString(R.string.updated))
                     selectedCustomer = null
-                    back_button.callOnClick()
+                    binding.customerDataI.backButton.callOnClick()
                 } else Config.appToast(requireActivity(), "failed to update")
             }.addOnFailureListener(requireActivity()){ task ->
             Config.appToast(
@@ -244,43 +226,31 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     private fun addData()
     {
         try{
-            selectedCustomer!!.name = name_user_Val.text.toString()
-            selectedCustomer!!.phone = phone_user_Val.text.toString()
+            selectedCustomer!!.name = binding.customerDataI.nameUserVal.text.toString()
+            selectedCustomer!!.phone = binding.customerDataI.phoneUserVal.text.toString()
             var naapQameez: NaapQameez = selectedCustomer!!.naapQameez!!
-            if(naapQameez!= null)
-            {
-                naapQameez.shirtLength = length_q_Val.text.toString()
-                naapQameez.armLength = length_b_Val.text.toString()
-                naapQameez.shoulderLength = shoulder_Val.text.toString()
-                naapQameez.colarSize = colar_Val.text.toString()
-                naapQameez.chest = chest_Val.text.toString()
-                naapQameez.waist = waist_Val.text.toString()
-                naapQameez.ghera = hip_Val.text.toString()
-            }
+            naapQameez.shirtLength = binding.customerDataI.shirtLayoutI.lengthQVal.text.toString()
+            naapQameez.armLength = binding.customerDataI.shirtLayoutI.lengthBVal.text.toString()
+            naapQameez.shoulderLength = binding.customerDataI.shirtLayoutI.shoulderVal.text.toString()
+            naapQameez.colarSize = binding.customerDataI.shirtLayoutI.colarVal.text.toString()
+            naapQameez.chest = binding.customerDataI.shirtLayoutI.chestVal.text.toString()
+            naapQameez.waist = binding.customerDataI.shirtLayoutI.waistVal.text.toString()
+            naapQameez.ghera = binding.customerDataI.shirtLayoutI.hipVal.text.toString()
             var naapShalwar: NaapShalwar = selectedCustomer!!.naapShalwar!!
-            if(naapShalwar!= null)
-            {
-                naapShalwar.shalwarLength = length_s_Val.text.toString()
-                naapShalwar.pancha = pancha_Val.text.toString()
-                naapShalwar.pocket = tpocket_checkbox.isChecked
+            naapShalwar.shalwarLength = binding.customerDataI.trouserLayoutI.lengthSVal.text.toString()
+            naapShalwar.pancha = binding.customerDataI.trouserLayoutI.panchaVal.text.toString()
+            naapShalwar.pocket = binding.customerDataI.trouserLayoutI.tpocketCheckbox.isChecked
 
-            }
             var order: Order = selectedCustomer!!.order!!
-            if(order!= null)
-            {
-                order.amountRcvd = wasool_Val.text.toString()
-                order.amountRemaining = rem_Val.text.toString()
-                order.deliveryDate = wapsi_Val.text.toString()
+            order.amountRcvd = binding.customerDataI.extrainfoLayoutI.wapsiVal.text.toString()
+            order.amountRemaining = binding.customerDataI.remVal.text.toString()
+            order.deliveryDate = binding.customerDataI.extrainfoLayoutI.wapsiVal.text.toString()
 
-            }
             var extraInfo: ExtraInfo = selectedCustomer!!.extraInfo!!
-            if(extraInfo!= null)
-            {
-                extraInfo.karhaiNo = emb_Val.text.toString()
-                extraInfo.pocketFront = fpocket_checkbox.isChecked
-                extraInfo.pocketSide = spocket_checkbox.isChecked
-                extraInfo.notes = notes_Val.text.toString()
-            }
+            extraInfo.karhaiNo = binding.customerDataI.extrainfoLayoutI.embVal.text.toString()
+            extraInfo.pocketFront = binding.customerDataI.extrainfoLayoutI.fpocketCheckbox.isChecked
+            extraInfo.pocketSide = binding.customerDataI.extrainfoLayoutI.spocketCheckbox.isChecked
+            extraInfo.notes = binding.customerDataI.extrainfoLayoutI.notesVal.text.toString()
 
             for ((index, customer) in customersList!!.withIndex()) {
                 var id = customer.name+"_"+customer.phone+"_"+customer.no
@@ -302,7 +272,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     private val clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.edit_pencil -> {
-                enableDisable(!edit_pencil.isSelected)
+                enableDisable(!binding.customerDataI.editPencil.isSelected)
             }
             R.id.delete -> {
                 if(selectedCustomer!= null)
@@ -313,7 +283,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                         if (task1.isSuccessful) {
                             Config.appToast(requireActivity(), "Data Removed")
                             selectedCustomer = null
-                            back_button.callOnClick()
+                            binding.customerDataI.backButton.callOnClick()
                         } else Config.appToast(requireActivity(), "failed to remove")
                     }.addOnFailureListener(requireActivity()){ task ->
                         Config.appToast(
@@ -326,16 +296,16 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
 
             }
             R.id.shirt_naap -> {
-                if (shirt_layout.isVisible) shirt_layout.visibility = View.GONE
-                else shirt_layout.visibility = View.VISIBLE
+                if (binding.customerDataI.shirtLayoutI.root.isVisible) binding.customerDataI.shirtLayoutI.root.visibility = View.GONE
+                else binding.customerDataI.shirtLayoutI.root.visibility = View.VISIBLE
             }
             R.id.trouser_naap -> {
-                if (trouser_layout.isVisible) trouser_layout.visibility = View.GONE
-                else trouser_layout.visibility = View.VISIBLE
+                if (binding.customerDataI.trouserLayoutI.root.isVisible) binding.customerDataI.trouserLayoutI.root.visibility = View.GONE
+                else binding.customerDataI.trouserLayoutI.root.visibility = View.VISIBLE
             }
             R.id.back_button -> {
-                orders_data_show.visibility = View.VISIBLE
-                scrollview_orders.visibility = View.GONE
+                binding.ordersDataShow.visibility = View.VISIBLE
+                binding.scrollviewOrders.visibility = View.GONE
             }
             R.id.save -> {
                 addData()
@@ -348,7 +318,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                         date_Cal.set(Calendar.YEAR, year)
                         date_Cal.set(Calendar.MONTH, monthOfYear)
                         date_Cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        wapsi_Val.text = Config.getFormatedStringDate(date_Cal.time)
+                        binding.customerDataI.extrainfoLayoutI.wapsiVal.text = Config.getFormatedStringDate(date_Cal.time)
                     },
                     date_Cal.get(Calendar.YEAR),
                     date_Cal.get(Calendar.MONTH),
@@ -359,7 +329,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                     "Clear"
                 ) { dialog: DialogInterface?, which: Int ->
                     datePickerDialog.cancel()
-                    wapsi_Val.text = ""
+                    binding.customerDataI.extrainfoLayoutI.wapsiVal.text = ""
                 }
                 datePickerDialog.show()
             }
@@ -367,9 +337,9 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     }
 
     override fun doBack(): Boolean {
-        if(!scrollview_orders.isVisible)
+        if(!binding.scrollviewOrders.isVisible)
         {
-            back_button.callOnClick()
+            binding.customerDataI.backButton.callOnClick()
             return false
         }
         else return true

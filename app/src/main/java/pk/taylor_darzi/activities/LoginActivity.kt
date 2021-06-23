@@ -14,32 +14,33 @@ import com.google.firebase.auth.ktx.userProfileChangeRequest
 import com.google.firebase.firestore.DocumentReference
 import com.google.firebase.firestore.DocumentSnapshot
 import com.google.firebase.ktx.Firebase
-import kotlinx.android.synthetic.main.activity_login.*
 import pk.taylor_darzi.BaseActivity
 import pk.taylor_darzi.R
 import pk.taylor_darzi.dataModels.CustomersList
 import pk.taylor_darzi.dataModels.User
+import pk.taylor_darzi.databinding.ActivityLoginBinding
 import pk.taylor_darzi.utils.*
 import java.util.regex.Pattern
 
 
 class LoginActivity : BaseActivity() {
 
-
+    private lateinit var binding: ActivityLoginBinding
     private var resendToken: PhoneAuthProvider.ForceResendingToken?=null
     private var storedVerificationId: String?=null
     var userPhone =""
     val phonePat = "^[+][0-9]{7,13}\$"
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_login)
+        binding = ActivityLoginBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mActivity = this
         Utils.setCurrentActivity(mActivity as LoginActivity)
         Config.auth!!.useAppLanguage()
-        create_aac_btn.setOnClickListener(clickListener)
-        login_btn.setOnClickListener(clickListener)
-        register.setOnClickListener(clickListener)
-        login_text.setOnClickListener(clickListener)
+        binding.createAacBtn.setOnClickListener(clickListener)
+        binding.loginBtn.setOnClickListener(clickListener)
+        binding.register.setOnClickListener(clickListener)
+        binding.loginText.setOnClickListener(clickListener)
     }
     public override fun onStart() {
         super.onStart()
@@ -55,12 +56,12 @@ class LoginActivity : BaseActivity() {
     val clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.register -> {
-                signup_group.visibility = View.VISIBLE
-                sigin_group.visibility = View.GONE
+                binding.signupGroup.visibility = View.VISIBLE
+                binding.siginGroup.visibility = View.GONE
             }
             R.id.login_text -> {
-                sigin_group.visibility = View.VISIBLE
-                signup_group.visibility = View.GONE
+                binding.siginGroup.visibility = View.VISIBLE
+                binding.signupGroup.visibility = View.GONE
             }
             R.id.create_aac_btn -> {
                 if (validate(true)) signUp()
@@ -69,8 +70,8 @@ class LoginActivity : BaseActivity() {
                 if (validate(false)) signIn(null)
             }
             R.id.forgotten_Pass_text -> {
-                if (validateEmail(useremail_phone.text.toString()))
-                    Config.auth!!.sendPasswordResetEmail(useremail_phone.text.toString().trim())
+                if (validateEmail(binding.useremailPhone.text.toString()))
+                    Config.auth!!.sendPasswordResetEmail(binding.useremailPhone.text.toString().trim())
                         .addOnCompleteListener(
                             this
                         ) { task ->
@@ -81,67 +82,64 @@ class LoginActivity : BaseActivity() {
     }
     fun validateEmail(email:String): Boolean {
         var validate = true
-        userName.error = null
+        binding.userName.error = null
 
         if (email.isBlank() || !EMAIL_ADDRESS.matcher(email.trim()).matches())
         {
             validate = false
-            useremail_phone.error = getString(R.string.inavlid_data)
+            binding.useremailPhone.error = getString(R.string.inavlid_data)
         }
         return  validate
-    }
-    private fun function(error: Unit, unit: Unit) {
-        TODO("Not yet implemented")
     }
 
     fun validate(signup: Boolean): Boolean {
         var validate = true
-        userName.error = null
-        useremail_phone.error = null
-        user_phone.error = null
-        password.error = null
-        password_2.error = null
+        binding.userName.error = null
+        binding.useremailPhone.error = null
+        binding.userPhone.error = null
+        binding.password.error = null
+        binding.password2.error = null
 
-        if(!validateEmail(useremail_phone.text.toString()) && !Pattern.compile(phonePat).matcher(useremail_phone.text.toString().trim()).matches())
+        if(!validateEmail(binding.useremailPhone.text.toString()) && !Pattern.compile(phonePat).matcher(binding.useremailPhone.text.toString().trim()).matches())
         {
             validate = false
-            useremail_phone.error = getString(R.string.inavlid_data)
+            binding.useremailPhone.error = getString(R.string.inavlid_data)
         }
 
         if(signup)
         {
-            if(!Pattern.compile(phonePat).matcher(user_phone.text.toString().trim()).matches())
+            if(!Pattern.compile(phonePat).matcher(binding.userPhone.text.toString().trim()).matches())
             {
                 validate = false
                 userPhone= ""
-                user_phone.error = getString(R.string.inavlid_data)
+                binding.userPhone.error = getString(R.string.inavlid_data)
             }
             else
-                userPhone = user_phone.text.toString().trim()
-            if(userName.text.toString().isBlank())
+                userPhone = binding.userPhone.text.toString().trim()
+            if(binding.userName.text.toString().isBlank())
             {
                 validate = false
-                userName.error = getString(R.string.inavlid_data)
+                binding.userName.error = getString(R.string.inavlid_data)
             }
 
-            if(password.text.toString().isBlank())
+            if(binding.password.text.toString().isBlank())
             {
                 validate = false
-                password.error = getString(R.string.inavlid_data)
+                binding.password.error = getString(R.string.inavlid_data)
             }
-            else if(password_2.text.toString().isBlank() || !password.text.toString().equals(
-                    password_2.text.toString(),
+            else if(binding.password2.text.toString().isBlank() || !binding.password.text.toString().equals(
+                    binding.password2.text.toString(),
                     false
                 ))
             {
                 validate = false
-                password_2.error = getString(R.string.inavlid_data)
+                binding.password2.error = getString(R.string.inavlid_data)
             }
         }
-        else if(password.text.toString().isBlank())
+        else if(binding.password.text.toString().isBlank())
         {
             validate = false
-            password.error = getString(R.string.inavlid_data)
+            binding.password.error = getString(R.string.inavlid_data)
         }
         return validate
     }
@@ -149,15 +147,15 @@ class LoginActivity : BaseActivity() {
     {
         if(CheckConnection.getInstance(mActivity!!)!!.isConnectedToInternet)
         {
-            progress_circular.visibility = View.VISIBLE
+            binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
 
             Config.auth?.createUserWithEmailAndPassword(
-                useremail_phone.text.toString().trim(),
-                password_2.text.toString()
+                binding.useremailPhone.text.toString().trim(),
+                binding.password2.text.toString()
             )
                     ?.addOnCompleteListener(this){ task ->
-                        progress_circular.visibility = View.GONE
+                        binding.progressCircular.visibility = View.GONE
                         if (task.isSuccessful) {
 
                             Config.currentUser = Firebase.auth.currentUser
@@ -165,11 +163,11 @@ class LoginActivity : BaseActivity() {
                             if (Config.currentUser != null) {
                                 Preferences.instance!!.saveStringPrefValue(
                                     Preferences.instance!!.PREF_USER_EMAIL,
-                                    useremail_phone.text.toString().trim()
+                                    binding.useremailPhone.text.toString().trim()
                                 )
                                 Preferences.instance!!.saveStringPrefValue(
                                     Preferences.instance!!.PREF_USER_PASS,
-                                    password_2.text.toString()
+                                    binding.password2.text.toString()
                                 )
                                 Preferences.instance!!.saveStringPrefValue(
                                     Preferences.instance!!.PREF_USER_ID,
@@ -177,7 +175,7 @@ class LoginActivity : BaseActivity() {
                                 )
 
                                 val profileUpdates = userProfileChangeRequest {
-                                    displayName = userName.text?.toString()
+                                    displayName = binding.userName.text?.toString()
                                     //photoUri = Uri.parse("https://example.com/jane-q-user/profile.jpg")
                                 }
 
@@ -230,7 +228,7 @@ class LoginActivity : BaseActivity() {
                                             }
                                         }
                             }
-                            signup_group.visibility = View.GONE
+                            binding.signupGroup.visibility = View.GONE
                         } else {
                             Config.appToast(mActivity, task.exception!!.message)
                         }
@@ -258,26 +256,26 @@ class LoginActivity : BaseActivity() {
     fun signIn(credential: PhoneAuthCredential?)
     {
         if(CheckConnection.getInstance(mActivity!!)!!.isConnectedToInternet) {
-            progress_circular.visibility = View.VISIBLE
+            binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
 
             Config.auth?.signInWithEmailAndPassword(
-                useremail_phone.text.toString().trim(),
-                password.text.toString()
+                binding.useremailPhone.text.toString().trim(),
+                binding.password.text.toString()
             )
                 ?.addOnCompleteListener(this) { task ->
-                    progress_circular.visibility = View.GONE
+                    binding.progressCircular.visibility = View.GONE
                     if (task.isSuccessful) {
                         Config.currentUser = Config.auth!!.currentUser
 
                         Config.getFirebaseFirestore
                         Preferences.instance!!.saveStringPrefValue(
                             Preferences.instance!!.PREF_USER_EMAIL,
-                            useremail_phone.text.toString().trim()
+                            binding.useremailPhone.text.toString().trim()
                         )
                         Preferences.instance!!.saveStringPrefValue(
                             Preferences.instance!!.PREF_USER_PASS,
-                            password.text.toString()
+                            binding.password.text.toString()
                         )
                         Preferences.instance!!.saveStringPrefValue(
                             Preferences.instance!!.PREF_USER_ID,

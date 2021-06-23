@@ -242,12 +242,12 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:shadowColor="@color/gray"
         android:text="@string/naap_Q"
-        app:layout_constraintBottom_toTopOf="@id/shirt_layout"
+        app:layout_constraintBottom_toTopOf="@id/shirt_layout_i"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rem_const" />
 
     <include
-        android:id="@+id/shirt_layout"
+        android:id="@+id/shirt_layout_i"
         layout="@layout/shirt_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -269,12 +269,12 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:shadowColor="@color/gray"
         android:text="@string/naap_S"
-        app:layout_constraintBottom_toTopOf="@id/trouser_layout"
+        app:layout_constraintBottom_toTopOf="@id/trouser_layout_i"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/shirt_layout" />
+        app:layout_constraintTop_toBottomOf="@id/shirt_layout_i" />
 
     <include
-        android:id="@+id/trouser_layout"
+        android:id="@+id/trouser_layout_i"
         layout="@layout/trouser_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -296,12 +296,12 @@
         android:paddingHorizontal="@dimen/_10sdp"
         android:shadowColor="@color/gray"
         android:text="@string/details"
-        app:layout_constraintBottom_toTopOf="@id/extrainfo_layout"
+        app:layout_constraintBottom_toTopOf="@id/extrainfo_layout_i"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/trouser_layout" />
+        app:layout_constraintTop_toBottomOf="@id/trouser_layout_i" />
 
     <include
-        android:id="@+id/extrainfo_layout"
+        android:id="@+id/extrainfo_layout_i"
         layout="@layout/extrainfo_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

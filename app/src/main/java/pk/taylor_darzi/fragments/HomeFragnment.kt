@@ -4,35 +4,35 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import kotlinx.android.synthetic.main.customer_data_layout.*
-import kotlinx.android.synthetic.main.home_fragment.*
-import kotlinx.android.synthetic.main.orders_fragment.*
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.ActivityStackManager
 import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.dataModels.Customer
 import pk.taylor_darzi.dataModels.CustomersList
+import pk.taylor_darzi.databinding.HomeFragmentBinding
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Preferences
 import pk.taylor_darzi.utils.Utils
 
 class HomeFragnment : ParentFragnment() {
+    private lateinit var binding: HomeFragmentBinding
     private var resumed = false
     private  var createdfirstTime = false
     private var ordersList: ArrayList<Customer> = ArrayList<Customer>()
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view: View = inflater.inflate(R.layout.home_fragment, container, false)
+        binding = HomeFragmentBinding.inflate(layoutInflater,  container, false)
+      
         createdfirstTime = true
-        return view
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         resumed = true
-        logout.setOnClickListener(clickListener)
-        customers_h.setOnClickListener(clickListener)
-        orders_h.setOnClickListener(clickListener)
-        remains.setOnClickListener(clickListener)
+        binding.logout.setOnClickListener(clickListener)
+        binding.customersH.setOnClickListener(clickListener)
+        binding.ordersH.setOnClickListener(clickListener)
+        binding.remains.setOnClickListener(clickListener)
         if(createdfirstTime) getData()
 
     }
@@ -80,7 +80,7 @@ class HomeFragnment : ParentFragnment() {
         var baqaya = 0f
         if(customersList!= null)
         {
-            customer_total.text = customersList!!.size.toString()
+            binding.customerTotal.text = customersList!!.size.toString()
             for (customer in customersList!!)
             {
                 val remAmount = Utils.getAmount(customer.order?.amountRemaining)
@@ -94,10 +94,10 @@ class HomeFragnment : ParentFragnment() {
 
             }
         }
-        else customer_total.text = "0"
+        else binding.customerTotal.text = "0"
 
-        orders_total.text = ordersList.size.toString()
-        remains_total.text = baqaya.toString()
+        binding.ordersTitle.text = ordersList.size.toString()
+        binding.remainsTotal.text = baqaya.toString()
     }
     private val clickListener = View.OnClickListener { view ->
         when (view.id) {

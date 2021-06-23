@@ -7,10 +7,9 @@ import android.view.ViewGroup
 import android.widget.AdapterView
 import android.widget.ArrayAdapter
 import com.google.firebase.auth.EmailAuthProvider
-import kotlinx.android.synthetic.main.my_account_fragment.*
-import kotlinx.android.synthetic.main.my_account_fragment.view.*
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.ActivityStackManager
+import pk.taylor_darzi.databinding.MyAccountFragmentBinding
 import pk.taylor_darzi.utils.CheckConnection
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Preferences
@@ -18,13 +17,14 @@ import pk.taylor_darzi.utils.Utils
 
 
 class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener {
-    private var resumed = false
+    private lateinit var binding: MyAccountFragmentBinding
+            private var resumed = false
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view: View = inflater.inflate(R.layout.my_account_fragment, container, false)
+        binding= MyAccountFragmentBinding.inflate(layoutInflater, container, false)
         ArrayAdapter.createFromResource(
             requireContext(),
             R.array.lang_array,
@@ -33,30 +33,30 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
             // Specify the layout to use when the list of choices appears
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
             //language_name.text
-            view.language_name.adapter = adapter
+            binding.languageName.adapter = adapter
             if (language!!.contains("Eng"))
-                view.language_name.setSelection(0, false)
+                binding.languageName.setSelection(0, false)
             else
-                view.language_name.setSelection(1, false)
-            view.language_name.onItemSelectedListener = this
+                binding.languageName.setSelection(1, false)
+            binding.languageName.onItemSelectedListener = this
 
         }
-        return view
+        return binding.root
     }
 
     override fun onResume() {
         super.onResume()
         resumed = true
-        name_val.text = Config.currentUser?.displayName
-        if(phone_val.text.isNullOrBlank())
+        binding.nameVal.text = Config.currentUser?.displayName
+        if(binding.phoneVal.text.isNullOrBlank())
         {
             docRef?.get()?.addOnSuccessListener (requireActivity() ){documentSnapshot ->
                 if(documentSnapshot.contains("phoneNumber"))
-                    phone_val.text = documentSnapshot.get("phoneNumber").toString()
+                    binding.phoneVal.text = documentSnapshot.get("phoneNumber").toString()
             }
         }
-        email_val.text = Config.currentUser?.email
-        delete_account.setOnClickListener(clickListener)
+        binding.emailVal.text = Config.currentUser?.email
+        binding.deleteAccount.setOnClickListener(clickListener)
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
         if (position ==1 && language!!.contains("Eng")) {

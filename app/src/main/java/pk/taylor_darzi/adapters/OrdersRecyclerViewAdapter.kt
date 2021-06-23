@@ -1,14 +1,10 @@
 package pk.taylor_darzi.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
-import kotlinx.android.synthetic.main.customer_item.view.name_user
-import kotlinx.android.synthetic.main.customer_item.view.phone_user
-import kotlinx.android.synthetic.main.order_item.view.*
-import pk.taylor_darzi.R
 import pk.taylor_darzi.dataModels.Customer
+import pk.taylor_darzi.databinding.OrderItemBinding
 
 class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit) : RecyclerView.Adapter<OrdersRecyclerViewAdapter.ViewHolder?>() {
     private var dataList: ArrayList<Customer>? = ArrayList<Customer>()
@@ -25,25 +21,25 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
 
     val listLoaded: List<Customer>? get() = dataListFiltered
 
-    class ViewHolder(itemView: View, val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit) : RecyclerView.ViewHolder(
-        itemView
+    class ViewHolder(private val itemBinding: OrderItemBinding, val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit) : RecyclerView.ViewHolder(
+        itemBinding.root
     ){
 
         fun bindItems(user: Customer, pos :Int) {
-            itemView.name_user.text = user.name
-            itemView.phone_user.text = user.phone
-            itemView.wasooli_Val.text = user.order?.amountRcvd
-            itemView.rema_Val.text = user.order?.amountRemaining
-            itemView.khata_val.text = user.no.toString()
-            itemView.deliver.setOnClickListener { user.let { onDelivered(it)} }
-            itemView.setOnClickListener { user.let { onClick(it)} }
+            itemBinding.nameUser.text = user.name
+            itemBinding.phoneUser.text = user.phone
+            itemBinding.wasooliVal.text = user.order?.amountRcvd
+            itemBinding.remaVal.text = user.order?.amountRemaining
+            itemBinding.khataVal.text = user.no.toString()
+            itemBinding.deliver.setOnClickListener { user.let { onDelivered(it)} }
+            itemBinding.root.setOnClickListener { user.let { onClick(it)} }
         }
 
 
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        val v = LayoutInflater.from(parent.context).inflate(R.layout.order_item, parent, false)
+        val v = OrderItemBinding.inflate( LayoutInflater.from(parent.context), parent, false)
         return ViewHolder(v, onClick, onDelivered)
     }
 

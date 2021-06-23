@@ -93,7 +93,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
-        <include layout="@layout/customer_data_layout" />
+        <include  android:id="@+id/customer_data_layout"
+            layout="@layout/customer_data_layout" />
 
     </ScrollView>
 

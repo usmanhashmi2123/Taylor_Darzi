@@ -7,14 +7,12 @@ import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
-import com.google.firebase.auth.FirebaseAuth
-import kotlinx.android.synthetic.main.activity_dashboard.*
-import kotlinx.android.synthetic.main.customer_data_layout.*
 import pk.taylor_darzi.BaseActivity
 import pk.taylor_darzi.BuildConfig
 import pk.taylor_darzi.R
 import pk.taylor_darzi.adapters.FragmentsAdapter
 import pk.taylor_darzi.customViews.CustomAlertDialogue
+import pk.taylor_darzi.databinding.ActivityDashboardBinding
 import pk.taylor_darzi.fragments.CustomersFragnment
 import pk.taylor_darzi.fragments.HomeFragnment
 import pk.taylor_darzi.fragments.MyAccountFragnment
@@ -27,57 +25,71 @@ import pk.taylor_darzi.utils.Utils
 
 
 class DashBoard : BaseActivity() {
-
-    private lateinit var auth: FirebaseAuth
+    
+    private lateinit var binding: ActivityDashboardBinding
     private var pagerAdapter: FragmentsAdapter? = null
+    private var created = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_dashboard)
+        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        setContentView(binding.root)
         mActivity = this
         Utils.setCurrentActivity(mActivity as DashBoard)
         Config.getFirebaseAuth
         Config.getFirebaseFirestore.collection(Config.User).document(Config.Version).addSnapshotListener { snapshot, e ->
-            if (e != null) {
 
-                return@addSnapshotListener
-            }
-            if (snapshot != null && snapshot.exists() && snapshot.get(Config.Version) != null) {
+            if(Utils.curentActivity is DashBoard)
+            {
+                if (e != null) {
 
-                if( snapshot.get(Config.Version) as Long > BuildConfig.VERSION_CODE)
-                {
-                    CustomAlertDialogue.instance?.showAlertDialog(mActivity,
-                        getString(R.string.update),
-                        getString(R.string.update_available),
-                        getString(R.string.update_btn),
-                        getString(R.string.cancel),
-                        object : GenericEvents {
-                            override fun onGenericEvent(eventType: String, vararg args: Any?) {
-                                if (eventType.equals(Constants.ON_OK.toString())) {
-                                    try {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
-                                    } catch (e: ActivityNotFoundException) {
-                                        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                    return@addSnapshotListener
+                }
+                if (snapshot != null && snapshot.exists() && snapshot.get(Config.Version) != null) {
+
+                    if( snapshot.get(Config.Version) as Long > BuildConfig.VERSION_CODE)
+                    {
+                        CustomAlertDialogue.instance?.showAlertDialog(mActivity,
+                            getString(R.string.update),
+                            getString(R.string.update_available),
+                            getString(R.string.update_btn),
+                            getString(R.string.cancel),
+                            object : GenericEvents {
+                                override fun onGenericEvent(eventType: String, vararg args: Any?) {
+                                    if (eventType.equals(Constants.ON_OK.toString())) {
+                                        try {
+                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName")))
+                                        } catch (e: ActivityNotFoundException) {
+                                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName")))
+                                        }
                                     }
                                 }
-                            }
-                        })
-                }
+                            })
+                    }
 
+                }
             }
 
         }
-        pagerAdapter = FragmentsAdapter(this)
-        var arrayList : ArrayList<Fragment> = ArrayList()
-        arrayList.add(HomeFragnment())
-        arrayList.add(CustomersFragnment())
-        arrayList.add(OrdersFragnment())
-        arrayList.add(MyAccountFragnment())
+        created = true
 
-        pagerAdapter!!.setFragments(arrayList)
-        viewpager.adapter = pagerAdapter
-        TabLayoutMediator(tabs, viewpager) { tab, position ->  getTabIcon(tab, position) }.attach()
+    }
+    fun setViewpager()
+    {
+        if(created)
+        {
+            pagerAdapter = FragmentsAdapter(this)
+            var arrayList : ArrayList<Fragment> = ArrayList()
+            arrayList.add(HomeFragnment())
+            arrayList.add(CustomersFragnment())
+            arrayList.add(OrdersFragnment())
+            arrayList.add(MyAccountFragnment())
 
+            pagerAdapter!!.setFragments(arrayList)
+            binding.viewpager.adapter = pagerAdapter
+            TabLayoutMediator(binding.tabs, binding.viewpager) { tab, position ->  getTabIcon(tab, position) }.attach()
+            created= false
+        }
     }
 
     fun getTabIcon(tabIcon: TabLayout.Tab, postion: Int)
@@ -110,9 +122,10 @@ class DashBoard : BaseActivity() {
     {
         super.onResume()
         Utils.setCurrentActivity(mActivity as DashBoard)
+        setViewpager()
     }
     fun fragmentMethod(i: Int) {
-        viewpager.currentItem= i
+        binding.viewpager.currentItem= i
 
     }
     override fun onBackPressed() {
@@ -123,9 +136,9 @@ class DashBoard : BaseActivity() {
             if( (fragment as CustomersFragnment).doBack())
                 super.onBackPressed()
         }
-        else if(fragment!= null && fragment.isResumed)
+        else if(fragmentO!= null && fragmentO.isResumed)
         {
-            if( (fragment as OrdersFragnment).doBack())
+            if( (fragmentO as OrdersFragnment).doBack())
                 super.onBackPressed()
         }
         else
