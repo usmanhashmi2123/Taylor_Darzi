@@ -59,21 +59,21 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
         binding.deleteAccount.setOnClickListener(clickListener)
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (position ==1 && language!!.contains("Eng")) {
+        if (position ==1 && language!!.contains("En")) {
             Utils.changeLanguage("ur", "PK")
             Preferences.instance!!.saveStringPrefValue(
                 Preferences.instance!!.PREF_LANG,
                 requireActivity().resources.getString(R.string.urdu)
             )
-            requireActivity().finish()
+            Utils.curentActivity?.finish()
             ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
-        } else  if(position ==0 && !language!!.contains("Eng")){
+        } else  if(position ==0 && !language!!.contains("En")){
             Utils.changeLanguage("en", "US")
             Preferences.instance!!.saveStringPrefValue(
                 Preferences.instance!!.PREF_LANG,
                 requireActivity().resources.getString(R.string.english)
             )
-            requireActivity().finish()
+            Utils.curentActivity?.finish()
             ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
         }
 

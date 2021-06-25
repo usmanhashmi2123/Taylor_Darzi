@@ -24,8 +24,8 @@ abstract class BaseActivity : FragmentActivity() {
     }
 
     fun updateBaseContextLocale(context: Context): Context? {
-        language = Preferences.instance!!.language// Helper method to get saved language from SharedPreferences
-        if (language!!.contains("Eng"))
+        language = Preferences.instance!!.language
+        if (language!!.contains("En"))
             Config.locale = Locale("en", "US")
         else
             Config.locale = Locale("ur", "PK")

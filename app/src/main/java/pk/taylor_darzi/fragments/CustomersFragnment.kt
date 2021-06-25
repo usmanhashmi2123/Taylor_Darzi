@@ -20,12 +20,14 @@ import com.google.firebase.firestore.FieldValue
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.CustomersRecyclerViewAdapter
+import pk.taylor_darzi.customViews.CustomAlertDialogue
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.databinding.CustomerFragmentBinding
 import pk.taylor_darzi.interfaces.fragmentbackEvents
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Utils
 import java.util.*
+import java.util.regex.Pattern
 
 class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
     private lateinit var binding: CustomerFragmentBinding
@@ -44,7 +46,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
         savedInstanceState: Bundle?
     ): View? {
 
-        binding = CustomerFragmentBinding.inflate(layoutInflater,  container, false)
+        binding = CustomerFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
 
@@ -86,7 +88,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
     }
 
 
-    private fun showCustomerInfo(customer: Customer, isNew:Boolean)
+    private fun showCustomerInfo(customer: Customer, isNew: Boolean)
     {
         binding.customerDataLayout.nameUserVal.setText(customer.name)
         binding.customerDataLayout.phoneUserVal.setText(customer.phone)
@@ -163,8 +165,10 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
     {
         if(customersList.isNullOrEmpty()) Config.appToast(requireActivity(), "No data to show")
 
-        binding.recyclerView.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL,
-            false)
+        binding.recyclerView.layoutManager = LinearLayoutManager(
+            requireActivity(), RecyclerView.VERTICAL,
+            false
+        )
         if(customersAdapter== null)
             customersAdapter = CustomersRecyclerViewAdapter { customer -> adapterOnClick(customer) }
 
@@ -178,17 +182,17 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
                 enableDisable(!binding.customerDataLayout.editPencil.isSelected)
             }
             R.id.delete -> {
-                if(selectedCustomer!= null)
-                {
-                    docRef!!.update(Config.Customers, FieldValue.arrayRemove(selectedCustomer)).addOnCompleteListener(
-                        requireActivity()
-                    ){ task1  ->
-                        if (task1.isSuccessful) {
-                            Config.appToast(requireActivity(), getString(R.string.deleted))
-                            selectedCustomer = null
-                            binding.customerDataLayout.backButton.callOnClick()
-                        } else Config.appToast(requireActivity(), "failed to remove")
-                    }.addOnFailureListener(requireActivity()){ task ->
+                if (selectedCustomer != null) {
+                    docRef!!.update(Config.Customers, FieldValue.arrayRemove(selectedCustomer))
+                        .addOnCompleteListener(
+                            requireActivity()
+                        ) { task1 ->
+                            if (task1.isSuccessful) {
+                                Config.appToast(requireActivity(), getString(R.string.deleted))
+                                selectedCustomer = null
+                                binding.customerDataLayout.backButton.callOnClick()
+                            } else Config.appToast(requireActivity(), "failed to remove")
+                        }.addOnFailureListener(requireActivity()) { task ->
                         Config.appToast(
                             requireActivity(),
                             task.message
@@ -213,11 +217,13 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
                 }
             }
             R.id.shirt_naap -> {
-                if (binding.customerDataLayout.shirtLayoutI.root.isVisible) binding.customerDataLayout.shirtLayoutI.root.visibility = View.GONE
+                if (binding.customerDataLayout.shirtLayoutI.root.isVisible) binding.customerDataLayout.shirtLayoutI.root.visibility =
+                    View.GONE
                 else binding.customerDataLayout.shirtLayoutI.root.visibility = View.VISIBLE
             }
             R.id.trouser_naap -> {
-                if (binding.customerDataLayout.trouserLayoutI.root.isVisible) binding.customerDataLayout.trouserLayoutI.root.visibility = View.GONE
+                if (binding.customerDataLayout.trouserLayoutI.root.isVisible) binding.customerDataLayout.trouserLayoutI.root.visibility =
+                    View.GONE
                 else binding.customerDataLayout.trouserLayoutI.root.visibility = View.VISIBLE
             }
             R.id.back_button -> {
@@ -243,7 +249,10 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
                         date_Cal.set(Calendar.YEAR, year)
                         date_Cal.set(Calendar.MONTH, monthOfYear)
                         date_Cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text = Config.getFormatedStringDate(date_Cal.time)
+                        binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text =
+                            Config.getFormatedStringDate(
+                                date_Cal.time
+                            )
                     },
                     date_Cal.get(Calendar.YEAR),
                     date_Cal.get(Calendar.MONTH),
@@ -306,7 +315,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
                             customersList?.addAll(list)
                             customers = customersList!!.size
                         }
-                        else customers =-1
+                        else customers =0
 
                     }
                     else Config.appToast(requireActivity(), "Current data: null")
@@ -325,11 +334,31 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents {
     }
     private fun saveCustomer(new: Boolean)
     {
+        binding.customerDataLayout.phoneUserVal.error = null
         if(selectedCustomer!= null)
         {
+            if(!selectedCustomer!!.phone.isNullOrBlank())
+            {
+                if(!Pattern.compile(Config.phonePat).matcher(
+                        selectedCustomer!!.phone.trim()
+                    ).matches())
+                {
+                    binding.customerDataLayout.phoneUserVal.error = getString(R.string.phone_msg)
+
+                    CustomAlertDialogue.instance?.showAlertDialog(requireActivity(),
+                        getString(R.string.error),
+                        getString(R.string.phone_msg),
+                        "OK",
+                        null,
+                        null)
+
+                    return
+                }
+            }
+
             if(new)
             {
-                docRef!!.update( Config.Customers, FieldValue.arrayUnion(selectedCustomer)).
+                docRef!!.update(Config.Customers, FieldValue.arrayUnion(selectedCustomer)).
                 addOnCompleteListener(
                     requireActivity()
                 ){ task1  ->

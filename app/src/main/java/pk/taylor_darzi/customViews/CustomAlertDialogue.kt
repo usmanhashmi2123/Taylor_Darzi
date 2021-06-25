@@ -1,7 +1,6 @@
 package pk.taylor_darzi.customViews
 
 import android.content.Context
-import android.text.TextUtils
 import androidx.appcompat.app.AlertDialog
 import pk.taylor_darzi.interfaces.GenericEvents
 import pk.taylor_darzi.utils.Constants
@@ -10,7 +9,8 @@ class CustomAlertDialogue {
     private var dialog: AlertDialog? = null
     fun showAlertDialog(
         context: Context?, title: String, message: String, okButtonString: String,
-        cancelButtonString: String?, genericEventListener: GenericEvents) {
+        cancelButtonString: String?, genericEventListener: GenericEvents?
+    ) {
         try {
             val builder = AlertDialog.Builder(
                 context!!
@@ -18,13 +18,13 @@ class CustomAlertDialogue {
             builder.setTitle(title)
             builder.setMessage(message)
             builder.setCancelable(true)
-            if (!TextUtils.isEmpty(okButtonString)) {
+            if (!okButtonString.isNullOrBlank()) {
                 builder.setPositiveButton(okButtonString) { dialog, which ->
-                    genericEventListener.onGenericEvent(Constants.ON_OK.toString())
+                    genericEventListener?.onGenericEvent(Constants.ON_OK.toString())
                     destroy()
                 }
             }
-            if (!TextUtils.isEmpty(cancelButtonString)) {
+            if (!cancelButtonString.isNullOrBlank()) {
                 builder.setNegativeButton(cancelButtonString) { dialog, which -> destroy() }
             }
             dialog = builder.create()

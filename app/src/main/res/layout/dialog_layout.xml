@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/_20sdp">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/bold_16"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:gravity="center_vertical"
+        android:text="SMS"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/phone_sms"/>
+
+    <TextView
+        android:id="@+id/phone_sms"
+        style="@style/bold_12"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/phone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/sms_no"
+        style="@style/regular_16"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_45sdp"
+        android:minWidth="@dimen/_130sdp"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:hint="+92"
+        android:gravity="center_vertical"
+        android:imeOptions="actionNext"
+        android:inputType="phone"
+        android:textColorHint="@color/gray"
+        app:layout_constraintStart_toEndOf="@id/phone_sms"
+        app:layout_constraintTop_toBottomOf="@id/title" />
+    <TextView
+        android:id="@+id/msg_title"
+        style="@style/bold_12"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_45sdp"
+        android:layout_gravity="start|center_vertical"
+        android:layout_marginTop="@dimen/_20sdp"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:gravity="center_vertical"
+        android:text="@string/message"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/phone_sms" />
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/sms"
+        style="@style/regular_10"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginHorizontal="@dimen/_10sdp"
+        android:background="@drawable/rounded_corner_doubleshade"
+        android:gravity="top|start"
+        android:minHeight="@dimen/_120sdp"
+        android:inputType="textImeMultiLine|textMultiLine"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/msg_title" />
+    <Button
+        android:id="@+id/send"
+        style="@style/bold_16"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_20sdp"
+        android:paddingHorizontal="@dimen/_10sdp"
+        android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:gravity="center"
+        android:elevation="@dimen/_5sdp"
+        android:text="@string/send"
+        app:layout_constraintTop_toBottomOf="@id/sms"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

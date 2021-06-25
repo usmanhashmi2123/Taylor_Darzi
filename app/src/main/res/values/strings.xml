@@ -12,7 +12,7 @@
     <string name="user_pass">Password</string>
     <string name="re_pass">Re enter Password</string>
     <string name="forgotten_pass">Forgot Password?</string>
-    <string name="inavlid_data">inavlid data</string>
+    <string name="invalid_data">inavlid data</string>
     <string name="search">Search</string>
     <string name="inch">Inch</string>
     <string name="naap">Measurements</string>
@@ -59,6 +59,11 @@
     <string name="remains">Oustanding Amount</string>
     <string name="orders">Orders</string>
     <string name="customer">Customers</string>
+    <string name="message">Enter Message</string>
+    <string name="send">Send sms</string>
+    <string name="error">Error</string>
+    <string name="phone_msg">Unknown phone number format. The number should start with the country code +92123456789</string>
+    <string name="smsMessage">Your suit is ready. Please take your suit and clear the bill =</string>
     <string-array name="lang_array" translatable="false">
         <item>English</item>
         <item>‎اردو</item>

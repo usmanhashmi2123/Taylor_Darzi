@@ -12,7 +12,7 @@
     <string name="user_pass">پاسورڈ</string>
     <string name="re_pass">پاس ورڈ دوبارہ درج کریں</string>
     <string name="forgotten_pass">پاسورڈ بھول گے؟</string>
-    <string name="inavlid_data">غلط ڈیٹا</string>
+    <string name="invalid_data">غلط ڈیٹا</string>
     <string name="search">تلاش کریں</string>
     <string name="inch">انچ</string>
     <string name="naap">ناپ</string>
@@ -53,4 +53,9 @@
     <string name="remains">بقیاجات</string>
     <string name="orders">آرڈرز</string>
     <string name="customer">گاہک</string>
+    <string name="message">پیغام لکھیں</string>
+    <string name="send">sms بھیجیں</string>
+    <string name="error">غلطی</string>
+    <string name="phone_msg">نامعلوم فون نمبر کی شکل۔ نمبر ملک کے کوڈ 92123456789+ کے ساتھ شروع ہونا چاہئے</string>
+    <string name="smsMessage">آپ کا سوٹ تیار ہے براہ کرم اپنا سوٹ لےجائیں اور بل کلیر کریں =</string>
 </resources>

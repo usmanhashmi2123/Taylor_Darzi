@@ -13,6 +13,7 @@ import java.util.*
 
 
 object Config {
+    val phonePat = "^[+][0-9]{7,13}\$"
     var LOGIN_GUID = ""
     var User = "user"
     var Version = "version"

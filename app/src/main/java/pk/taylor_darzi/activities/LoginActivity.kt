@@ -29,7 +29,7 @@ class LoginActivity : BaseActivity() {
     private var resendToken: PhoneAuthProvider.ForceResendingToken?=null
     private var storedVerificationId: String?=null
     var userPhone =""
-    val phonePat = "^[+][0-9]{7,13}\$"
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityLoginBinding.inflate(layoutInflater)
@@ -67,7 +67,7 @@ class LoginActivity : BaseActivity() {
                 if (validate(true)) signUp()
             }
             R.id.login_btn -> {
-                if (validate(false)) signIn(null)
+                if (validate(false)) signIn()
             }
             R.id.forgotten_Pass_text -> {
                 if (validateEmail(binding.useremailPhone.text.toString()))
@@ -87,7 +87,7 @@ class LoginActivity : BaseActivity() {
         if (email.isBlank() || !EMAIL_ADDRESS.matcher(email.trim()).matches())
         {
             validate = false
-            binding.useremailPhone.error = getString(R.string.inavlid_data)
+            binding.useremailPhone.error = getString(R.string.invalid_data)
         }
         return  validate
     }
@@ -100,32 +100,32 @@ class LoginActivity : BaseActivity() {
         binding.password.error = null
         binding.password2.error = null
 
-        if(!validateEmail(binding.useremailPhone.text.toString()) && !Pattern.compile(phonePat).matcher(binding.useremailPhone.text.toString().trim()).matches())
+        if(!validateEmail(binding.useremailPhone.text.toString()) && !Pattern.compile(Config.phonePat).matcher(binding.useremailPhone.text.toString().trim()).matches())
         {
             validate = false
-            binding.useremailPhone.error = getString(R.string.inavlid_data)
+            binding.useremailPhone.error = getString(R.string.invalid_data)
         }
 
         if(signup)
         {
-            if(!Pattern.compile(phonePat).matcher(binding.userPhone.text.toString().trim()).matches())
+            if(!Pattern.compile(Config.phonePat).matcher(binding.userPhone.text.toString().trim()).matches())
             {
                 validate = false
                 userPhone= ""
-                binding.userPhone.error = getString(R.string.inavlid_data)
+                binding.userPhone.error = getString(R.string.phone_msg)
             }
             else
                 userPhone = binding.userPhone.text.toString().trim()
             if(binding.userName.text.toString().isBlank())
             {
                 validate = false
-                binding.userName.error = getString(R.string.inavlid_data)
+                binding.userName.error = getString(R.string.invalid_data)
             }
 
             if(binding.password.text.toString().isBlank())
             {
                 validate = false
-                binding.password.error = getString(R.string.inavlid_data)
+                binding.password.error = getString(R.string.invalid_data)
             }
             else if(binding.password2.text.toString().isBlank() || !binding.password.text.toString().equals(
                     binding.password2.text.toString(),
@@ -133,13 +133,13 @@ class LoginActivity : BaseActivity() {
                 ))
             {
                 validate = false
-                binding.password2.error = getString(R.string.inavlid_data)
+                binding.password2.error = getString(R.string.invalid_data)
             }
         }
         else if(binding.password.text.toString().isBlank())
         {
             validate = false
-            binding.password.error = getString(R.string.inavlid_data)
+            binding.password.error = getString(R.string.invalid_data)
         }
         return validate
     }
@@ -233,7 +233,8 @@ class LoginActivity : BaseActivity() {
                             Config.appToast(mActivity, task.exception!!.message)
                         }
                     }
-                    ?.addOnFailureListener(this){ task2 ->  Config.appToast(
+                    ?.addOnFailureListener(this){ task2 ->    binding.progressCircular.visibility = View.GONE
+                        Config.appToast(
                         mActivity,
                         task2.message
                     )}
@@ -253,7 +254,7 @@ class LoginActivity : BaseActivity() {
         }*/
 
     }
-    fun signIn(credential: PhoneAuthCredential?)
+    fun signIn()
     {
         if(CheckConnection.getInstance(mActivity!!)!!.isConnectedToInternet) {
             binding.progressCircular.visibility = View.VISIBLE
@@ -364,7 +365,7 @@ class LoginActivity : BaseActivity() {
             //     detect the incoming verification SMS and perform verification without
             //     user action.
             //Log.d(TAG, "onVerificationCompleted:$credential")
-            signIn(credential)
+            signIn()
         }
 
         override fun onVerificationFailed(e: FirebaseException) {

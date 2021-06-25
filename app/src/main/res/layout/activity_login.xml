@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="@dimen/_20sdp"
         android:layout_marginTop="@dimen/_15sdp"
-        android:hint="@string/phone"
+        android:hint="+92"
         android:imeOptions="actionNext"
         android:inputType="phone"
         android:textColorHint="@color/gray"

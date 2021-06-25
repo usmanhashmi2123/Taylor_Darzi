@@ -6,7 +6,7 @@ import androidx.recyclerview.widget.RecyclerView
 import pk.taylor_darzi.dataModels.Customer
 import pk.taylor_darzi.databinding.OrderItemBinding
 
-class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit) : RecyclerView.Adapter<OrdersRecyclerViewAdapter.ViewHolder?>() {
+class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit, val sendSms: (Customer) -> Unit) : RecyclerView.Adapter<OrdersRecyclerViewAdapter.ViewHolder?>() {
     private var dataList: ArrayList<Customer>? = ArrayList<Customer>()
     private var dataListFiltered: ArrayList<Customer>? = null
 
@@ -21,7 +21,7 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
 
     val listLoaded: List<Customer>? get() = dataListFiltered
 
-    class ViewHolder(private val itemBinding: OrderItemBinding, val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit) : RecyclerView.ViewHolder(
+    class ViewHolder(private val itemBinding: OrderItemBinding, val onClick: (Customer) -> Unit, val onDelivered: (Customer) -> Unit, val sendSms: (Customer) -> Unit) : RecyclerView.ViewHolder(
         itemBinding.root
     ){
 
@@ -32,6 +32,7 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
             itemBinding.remaVal.text = user.order?.amountRemaining
             itemBinding.khataVal.text = user.no.toString()
             itemBinding.deliver.setOnClickListener { user.let { onDelivered(it)} }
+            itemBinding.sendSms.setOnClickListener { user.let { sendSms(it)} }
             itemBinding.root.setOnClickListener { user.let { onClick(it)} }
         }
 
@@ -40,7 +41,7 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val v = OrderItemBinding.inflate( LayoutInflater.from(parent.context), parent, false)
-        return ViewHolder(v, onClick, onDelivered)
+        return ViewHolder(v, onClick, onDelivered, sendSms)
     }
 
 

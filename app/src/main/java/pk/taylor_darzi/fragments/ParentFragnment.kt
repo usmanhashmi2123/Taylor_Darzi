@@ -9,7 +9,7 @@ import pk.taylor_darzi.utils.Preferences
 
 abstract class ParentFragnment : Fragment() {
     protected var language: String? = null
-    protected var customers = -1
+    protected var customers = 0
     protected var docRef : DocumentReference? =null
     protected var customersList: ArrayList<Customer>? = ArrayList<Customer>()
     override fun onCreate(savedInstanceState: Bundle?) {

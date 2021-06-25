@@ -55,7 +55,7 @@ class HomeFragnment : ParentFragnment() {
                             customersList?.addAll(list)
                             customers = customersList!!.size
                         }
-                        else customers =-1
+                        else customers =0
                         filterList()
                     }
                     else Config.appToast(requireActivity(), "Current data: null")
@@ -96,7 +96,7 @@ class HomeFragnment : ParentFragnment() {
         }
         else binding.customerTotal.text = "0"
 
-        binding.ordersTitle.text = ordersList.size.toString()
+        binding.ordersTotal.text = ordersList.size.toString()
         binding.remainsTotal.text = baqaya.toString()
     }
     private val clickListener = View.OnClickListener { view ->

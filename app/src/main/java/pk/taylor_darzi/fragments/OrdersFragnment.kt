@@ -14,12 +14,15 @@ import com.google.firebase.firestore.FieldValue
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.OrdersRecyclerViewAdapter
+import pk.taylor_darzi.customViews.CustomAlertDialogue
+import pk.taylor_darzi.customViews.CustomDialogue
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.databinding.OrdersFragmentBinding
 import pk.taylor_darzi.interfaces.fragmentbackEvents
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Utils
 import java.util.*
+import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
 class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
@@ -30,7 +33,11 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     var customersAdapter: OrdersRecyclerViewAdapter?= null
     val date_Cal = Calendar.getInstance()
     private var ordersList: ArrayList<Customer> = ArrayList<Customer>()
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding= OrdersFragmentBinding.inflate(layoutInflater, container, false)
         return binding.root
     }
@@ -115,11 +122,20 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         if(ordersList.isNullOrEmpty()) Config.appToast(requireActivity(), "No data to show")
         binding.ordersDataShow.visibility=View.VISIBLE
         binding.scrollviewOrders.visibility = View.GONE
-        binding.recyclerViewOrders.layoutManager = LinearLayoutManager(requireActivity(), RecyclerView.VERTICAL,
-            false)
+        binding.recyclerViewOrders.layoutManager = LinearLayoutManager(
+            requireActivity(), RecyclerView.VERTICAL,
+            false
+        )
         if(customersAdapter== null)
         {
-            customersAdapter = OrdersRecyclerViewAdapter({customer -> adapterOnClick(customer)}, {deliver -> onDelivered(deliver)})
+            customersAdapter = OrdersRecyclerViewAdapter(
+                { customer -> adapterOnClick(customer) },
+                { deliver ->
+                    onDelivered(
+                        deliver
+                    )
+                },
+                { sendSms -> sendSms(sendSms) })
 
         }
         customersAdapter?.setData(ordersList)
@@ -136,12 +152,24 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         showCustomerInfo(selectedCustomer!!)
 
     }
+    private fun sendSms(customer: Customer) {
+        selectedCustomer = customer
+        customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
+        val sb = StringBuilder()
+        sb.append(Config.currentUser?.displayName).append(" \n")
+        sb.append(getString(R.string.smsMessage))
+        sb.append(selectedCustomer!!.order!!.amountRemaining)
+        CustomDialogue.instance?.showSmsDialog(sb.toString() , selectedCustomer!!.phone)
+
+    }
     private fun onDelivered(deliver: Customer) {
 
         selectedCustomer = deliver
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
         selectedCustomer!!.order?.deliveryDate =""
-        selectedCustomer!!.order?.amountRcvd = (Utils.getAmount(selectedCustomer!!.order!!.amountRemaining)+Utils.getAmount(selectedCustomer!!.order!!.amountRcvd)).toString()
+        selectedCustomer!!.order?.amountRcvd = (Utils.getAmount(selectedCustomer!!.order!!.amountRemaining)+Utils.getAmount(
+            selectedCustomer!!.order!!.amountRcvd
+        )).toString()
         selectedCustomer!!.order?.amountRemaining =""
         updateCustomer()
     }
@@ -206,7 +234,23 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     }
     private fun updateCustomer()
     {
+        binding.customerDataI.phoneUserVal.error = null
+        if(!selectedCustomer!!.phone.isNullOrBlank())
+        {
+            if(!Pattern.compile(Config.phonePat).matcher(selectedCustomer!!.phone.trim()).matches())
+            {
+                binding.customerDataI.phoneUserVal.error = getString(R.string.phone_msg)
 
+                CustomAlertDialogue.instance?.showAlertDialog(requireActivity(),
+                    getString(R.string.error),
+                    getString(R.string.phone_msg),
+                    "OK",
+                    null,
+                    null)
+
+                return
+            }
+        }
 
         docRef!!.update(Config.Customers, customersList)
             .addOnCompleteListener(requireActivity()) { task1 ->
@@ -275,17 +319,17 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                 enableDisable(!binding.customerDataI.editPencil.isSelected)
             }
             R.id.delete -> {
-                if(selectedCustomer!= null)
-                {
-                    docRef!!.update(Config.Customers, FieldValue.arrayRemove(selectedCustomer)).addOnCompleteListener(
-                        requireActivity()
-                    ){ task1  ->
-                        if (task1.isSuccessful) {
-                            Config.appToast(requireActivity(), "Data Removed")
-                            selectedCustomer = null
-                            binding.customerDataI.backButton.callOnClick()
-                        } else Config.appToast(requireActivity(), "failed to remove")
-                    }.addOnFailureListener(requireActivity()){ task ->
+                if (selectedCustomer != null) {
+                    docRef!!.update(Config.Customers, FieldValue.arrayRemove(selectedCustomer))
+                        .addOnCompleteListener(
+                            requireActivity()
+                        ) { task1 ->
+                            if (task1.isSuccessful) {
+                                Config.appToast(requireActivity(), "Data Removed")
+                                selectedCustomer = null
+                                binding.customerDataI.backButton.callOnClick()
+                            } else Config.appToast(requireActivity(), "failed to remove")
+                        }.addOnFailureListener(requireActivity()) { task ->
                         Config.appToast(
                             requireActivity(),
                             task.message
@@ -296,11 +340,13 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
 
             }
             R.id.shirt_naap -> {
-                if (binding.customerDataI.shirtLayoutI.root.isVisible) binding.customerDataI.shirtLayoutI.root.visibility = View.GONE
+                if (binding.customerDataI.shirtLayoutI.root.isVisible) binding.customerDataI.shirtLayoutI.root.visibility =
+                    View.GONE
                 else binding.customerDataI.shirtLayoutI.root.visibility = View.VISIBLE
             }
             R.id.trouser_naap -> {
-                if (binding.customerDataI.trouserLayoutI.root.isVisible) binding.customerDataI.trouserLayoutI.root.visibility = View.GONE
+                if (binding.customerDataI.trouserLayoutI.root.isVisible) binding.customerDataI.trouserLayoutI.root.visibility =
+                    View.GONE
                 else binding.customerDataI.trouserLayoutI.root.visibility = View.VISIBLE
             }
             R.id.back_button -> {
@@ -318,7 +364,10 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                         date_Cal.set(Calendar.YEAR, year)
                         date_Cal.set(Calendar.MONTH, monthOfYear)
                         date_Cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                        binding.customerDataI.extrainfoLayoutI.wapsiVal.text = Config.getFormatedStringDate(date_Cal.time)
+                        binding.customerDataI.extrainfoLayoutI.wapsiVal.text =
+                            Config.getFormatedStringDate(
+                                date_Cal.time
+                            )
                     },
                     date_Cal.get(Calendar.YEAR),
                     date_Cal.get(Calendar.MONTH),
@@ -337,7 +386,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
     }
 
     override fun doBack(): Boolean {
-        if(!binding.scrollviewOrders.isVisible)
+        if(binding.scrollviewOrders.isVisible)
         {
             binding.customerDataI.backButton.callOnClick()
             return false

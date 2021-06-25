@@ -58,6 +58,7 @@ class MainActivity : BaseActivity() {
                     }
                 }
                 .addOnFailureListener(this){ task2 ->
+                    binding.progressCircular.visibility = View.GONE
                     binding.languageGroup.visibility = View.VISIBLE
                 }
         /*else
@@ -87,7 +88,7 @@ class MainActivity : BaseActivity() {
 
             Preferences.instance!!.saveStringPrefValue(
                 Preferences.instance!!.PREF_LANG,
-                findViewById<AppCompatRadioButton>(checkedId).tag.toString())
+                findViewById<AppCompatRadioButton>(checkedId).text.toString())
             ActivityStackManager.instance!!.startLoginActivity(mActivity!!)
 
     }

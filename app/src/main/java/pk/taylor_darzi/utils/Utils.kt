@@ -12,6 +12,7 @@ import java.util.*
 
 
 object Utils {
+    const val REQUEST_PERMISSIONS_REQUEST_CODE = 35
     var mContext: Context? = null
     var curentActivity: FragmentActivity? = null
     fun setCurrentActivity(activity: FragmentActivity) {
@@ -42,7 +43,7 @@ object Utils {
         //Find the currently focused view, so we can grab the correct window token from it.
         imm.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT)
     }
-    fun getAmount(amount:String?):Float
+    fun getAmount(amount: String?):Float
     {
         var remAmount = 0f
         if(!amount.isNullOrBlank())
@@ -51,4 +52,6 @@ object Utils {
         }
         return remAmount
     }
+
+
 }

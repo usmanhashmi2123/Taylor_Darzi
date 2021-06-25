@@ -54,7 +54,7 @@
                 style="@style/regular_14"
                 android:button="@null"
                 android:drawableRight="@android:drawable/btn_radio"
-                android:tag="eng"
+                android:tag="Eng"
                 android:text="@string/english"/>
 
             <androidx.appcompat.widget.AppCompatRadioButton
