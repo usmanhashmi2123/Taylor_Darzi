@@ -46,7 +46,7 @@
     <string name="update_btn">Update</string>
     <string name="cancel">Cancel</string>
     <string name="check_interent">Please check your internt connection.</string>
-
+    <string name="clear_key">Clear</string>
 
 
     <string name="english" translatable="false">English</string>
@@ -54,18 +54,29 @@
     <string name="select_lang_eng" translatable="false">Select language</string>
     <string name="select_lang_urdu" translatable="false">زبان منتخب کریں</string>
     <string name="language" translatable="false">Language/زبان</string>
+    <string name="keyboard" translatable="false">Keyboard</string>
     <string name="delete_acc">Delete account</string>
     <string name="deliver">Delivered</string>
     <string name="remains">Oustanding Amount</string>
     <string name="orders">Orders</string>
     <string name="customer">Customers</string>
     <string name="message">Enter Message</string>
+    <string name="message_app">Messaging app</string>
     <string name="send">Send sms</string>
     <string name="error">Error</string>
     <string name="phone_msg">Unknown phone number format. The number should start with the country code +92123456789</string>
     <string name="smsMessage">Your suit is ready. Please take your suit and clear the bill =</string>
+    <string name="done" translatable="false" >Done</string>
     <string-array name="lang_array" translatable="false">
         <item>English</item>
         <item>‎اردو</item>
+    </string-array>
+    <string-array name="keyboard_array" translatable="false">
+        <item>System</item>
+        <item>Custom</item>
+    </string-array>
+    <string-array name="messaging_array" translatable="false">
+        <item>Whats App</item>
+        <item>SMS</item>
     </string-array>
 </resources>

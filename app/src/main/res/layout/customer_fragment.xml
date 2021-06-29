@@ -5,15 +5,15 @@
     android:id="@+id/customer_frag"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.CustomersFragnment"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".fragments.CustomersFragnment">
 
     <androidx.constraintlayout.widget.Group
         android:id="@+id/customer_data_show"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="visible"
-        app:constraint_referenced_ids="search_const, recyclerView, add_customer"/>
+        app:constraint_referenced_ids="search_const, recyclerView, add_customer" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/search_const"
@@ -24,8 +24,8 @@
         android:background="@drawable/rounded_corner_doubleshade"
         android:gravity="center|center_vertical"
         android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -36,9 +36,9 @@
             android:layout_gravity="center_vertical"
             android:gravity="start|center_vertical"
             android:hint="@string/search"
+            android:inputType="text"
             android:minWidth="@dimen/_120sdp"
             android:singleLine="true"
-            android:inputType="text"
             android:textColorHint="@color/gray"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/reset_search"
@@ -76,27 +76,41 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_const"
         app:layout_constraintVertical_bias="0.050" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_customer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|right"
         android:layout_marginHorizontal="@dimen/_10sdp"
+        android:src="@drawable/plus_svg"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:src="@drawable/plus_svg"/>
+        app:layout_constraintEnd_toEndOf="parent" />
+
     <ScrollView
         android:id="@+id/scrollview"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:visibility="gone"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <include  android:id="@+id/customer_data_layout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/keyboard">
+        <include
+            android:id="@+id/customer_data_layout"
             layout="@layout/customer_data_layout" />
 
     </ScrollView>
+
+    <pk.taylor_darzi.customViews.NumericKeyboard
+        android:id="@+id/keyboard"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_163sdp"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <androidx.constraintlayout.widget.Guideline
         android:id="@+id/guideline2"

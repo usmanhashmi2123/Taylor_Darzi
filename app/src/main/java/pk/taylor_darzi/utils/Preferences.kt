@@ -12,7 +12,8 @@ class Preferences private constructor() {
     val PREF_USER_PASS = "pref_user_pass"
     val PREF_LOGINED = "pref_user_login"
     val PREF_LANG = "pref_lang"
-    val PREF_ALERTS = "pref_alerts"
+    val PREF_KEYBORAD = "pref_keyboard"
+    val PREF_APP = "pref_app"
     val PREF_TOKEN = "Pref_token"
     val PHOTO_URI = "pref_user_photo_local"
     private val PREFERENCE_FILE = "time_preferences"
@@ -27,9 +28,10 @@ class Preferences private constructor() {
         get() = instance!!.mPrefs.getString(PREF_USER_PASS, "").toString()
     val token: String?
         get() = instance!!.mPrefs.getString(PREF_TOKEN, "")
-    val isAlertsOn: Boolean
-        get() = instance!!.mPrefs.getBoolean(PREF_ALERTS, true)
-
+    val isCustomKeyboard: Boolean
+        get() = instance!!.mPrefs.getBoolean(PREF_KEYBORAD, false)
+    val isSmsApp: Boolean
+        get() = instance!!.mPrefs.getBoolean(PREF_APP, false)
     fun getStringPrefrence(key: String?): String? {
         return instance!!.mPrefs.getString(key, "")
     }

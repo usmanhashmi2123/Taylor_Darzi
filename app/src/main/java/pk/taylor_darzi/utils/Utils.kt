@@ -1,10 +1,12 @@
 package pk.taylor_darzi.utils
 
 import android.app.Activity
+import android.app.Dialog
 import android.content.Context
 import android.content.res.Resources
 import android.os.Build
 import android.view.View
+import android.view.WindowManager
 import android.view.inputmethod.InputMethodManager
 import android.widget.EditText
 import androidx.fragment.app.FragmentActivity
@@ -38,6 +40,24 @@ object Utils {
         }
         imm.hideSoftInputFromWindow(view.windowToken, 0)
     }
+
+    fun hideNativeKeyboard(activity: Activity?) {
+        var activity = activity
+        if (activity == null) activity = Utils.curentActivity
+        activity?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+    }
+
+    fun hideKeyboardFromDialogue(dialog: Dialog, activity: Activity?) {
+        try {
+            dialog.window!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN)
+            activity?.let { hideKeyboard(it) }
+            //appToast(mContext, "hiddenCalled");
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Config.appToast(Utils.mContext, "hiddenCalled:" + e.message)
+        }
+    }
+
     fun showKeyboard(activity: Activity, view: EditText?) {
         val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         //Find the currently focused view, so we can grab the correct window token from it.

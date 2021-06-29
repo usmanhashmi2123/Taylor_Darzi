@@ -1,18 +1,18 @@
 package pk.taylor_darzi.customViews
 
-import android.Manifest
 import android.app.Dialog
-import android.telephony.SmsManager
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.Window
 import android.view.WindowManager
-import androidx.core.app.ActivityCompat.requestPermissions
-import androidx.core.content.PermissionChecker.PERMISSION_GRANTED
-import androidx.core.content.PermissionChecker.checkSelfPermission
 import pk.taylor_darzi.databinding.DialogLayoutBinding
 import pk.taylor_darzi.utils.Config
+import pk.taylor_darzi.utils.Preferences
 import pk.taylor_darzi.utils.Utils
+import java.net.URLEncoder
 import java.util.regex.Pattern
 
 
@@ -41,7 +41,7 @@ class CustomDialogue {
         binding.sms.setText(message)
         binding.send.setOnClickListener {
             if(!binding.smsNo.text.isNullOrBlank() && Pattern.compile(Config.phonePat).matcher(
-                    binding.smsNo.text.toString().trim()).matches())
+                            binding.smsNo.text.toString().trim()).matches())
             {
                 binding.smsNo.error = null
                 binding.sms.error = null
@@ -49,33 +49,53 @@ class CustomDialogue {
                 {
                     try {
 
-                        val missingPerms = arrayOf(Manifest.permission.SEND_SMS/*, Manifest.permission.READ_PHONE_STATE*/)
-                        if(checkSelfPermission(Utils.curentActivity!!, Manifest.permission.SEND_SMS) == PERMISSION_GRANTED)
-                        {
+
                             var no = binding.smsNo.text.toString().trim()
 
-                            val smsManager = SmsManager.getSmsManagerForSubscriptionId(SmsManager.getDefaultSmsSubscriptionId())
-                            val parts = smsManager.divideMessage(binding.sms.text.toString())
-                            smsManager.sendMultipartTextMessage(
-                                no,
-                                null,
-                                parts,
-                                null,
-                                null
-                            )
+                            if(Preferences.instance!!.isSmsApp)
+                            {
+                                val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                    type = "text/plain"
+                                    data = Uri.parse("smsto:" + no)  // This ensures only SMS apps respond
+                                    putExtra("sms_body", message)
+                                }
+                                if (intent.resolveActivity(Utils.curentActivity!!.packageManager) != null) {
+                                    Utils.curentActivity!!.startActivity(intent)
+                                }
+                            }
+                        else
+                            {
+                                try {
+                                    Utils.curentActivity!!.applicationContext!!.packageManager.getPackageInfo("com.whatsapp", PackageManager.GET_ACTIVITIES)
+                                    val intent = Intent(Intent.ACTION_VIEW )
+                                    val url = "https://api.whatsapp.com/send?phone=" + no + "&text=" + URLEncoder.encode(message, "UTF-8")
+                                    intent.setPackage("com.whatsapp")
+                                    intent.data = Uri.parse(url)
+
+                                    Utils.curentActivity!!.startActivity(intent)
+
+                                } catch (e: PackageManager.NameNotFoundException) {
+                                    val intent = Intent(Intent.ACTION_SENDTO).apply {
+                                        type = "text/plain"
+                                        data = Uri.parse("smsto:" + no)  // This ensures only SMS apps respond
+                                        putExtra("sms_body", message)
+                                    }
+                                    if (intent.resolveActivity(Utils.curentActivity!!.packageManager) != null) {
+                                        Utils.curentActivity!!.startActivity(intent)
+                                    }
+                                }
+                            }
+
+
+
                             dismissDialog()
-                        }
-                        else requestPermissions(
-                            Utils.curentActivity!!,
-                            missingPerms,
-                            30
-                        )
+
                     }catch (ex: Exception)
                     {
                         ex.printStackTrace()
                         Config.appToast(
-                            Utils.curentActivity!!,
-                            ex.message
+                                Utils.curentActivity!!,
+                                ex.message
                         )
                     }
 
@@ -94,7 +114,6 @@ class CustomDialogue {
             dialog!!.dismiss()
         }
     }
-
 
     companion object {
         var customdialog: CustomDialogue? = null

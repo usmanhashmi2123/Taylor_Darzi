@@ -3,13 +3,19 @@ package pk.taylor_darzi.fragments
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnTouchListener
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.ScrollView
+import android.widget.TextView
+import android.widget.TextView.OnEditorActionListener
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FieldValue
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.DashBoard
@@ -18,14 +24,16 @@ import pk.taylor_darzi.customViews.CustomAlertDialogue
 import pk.taylor_darzi.customViews.CustomDialogue
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.databinding.OrdersFragmentBinding
+import pk.taylor_darzi.interfaces.NumPadCommandKeyEvent
 import pk.taylor_darzi.interfaces.fragmentbackEvents
 import pk.taylor_darzi.utils.Config
+import pk.taylor_darzi.utils.Preferences
 import pk.taylor_darzi.utils.Utils
 import java.util.*
 import java.util.regex.Pattern
 import kotlin.collections.ArrayList
 
-class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
+class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKeyEvent {
     private lateinit var binding: OrdersFragmentBinding
             private var customerId = ""
     var selectedCustomer: Customer? =null
@@ -39,12 +47,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         savedInstanceState: Bundle?
     ): View? {
         binding= OrdersFragmentBinding.inflate(layoutInflater, container, false)
-        return binding.root
-    }
 
-    override fun onResume() {
-        super.onResume()
-        resumed = true
         binding.customerDataI.shirtNaap.setOnClickListener(clickListener)
         binding.customerDataI.trouserNaap.setOnClickListener(clickListener)
         binding.customerDataI.backButton.setOnClickListener(clickListener)
@@ -53,11 +56,129 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         binding.customerDataI.extrainfoLayoutI.save.setOnClickListener(clickListener)
         binding.customerDataI.extrainfoLayoutI.wapsiVal.setOnClickListener(clickListener)
         binding.customerDataI.extrainfoLayoutI.wapsiConst.setOnClickListener(clickListener)
+       
+        return binding.root
+    }
+
+    override fun onResume() {
+        super.onResume()
+        resumed = true
+        if(Preferences.instance!!.isCustomKeyboard)
+        {
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.lengthQVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.lengthBVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.shoulderVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.colarVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.colarVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.colarVal.onFocusChangeListener = focusChangeListener
+            binding.customerDataI.shirtLayoutI.colarVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.chestVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.chestVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.chestVal.onFocusChangeListener = focusChangeListener
+            binding.customerDataI.shirtLayoutI.chestVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.waistVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.waistVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.waistVal.onFocusChangeListener = focusChangeListener
+            binding.customerDataI.shirtLayoutI.waistVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.shirtLayoutI.hipVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.hipVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.hipVal.onFocusChangeListener = focusChangeListener
+            binding.customerDataI.shirtLayoutI.hipVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnClickListener(clickListener)
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnTouchListener(touchListener)
+            binding.customerDataI.trouserLayoutI.lengthSVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnClickListener(clickListener)
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnTouchListener(touchListener)
+            binding.customerDataI.trouserLayoutI.panchaVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnEditorActionListener(editor)
+
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnClickListener(clickListener)
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnTouchListener(touchListener)
+            binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnEditorActionListener(editor)
+        }
+        else
+        {
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.lengthQVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.lengthQVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.lengthBVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.shoulderVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.shoulderVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.colarVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.colarVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.colarVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.colarVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.chestVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.chestVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.chestVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.chestVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.waistVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.waistVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.waistVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.waistVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.hipVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.hipVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.hipVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.hipVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnClickListener(null)
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnTouchListener(null)
+            binding.customerDataI.trouserLayoutI.lengthSVal.onFocusChangeListener = null
+            binding.customerDataI.trouserLayoutI.lengthSVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnClickListener(null)
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnTouchListener(null)
+            binding.customerDataI.trouserLayoutI.panchaVal.onFocusChangeListener = null
+            binding.customerDataI.trouserLayoutI.panchaVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnClickListener(null)
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnTouchListener(null)
+            binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener = null
+            binding.customerDataI.extrainfoLayoutI.embVal.setOnEditorActionListener(null)
+        }
         if (binding.ordersDataShow.isVisible)
             getData()
     }
     override fun onPause() {
         super.onPause()
+        binding.keyboard.visibility =View.GONE
         resumed = false
 
     }
@@ -197,7 +318,11 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         if(enable)
             binding.customerDataI.extrainfoLayoutI.save.visibility = View.VISIBLE
         else
+        {
             binding.customerDataI.extrainfoLayoutI.save.visibility = View.GONE
+            binding.keyboard.visibility =View.GONE
+        }
+
 
     }
 
@@ -313,6 +438,30 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         }
 
     }
+    var editor = OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            binding.keyboard.visibility = View.GONE
+            Utils.hideKeyboard(requireActivity())
+            true
+        } else if (actionId == EditorInfo.IME_ACTION_NEXT) {
+            Utils.hideKeyboard(requireActivity())
+            true
+        }
+        false
+    }
+    var touchListener = OnTouchListener { v, event ->
+        showKeyBoard((v as TextInputEditText))
+        true
+    }
+    var focusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+        if (!hasFocus) {
+            Utils.hideKeyboard(requireActivity())
+            binding.keyboard.visibility = View.GONE
+        } else {
+
+            showKeyBoard((v as TextInputEditText))
+        }
+    }
     private val clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.edit_pencil -> {
@@ -350,8 +499,13 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                 else binding.customerDataI.trouserLayoutI.root.visibility = View.VISIBLE
             }
             R.id.back_button -> {
-                binding.ordersDataShow.visibility = View.VISIBLE
-                binding.scrollviewOrders.visibility = View.GONE
+                if(binding.keyboard.visibility == View.VISIBLE) binding.keyboard.visibility =View.GONE
+                else
+                {
+                    binding.ordersDataShow.visibility = View.VISIBLE
+                    binding.scrollviewOrders.visibility = View.GONE
+                }
+
             }
             R.id.save -> {
                 addData()
@@ -382,9 +536,25 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
                 }
                 datePickerDialog.show()
             }
+            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_Val, R.id.colar_Val,
+            R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val, R.id.pancha_Val, R.id.emb_Val -> {
+                showKeyBoard(view as TextInputEditText)
+            }
         }
     }
+    private fun showKeyBoard(field: TextInputEditText) {
+        if (binding.keyboard.visibility !== View.VISIBLE) {
+            binding.keyboard.setFiled(field,  0, this)
+            binding.keyboard.visibility = View.VISIBLE
+        } else if (binding.keyboard.getInputField()?.id !== field.id) {
+            binding.keyboard.changeField()
+            binding.keyboard.setFiled(field, 0, this)
+        }
+    }
+    override fun onNumPadCommandKeyEvent(command: String?, vararg args: Any?) {
+        if (command.equals("done", ignoreCase = true) || command.equals("dismiss", ignoreCase = true)) binding.keyboard.visibility =View.GONE
 
+    }
     override fun doBack(): Boolean {
         if(binding.scrollviewOrders.isVisible)
         {
@@ -393,4 +563,6 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents {
         }
         else return true
     }
+
+
 }

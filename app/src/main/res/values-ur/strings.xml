@@ -35,8 +35,8 @@
     <string name="down_pocket">جیب</string>
     <string name="embroidery">نمبر کڑھائ</string>
     <string name="wapsi">واپسی کی تاریخ</string>
-
     <string name="details">دیگر تفصیل</string>
+    <string name="clear_key">clear</string>
 
     <string name="recovery">وصول</string>
     <string name="outstanding">بقایا</string>
@@ -54,6 +54,7 @@
     <string name="orders">آرڈرز</string>
     <string name="customer">گاہک</string>
     <string name="message">پیغام لکھیں</string>
+    <string name="message_app">پیغام رسانی کی ایپ</string>
     <string name="send">sms بھیجیں</string>
     <string name="error">غلطی</string>
     <string name="phone_msg">نامعلوم فون نمبر کی شکل۔ نمبر ملک کے کوڈ 92123456789+ کے ساتھ شروع ہونا چاہئے</string>

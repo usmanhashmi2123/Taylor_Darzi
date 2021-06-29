@@ -22,4 +22,6 @@
     <color name="dark_light">#008577</color>
     <color name="white_black">#191313</color>
     <color name="black_white">#FFFFFFFF</color>
+    <color name="keyboard_comandbtn">#C8C8C8</color>
+    <color name="gray_light">#E8E8E8</color>
 </resources>

@@ -41,6 +41,38 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
             binding.languageName.onItemSelectedListener = this
 
         }
+        ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.keyboard_array,
+                android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            //language_name.text
+            binding.keyboardName.adapter = adapter
+            if (Preferences.instance!!.isCustomKeyboard)
+                binding.keyboardName.setSelection(1, false)
+            else
+                binding.keyboardName.setSelection(0, false)
+            binding.keyboardName.onItemSelectedListener = this
+
+        }
+        ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.messaging_array,
+                android.R.layout.simple_spinner_item
+        ).also { adapter ->
+            // Specify the layout to use when the list of choices appears
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+            //language_name.text
+            binding.messagingName.adapter = adapter
+            if (Preferences.instance!!.isSmsApp)
+                binding.messagingName.setSelection(1, false)
+            else
+                binding.messagingName.setSelection(0, false)
+            binding.messagingName.onItemSelectedListener = this
+
+        }
         return binding.root
     }
 
@@ -59,24 +91,49 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
         binding.deleteAccount.setOnClickListener(clickListener)
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
-        if (position ==1 && language!!.contains("En")) {
-            Utils.changeLanguage("ur", "PK")
-            Preferences.instance!!.saveStringPrefValue(
-                Preferences.instance!!.PREF_LANG,
-                requireActivity().resources.getString(R.string.urdu)
-            )
-            Utils.curentActivity?.finish()
-            ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
-        } else  if(position ==0 && !language!!.contains("En")){
-            Utils.changeLanguage("en", "US")
-            Preferences.instance!!.saveStringPrefValue(
-                Preferences.instance!!.PREF_LANG,
-                requireActivity().resources.getString(R.string.english)
-            )
-            Utils.curentActivity?.finish()
-            ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
-        }
 
+        if(parent?.id == R.id.language_name)
+        {
+            if (position ==1 && language!!.contains("En")) {
+                Utils.changeLanguage("ur", "PK")
+                Preferences.instance!!.saveStringPrefValue(
+                        Preferences.instance!!.PREF_LANG,
+                        requireActivity().resources.getString(R.string.urdu)
+                )
+                Utils.curentActivity?.finish()
+                ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
+            } else  if(position ==0 && !language!!.contains("En")){
+                Utils.changeLanguage("en", "US")
+                Preferences.instance!!.saveStringPrefValue(
+                        Preferences.instance!!.PREF_LANG,
+                        requireActivity().resources.getString(R.string.english)
+                )
+                Utils.curentActivity?.finish()
+                ActivityStackManager.instance!!.goToDashBoard(Utils.curentActivity!!)
+            }
+        }
+        else if(parent?.id == R.id.keyboard_name)
+        {
+            if (position ==1 && !Preferences.instance!!.isCustomKeyboard) {
+                Preferences.instance!!.saveBooleanPrefValue(
+                        Preferences.instance!!.PREF_KEYBORAD,true)
+
+            } else  if(position ==0 && Preferences.instance!!.isCustomKeyboard){
+                Preferences.instance!!.saveBooleanPrefValue(
+                        Preferences.instance!!.PREF_KEYBORAD,false)
+            }
+        }
+        else if(parent?.id == R.id.messaging_name)
+        {
+            if (position ==1 && !Preferences.instance!!.isSmsApp) {
+                Preferences.instance!!.saveBooleanPrefValue(
+                        Preferences.instance!!.PREF_APP,true)
+
+            } else  if(position ==0 && Preferences.instance!!.isSmsApp){
+                Preferences.instance!!.saveBooleanPrefValue(
+                        Preferences.instance!!.PREF_APP,false)
+            }
+        }
     }
 
     override fun onNothingSelected(parent: AdapterView<*>?) {
