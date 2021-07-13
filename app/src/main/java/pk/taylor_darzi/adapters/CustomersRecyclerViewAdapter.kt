@@ -32,6 +32,7 @@ class CustomersRecyclerViewAdapter(private val onClick: (Customer) -> Unit) : Re
             itemBinding.nameUser.text = user.name
             itemBinding.phoneUser.text = user.phone
             itemBinding.khataVal.text = user.no.toString()
+            //itemBinding.customerPic
             itemBinding.root.setOnClickListener { user.let { onClick(it)} }
         }
 
@@ -62,10 +63,8 @@ class CustomersRecyclerViewAdapter(private val onClick: (Customer) -> Unit) : Re
             {
                 for (customer in dataList!!)
                 {
-                    if(customer.name!!.toLowerCase().contains(querry.toLowerCase()) || customer.phone.toLowerCase()
-                            .contains(
-                            querry.toLowerCase()
-                        ))
+                    var phone = customer.phone.replace("+92","0")
+                    if(customer.name!!.toLowerCase().contains(querry.toLowerCase()) || phone.toLowerCase().contains(querry.toLowerCase()) || customer.phone.toLowerCase().contains(querry.toLowerCase()))
                         filteredList.add(customer)
 
                 }

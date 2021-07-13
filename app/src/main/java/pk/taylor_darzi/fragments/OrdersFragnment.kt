@@ -117,8 +117,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
 
             binding.customerDataI.extrainfoLayoutI.embVal.setOnClickListener(clickListener)
             binding.customerDataI.extrainfoLayoutI.embVal.setOnTouchListener(touchListener)
-            binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener =
-                focusChangeListener
+            binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener = focusChangeListener
             binding.customerDataI.extrainfoLayoutI.embVal.setOnEditorActionListener(editor)
         }
         else
@@ -189,7 +188,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 if(Utils.curentActivity is DashBoard)
                 {
                     if (e != null) {
-                        Config.appToast(requireActivity(), e.message)
+                        Config.appToast( e.message)
                         return@addSnapshotListener
                     }
                     if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
@@ -200,7 +199,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                         if(!list.isNullOrEmpty()) customersList?.addAll(list)
 
                     }
-                    else Config.appToast(requireActivity(), "Current data: null")
+                    else Config.appToast( "Current data: null")
                     filterList()
                 }
 
@@ -209,7 +208,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         catch (ex: Exception)
         {
             ex.printStackTrace()
-            Config.appToast(requireActivity(), ex.message)
+            Config.appToast( ex.message)
 
         }
 
@@ -240,7 +239,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
 
     fun showList()
     {
-        if(ordersList.isNullOrEmpty()) Config.appToast(requireActivity(), "No data to show")
+        if(ordersList.isNullOrEmpty()) Config.appToast( "No data to show")
         binding.ordersDataShow.visibility=View.VISIBLE
         binding.scrollviewOrders.visibility = View.GONE
         binding.recyclerViewOrders.layoutManager = LinearLayoutManager(
@@ -289,8 +288,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
         selectedCustomer!!.order?.deliveryDate =""
         selectedCustomer!!.order?.amountRcvd = (Utils.getAmount(selectedCustomer!!.order!!.amountRemaining)+Utils.getAmount(
-            selectedCustomer!!.order!!.amountRcvd
-        )).toString()
+            selectedCustomer!!.order!!.amountRcvd)).toString()
         selectedCustomer!!.order?.amountRemaining =""
         updateCustomer()
     }
@@ -380,13 +378,12 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         docRef!!.update(Config.Customers, customersList)
             .addOnCompleteListener(requireActivity()) { task1 ->
                 if (task1.isSuccessful) {
-                    Config.appToast(requireActivity(), getString(R.string.updated))
+                    Config.appToast( getString(R.string.updated))
                     selectedCustomer = null
                     binding.customerDataI.backButton.callOnClick()
-                } else Config.appToast(requireActivity(), "failed to update")
+                } else Config.appToast( "failed to update")
             }.addOnFailureListener(requireActivity()){ task ->
             Config.appToast(
-                requireActivity(),
                 task.message
             )
         }
@@ -411,7 +408,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             naapShalwar.pocket = binding.customerDataI.trouserLayoutI.tpocketCheckbox.isChecked
 
             var order: Order = selectedCustomer!!.order!!
-            order.amountRcvd = binding.customerDataI.extrainfoLayoutI.wapsiVal.text.toString()
+            order.amountRcvd = binding.customerDataI.wasoolVal.text.toString()
             order.amountRemaining = binding.customerDataI.remVal.text.toString()
             order.deliveryDate = binding.customerDataI.extrainfoLayoutI.wapsiVal.text.toString()
 
@@ -434,7 +431,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         catch (ex: Exception)
         {
             ex.printStackTrace()
-            Config.appToast(requireActivity(), ex.message)
+            Config.appToast( ex.message)
         }
 
     }
@@ -474,13 +471,12 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                             requireActivity()
                         ) { task1 ->
                             if (task1.isSuccessful) {
-                                Config.appToast(requireActivity(), "Data Removed")
+                                Config.appToast( "Data Removed")
                                 selectedCustomer = null
                                 binding.customerDataI.backButton.callOnClick()
-                            } else Config.appToast(requireActivity(), "failed to remove")
+                            } else Config.appToast( "failed to remove")
                         }.addOnFailureListener(requireActivity()) { task ->
                         Config.appToast(
-                            requireActivity(),
                             task.message
                         )
                     }

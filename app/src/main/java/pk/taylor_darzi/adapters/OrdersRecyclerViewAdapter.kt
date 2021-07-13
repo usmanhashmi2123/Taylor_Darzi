@@ -31,6 +31,7 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
             itemBinding.wasooliVal.text = user.order?.amountRcvd
             itemBinding.remaVal.text = user.order?.amountRemaining
             itemBinding.khataVal.text = user.no.toString()
+            itemBinding.date.text = user.order?.deliveryDate
             itemBinding.deliver.setOnClickListener { user.let { onDelivered(it)} }
             itemBinding.sendSms.setOnClickListener { user.let { sendSms(it)} }
             itemBinding.root.setOnClickListener { user.let { onClick(it)} }

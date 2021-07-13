@@ -145,7 +145,7 @@ class LoginActivity : BaseActivity() {
     }
     fun signUp()
     {
-        if(CheckConnection.getInstance(mActivity!!)!!.isConnectedToInternet)
+        if(CheckConnection.isConnectedToInternet)
         {
             binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
@@ -182,7 +182,7 @@ class LoginActivity : BaseActivity() {
                                 Config.currentUser!!.updateProfile(profileUpdates)
                                         .addOnCompleteListener { task ->
                                             if (task.isSuccessful) {
-                                                Config.appToast(mActivity, "User profile updated.")
+                                                Config.appToast( "User profile updated.")
                                                 Config.currentUser = Firebase.auth.currentUser
 
                                                 val docIdRef :DocumentReference = Config.firebaseDb!!.collection(
@@ -197,7 +197,6 @@ class LoginActivity : BaseActivity() {
                                                                         docIdRef.set(CustomersList(phoneNumber = userPhone))
                                                                             .addOnFailureListener(this) { task3 ->
                                                                                 Config.appToast(
-                                                                                    mActivity,
                                                                                     task3.message
                                                                                 )
                                                                     }
@@ -207,7 +206,6 @@ class LoginActivity : BaseActivity() {
                                                                             this
                                                                         ) { task3 ->
                                                                             Config.appToast(
-                                                                                mActivity,
                                                                                 task3.message
                                                                             )
                                                                         }
@@ -216,7 +214,6 @@ class LoginActivity : BaseActivity() {
                                                                     this
                                                                 ) { task3 ->
                                                                     Config.appToast(
-                                                                        mActivity,
                                                                         task3.message
                                                                     )
                                                                 }
@@ -230,16 +227,15 @@ class LoginActivity : BaseActivity() {
                             }
                             binding.signupGroup.visibility = View.GONE
                         } else {
-                            Config.appToast(mActivity, task.exception!!.message)
+                            Config.appToast(task.exception!!.message)
                         }
                     }
                     ?.addOnFailureListener(this){ task2 ->    binding.progressCircular.visibility = View.GONE
                         Config.appToast(
-                        mActivity,
                         task2.message
                     )}
         }
-        else  Config.appToast(mActivity, mActivity?.getString(R.string.check_interent))
+        else  Config.appToast( mActivity?.getString(R.string.check_interent))
 
 
        /* else
@@ -256,7 +252,7 @@ class LoginActivity : BaseActivity() {
     }
     fun signIn()
     {
-        if(CheckConnection.getInstance(mActivity!!)!!.isConnectedToInternet) {
+        if(CheckConnection.isConnectedToInternet) {
             binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
 
@@ -298,7 +294,6 @@ class LoginActivity : BaseActivity() {
                                         if (!document.exists()) docIdRef.set(CustomersList())
                                             .addOnFailureListener(this) { task3 ->
                                                 Config.appToast(
-                                                    mActivity,
                                                     task3.message
                                                 )
                                             }
@@ -306,14 +301,12 @@ class LoginActivity : BaseActivity() {
                                         docIdRef.set(CustomersList())
                                             .addOnFailureListener(this) { task3 ->
                                                 Config.appToast(
-                                                    mActivity,
                                                     task3.message
                                                 )
                                             }
                                 } else docIdRef.set(CustomersList())
                                     .addOnFailureListener(this) { task3 ->
                                         Config.appToast(
-                                            mActivity,
                                             task3.message
                                         )
                                     }
@@ -321,16 +314,16 @@ class LoginActivity : BaseActivity() {
                                 finish()
                             })
                     } else {
-                        Config.appToast(mActivity, task.exception?.message)
+                        Config.appToast( task.exception?.message)
                     }
                 }
                 ?.addOnFailureListener(this) { task2 ->
-                    Config.appToast(mActivity, task2.message)
+                    Config.appToast( task2.message)
 
                 }
 
         }
-        else  Config.appToast(mActivity, mActivity?.getString(R.string.check_interent))
+        else  Config.appToast( mActivity?.getString(R.string.check_interent))
         /*else
         {
 

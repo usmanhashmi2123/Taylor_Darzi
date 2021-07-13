@@ -42,6 +42,8 @@ class DashBoard : BaseActivity() {
         created = true
 
     }
+
+
     fun setViewpager()
     {
         if(created)
@@ -133,12 +135,10 @@ class DashBoard : BaseActivity() {
             if(grantResults[0] == PERMISSION_GRANTED)
             {
                 Config.appToast(
-                    mActivity,
                     "SMS Permission granted"
                 )
             }
             else  Config.appToast(
-                mActivity,
                 "SMS Permission denied"
             )
         }

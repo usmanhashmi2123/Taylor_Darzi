@@ -93,9 +93,7 @@ class CustomDialogue {
                     }catch (ex: Exception)
                     {
                         ex.printStackTrace()
-                        Config.appToast(
-                                Utils.curentActivity!!,
-                                ex.message
+                        Config.appToast(ex.message
                         )
                     }
 
@@ -113,6 +111,10 @@ class CustomDialogue {
         if (dialog != null) {
             dialog!!.dismiss()
         }
+    }
+
+    fun ImageCaptureDialog(mActivity: Any, any: Any) {
+
     }
 
     companion object {

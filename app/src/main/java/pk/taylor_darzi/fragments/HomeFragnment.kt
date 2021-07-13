@@ -43,7 +43,7 @@ class HomeFragnment : ParentFragnment() {
                 if(Utils.curentActivity is DashBoard)
                 {
                     if (e != null) {
-                        Config.appToast(requireActivity(), e.message)
+                        Config.appToast( e.message)
                         return@addSnapshotListener
                     }
                     if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
@@ -58,7 +58,7 @@ class HomeFragnment : ParentFragnment() {
                         else customers =0
                         filterList()
                     }
-                    else Config.appToast(requireActivity(), "Current data: null")
+                    else Config.appToast( "Current data: null")
                 }
 
 
@@ -67,7 +67,7 @@ class HomeFragnment : ParentFragnment() {
         catch (ex: Exception)
         {
             ex.printStackTrace()
-            Config.appToast(requireActivity(), ex.message)
+            Config.appToast( ex.message)
 
         }
         createdfirstTime = false

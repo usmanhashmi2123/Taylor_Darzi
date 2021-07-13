@@ -67,6 +67,7 @@
     <string name="phone_msg">Unknown phone number format. The number should start with the country code +92123456789</string>
     <string name="smsMessage">Your suit is ready. Please take your suit and clear the bill =</string>
     <string name="done" translatable="false" >Done</string>
+    <string name="permission_rationale" translatable="false">Camera and Storage permission is needed for core functionality</string>
     <string-array name="lang_array" translatable="false">
         <item>English</item>
         <item>‎اردو</item>

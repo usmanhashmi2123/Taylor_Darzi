@@ -2,7 +2,10 @@ package pk.taylor_darzi.fragments
 
 import android.app.DatePickerDialog
 import android.content.DialogInterface
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
@@ -12,6 +15,8 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -25,15 +30,13 @@ import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.databinding.CustomerFragmentBinding
 import pk.taylor_darzi.interfaces.NumPadCommandKeyEvent
 import pk.taylor_darzi.interfaces.fragmentbackEvents
-import pk.taylor_darzi.utils.Config
-import pk.taylor_darzi.utils.Preferences
-import pk.taylor_darzi.utils.Utils
+import pk.taylor_darzi.utils.*
+import java.io.File
 import java.util.*
 import java.util.regex.Pattern
 
 class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommandKeyEvent {
     private lateinit var binding: CustomerFragmentBinding
-
     private var resumed = false
     private var customerId = ""
     var selectedCustomer: Customer? =null
@@ -43,13 +46,13 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
 
     val date_Cal = Calendar.getInstance()
     override fun onCreateView(
-            inflater: LayoutInflater,
-            container: ViewGroup?,
-            savedInstanceState: Bundle?
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
     ): View? {
 
         binding = CustomerFragmentBinding.inflate(layoutInflater, container, false)
-
+        binding.customerDataLayout.cardview.setOnClickListener(clickListener)
         binding.customerDataLayout.shirtNaap.setOnClickListener(clickListener)
         binding.customerDataLayout.trouserNaap.setOnClickListener(clickListener)
         binding.customerDataLayout.backButton.setOnClickListener(clickListener)
@@ -62,72 +65,24 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.resetSearch.setOnClickListener(clickListener)
         binding.searchIcon.setOnClickListener(clickListener)
 
-        if(Preferences.instance!!.isCustomKeyboard)
-        {
-            binding.customerDataLayout.shirtLayoutI.lengthQVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.lengthQVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.lengthQVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.lengthQVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.lengthBVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.shoulderVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.colarVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.colarVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.colarVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.colarVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.chestVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.chestVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.chestVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.chestVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.waistVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.waistVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.waistVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.waistVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.shirtLayoutI.hipVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.shirtLayoutI.hipVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.shirtLayoutI.hipVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.shirtLayoutI.hipVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.trouserLayoutI.lengthSVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.trouserLayoutI.panchaVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.trouserLayoutI.panchaVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.trouserLayoutI.panchaVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.trouserLayoutI.panchaVal.setOnEditorActionListener(editor)
-
-            binding.customerDataLayout.extrainfoLayoutI.embVal.setOnClickListener(clickListener)
-            binding.customerDataLayout.extrainfoLayoutI.embVal.setOnTouchListener(touchListener)
-            binding.customerDataLayout.extrainfoLayoutI.embVal.onFocusChangeListener =
-                focusChangeListener
-            binding.customerDataLayout.extrainfoLayoutI.embVal.setOnEditorActionListener(editor)
-        }
 
         return binding.root
     }
+    private val takePictureResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if(success)
+        {
 
+        }
+
+    }
+    private val forPermissionsResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
+
+        var granted = true
+        permissions.entries.forEach {
+            granted = it.value
+        }
+        if(granted) binding.customerDataLayout.cardview.callOnClick()
+    }
     private fun adapterOnClick(customer: Customer) {
         selectedCustomer = customer
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
@@ -177,7 +132,8 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         if(isNew)
         {
             binding.customerDataLayout.delete.visibility = View.GONE
-            customer.no = customers+1
+            if(!customersList.isNullOrEmpty()) customer.no = customersList?.get(customersList!!.size - 1)!!.no+1
+            else customer.no = customers+1
         }
         else
             binding.customerDataLayout.delete.visibility = View.VISIBLE
@@ -329,7 +285,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.searchValue.addTextChangedListener(textWatcher)
         binding.searchValue.setOnEditorActionListener(OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
             if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                    actionId == EditorInfo.IME_ACTION_DONE
+                actionId == EditorInfo.IME_ACTION_DONE
             ) {
                 loadSearch(v.text.toString())
                 Utils.hideKeyboard(requireActivity())
@@ -348,11 +304,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
 
     fun showList()
     {
-        if(customersList.isNullOrEmpty()) Config.appToast(requireActivity(), "No data to show")
+        if(customersList.isNullOrEmpty()) Config.appToast("No data to show")
 
         binding.recyclerView.layoutManager = LinearLayoutManager(
-                requireActivity(), RecyclerView.VERTICAL,
-                false
+            requireActivity(), RecyclerView.VERTICAL,
+            false
         )
         if(customersAdapter== null)
             customersAdapter = CustomersRecyclerViewAdapter { customer -> adapterOnClick(customer) }
@@ -380,13 +336,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
     var focusChangeListener = OnFocusChangeListener { v, hasFocus ->
         if (!hasFocus) {
             Utils.hideKeyboard(requireActivity())
+            Utils.hideNativeKeyboard(requireActivity())
             binding.keyboard.visibility=View.GONE
         }
         else
-        {
-
             showKeyBoard((v as TextInputEditText))
-        }
     }
 
     private val clickListener = View.OnClickListener { view ->
@@ -394,23 +348,30 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             R.id.edit_pencil -> {
                 enableDisable(!binding.customerDataLayout.editPencil.isSelected)
             }
+            R.id.cardview -> {
+              if(AppPermissions.checkPermissions(requireActivity()))
+              {
+
+              }
+              else AppPermissions.requestPermissions(requireActivity(),forPermissionsResult)
+
+            }
             R.id.delete -> {
                 if (selectedCustomer != null) {
                     docRef!!.update(Config.Customers, FieldValue.arrayRemove(selectedCustomer))
-                            .addOnCompleteListener(
-                                    requireActivity()
-                            ) { task1 ->
-                                if (task1.isSuccessful) {
-                                    Config.appToast(requireActivity(), getString(R.string.deleted))
-                                    selectedCustomer = null
-                                    binding.customerDataLayout.backButton.callOnClick()
-                                } else Config.appToast(requireActivity(), "failed to remove")
-                            }.addOnFailureListener(requireActivity()) { task ->
-                                Config.appToast(
-                                        requireActivity(),
-                                        task.message
-                                )
-                            }
+                        .addOnCompleteListener(
+                            requireActivity()
+                        ) { task1 ->
+                            if (task1.isSuccessful) {
+                                Config.appToast( getString(R.string.deleted))
+                                selectedCustomer = null
+                                binding.customerDataLayout.backButton.callOnClick()
+                            } else Config.appToast( "failed to remove")
+                        }.addOnFailureListener(requireActivity()) { task ->
+                            Config.appToast(
+                                task.message
+                            )
+                        }
 
                 }
 
@@ -431,18 +392,18 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             }
             R.id.shirt_naap -> {
                 if (binding.customerDataLayout.shirtLayoutI.root.isVisible) binding.customerDataLayout.shirtLayoutI.root.visibility =
-                        View.GONE
+                    View.GONE
                 else binding.customerDataLayout.shirtLayoutI.root.visibility = View.VISIBLE
             }
             R.id.trouser_naap -> {
                 if (binding.customerDataLayout.trouserLayoutI.root.isVisible) binding.customerDataLayout.trouserLayoutI.root.visibility =
-                        View.GONE
+                    View.GONE
                 else binding.customerDataLayout.trouserLayoutI.root.visibility = View.VISIBLE
             }
             R.id.back_button -> {
-                if(binding.keyboard.visibility == View.VISIBLE) binding.keyboard.visibility =View.GONE
-                else
-                {
+                if (binding.keyboard.visibility == View.VISIBLE) binding.keyboard.visibility =
+                    View.GONE
+                else {
                     binding.customerDataShow.visibility = View.VISIBLE
                     binding.scrollview.visibility = View.GONE
                 }
@@ -462,32 +423,32 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             }
             R.id.wapsi_Val, R.id.wapsi_const -> {
                 val datePickerDialog = DatePickerDialog(
-                        requireActivity(),
-                        { view, year, monthOfYear, dayOfMonth ->
-                            date_Cal.set(Calendar.YEAR, year)
-                            date_Cal.set(Calendar.MONTH, monthOfYear)
-                            date_Cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
-                            binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text =
-                                    Config.getFormatedStringDate(
-                                            date_Cal.time
-                                    )
-                        },
-                        date_Cal.get(Calendar.YEAR),
-                        date_Cal.get(Calendar.MONTH),
-                        date_Cal.get(Calendar.DAY_OF_MONTH)
+                    requireActivity(),
+                    { view, year, monthOfYear, dayOfMonth ->
+                        date_Cal.set(Calendar.YEAR, year)
+                        date_Cal.set(Calendar.MONTH, monthOfYear)
+                        date_Cal.set(Calendar.DAY_OF_MONTH, dayOfMonth)
+                        binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text =
+                            Config.getFormatedStringDate(
+                                date_Cal.time
+                            )
+                    },
+                    date_Cal.get(Calendar.YEAR),
+                    date_Cal.get(Calendar.MONTH),
+                    date_Cal.get(Calendar.DAY_OF_MONTH)
                 )
                 datePickerDialog.setButton(
-                        DialogInterface.BUTTON_NEUTRAL,
-                        "Clear"
+                    DialogInterface.BUTTON_NEUTRAL,
+                    "Clear"
                 ) { dialog: DialogInterface?, which: Int ->
                     datePickerDialog.cancel()
                     binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text = ""
                 }
                 datePickerDialog.show()
             }
-            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_Val, R.id.colar_Val,
+            R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_Val, R.id.colar_Val,
             R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val, R.id.pancha_Val, R.id.emb_Val -> {
-               showKeyBoard(view as TextInputEditText)
+                showKeyBoard(view as TextInputEditText)
             }
         }
     }
@@ -525,7 +486,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 if(Utils.curentActivity is DashBoard)
                 {
                     if (e != null) {
-                        Config.appToast(requireActivity(), e.message)
+                        Config.appToast( e.message)
                         return@addSnapshotListener
                     }
                     if (snapshot != null && snapshot.exists() && snapshot.get(Config.Customers) != null) {
@@ -541,7 +502,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                         else customers =0
 
                     }
-                    else Config.appToast(requireActivity(), "Current data: null")
+                    else Config.appToast( "Current data: null")
                     showList()
                 }
 
@@ -550,7 +511,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         catch (ex: Exception)
         {
             ex.printStackTrace()
-            Config.appToast(requireActivity(), ex.message)
+            Config.appToast( ex.message)
 
         }
 
@@ -563,17 +524,19 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             if(!selectedCustomer!!.phone.isNullOrBlank())
             {
                 if(!Pattern.compile(Config.phonePat).matcher(
-                                selectedCustomer!!.phone.trim()
-                        ).matches())
+                        selectedCustomer!!.phone.trim()
+                    ).matches())
                 {
                     binding.customerDataLayout.phoneUserVal.error = getString(R.string.phone_msg)
 
-                    CustomAlertDialogue.instance?.showAlertDialog(requireActivity(),
-                            getString(R.string.error),
-                            getString(R.string.phone_msg),
-                            "OK",
-                            null,
-                            null)
+                    CustomAlertDialogue.instance?.showAlertDialog(
+                        requireActivity(),
+                        getString(R.string.error),
+                        getString(R.string.phone_msg),
+                        "OK",
+                        null,
+                        null
+                    )
 
                     return
                 }
@@ -583,18 +546,15 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             {
                 docRef!!.update(Config.Customers, FieldValue.arrayUnion(selectedCustomer)).
                 addOnCompleteListener(
-                        requireActivity()
+                    requireActivity()
                 ){ task1  ->
                     if (task1.isSuccessful) {
-                        Config.appToast(requireActivity(), getString(R.string.added))
+                        Config.appToast( getString(R.string.added))
                         selectedCustomer = null
                         binding.customerDataLayout.backButton.callOnClick()
-                    } else Config.appToast(requireActivity(), "failed to add")
+                    } else Config.appToast( "failed to add")
                 }.addOnFailureListener(requireActivity()){ task ->
-                    Config.appToast(
-                            requireActivity(),
-                            task.message
-                    )
+                    Config.appToast(task.message)
                 }
 
             }
@@ -603,14 +563,13 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 docRef!!.update(Config.Customers, customersList)
                     .addOnCompleteListener(requireActivity()) { task1 ->
                         if (task1.isSuccessful) {
-                            Config.appToast(requireActivity(), getString(R.string.updated))
+                            Config.appToast( getString(R.string.updated))
                             selectedCustomer = null
                             binding.customerDataLayout.backButton.callOnClick()
-                        } else Config.appToast(requireActivity(), "failed to update")
+                        } else Config.appToast( "failed to update")
                     }.addOnFailureListener(requireActivity()){ task ->
                     Config.appToast(
-                            requireActivity(),
-                            task.message
+                        task.message
                     )
                 }
             }
@@ -627,16 +586,18 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             if(selectedCustomer == null)
             {
                 new = true
-                selectedCustomer = Customer(
-                        binding.customerDataLayout.nameUserVal.text.toString(),
-                        binding.customerDataLayout.phoneUserVal.text.toString(),
-                        (customers + 1),
-                        Order(),
-                        NaapQameez(),
-                        NaapShalwar(),
-                        ExtraInfo()
-                )
 
+                selectedCustomer = Customer(
+                    binding.customerDataLayout.nameUserVal.text.toString(),
+                    binding.customerDataLayout.phoneUserVal.text.toString(),
+                    (customers + 1),
+                    Order(),
+                    NaapQameez(),
+                    NaapShalwar(),
+                    ExtraInfo()
+                )
+                if(!customersList.isNullOrEmpty()) selectedCustomer!!.no = customersList?.get(customersList!!.size - 1)!!.no+1
+                else selectedCustomer!!.no = customers+1
             }
 
             selectedCustomer!!.name = binding.customerDataLayout.nameUserVal.text.toString()
@@ -681,7 +642,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         {
             new = true
             ex.printStackTrace()
-            Config.appToast(requireActivity(), ex.message)
+            Config.appToast( ex.message)
 
         }
         if(!new)
@@ -698,12 +659,68 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
 
         return new
     }
+    private fun showPopUp() {
+        /*CustomDialogue.instance?.ImageCaptureDialog(requireActivity()) { message ->
+            if (!message.equalsIgnoreCase(resources.getString(R.string.cancel))) {
+                if (message.equalsIgnoreCase("Camera")) doTakePhoto() else openGallery()
+            }
+        }*/
+    }
+
+    private fun openGallery() {
+
+        //val i = Intent(Intent.ACTION_PICK)
+        //i.setDataAndType(imageUri_Location, "image/*")
+        /*i.addFlags(
+            Intent.FLAG_GRANT_READ_URI_PERMISSION
+                    or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+        )
+        startActivityForResult(i, Constants.PICK_FROM_FILE_NORMAL)
+
+         */
+    }
+
+    private fun doTakePhoto() {
+        try {
+            Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
+                // Ensure that there's a camera activity to handle the intent
+                takePictureIntent.resolveActivity(requireActivity().packageManager)?.also {
+                    // Create the File where the photo should go
+                    val photoFile: File? = DirManager.createImageFile(selectedCustomer?.name+selectedCustomer?.no)
+                    // Continue only if the File was successfully created
+
+                    photoFile?.also {
+                        val photoURI: Uri = FileProvider.getUriForFile(requireActivity(), "pk.taylor_darzi.fileprovider", it)
+                        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
+                            takePictureResult.launch(photoURI)
+
+                    }
+
+                }
+            }
+          /*  val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
+            intent.addFlags(
+                Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+            )
+            if (imageUri_Location != null) intent.putExtra(
+                MediaStore.EXTRA_OUTPUT,
+                imageUri_Location
+            )
+            startForActivityResult.launch(intent, Constants.PICK_FROM_CAMERA.ordinal)*/
+        } catch (e: java.lang.Exception) {
+            e.printStackTrace()
+
+        }
+    }
     private fun showKeyBoard(field: TextInputEditText) {
         if (binding.keyboard.visibility !== View.VISIBLE) {
+            Utils.hideKeyboard(requireActivity())
             Utils.hideNativeKeyboard(requireActivity())
             binding.keyboard.setFiled(field, 0, this)
             binding.keyboard.visibility = View.VISIBLE
         } else if (binding.keyboard.getInputField()?.id !== field.id) {
+            Utils.hideKeyboard(requireActivity())
             Utils.hideNativeKeyboard(requireActivity())
             binding.keyboard.changeField()
             binding.keyboard.setFiled(field, 0, this)
@@ -711,8 +728,13 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         }
     }
     override fun onNumPadCommandKeyEvent(command: String?, vararg args: Any?) {
-        if (command.equals("done", ignoreCase = true) || command.equals("dismiss", ignoreCase = true)) binding.keyboard.visibility =View.GONE
+        if (command.equals("done", ignoreCase = true) || command.equals(
+                "dismiss",
+                ignoreCase = true
+            )) binding.keyboard.visibility =View.GONE
     }
+
+
     override fun onPause() {
         super.onPause()
         binding.keyboard.visibility =View.GONE
@@ -728,5 +750,4 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         }
         else return true
     }
-
 }

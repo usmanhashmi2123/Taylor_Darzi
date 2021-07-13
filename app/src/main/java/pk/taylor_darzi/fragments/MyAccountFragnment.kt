@@ -114,25 +114,15 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
         }
         else if(parent?.id == R.id.keyboard_name)
         {
-            if (position ==1 && !Preferences.instance!!.isCustomKeyboard) {
-                Preferences.instance!!.saveBooleanPrefValue(
-                        Preferences.instance!!.PREF_KEYBORAD,true)
+            if (position ==1)  Preferences.instance!!.saveBooleanPrefValue(Preferences.instance!!.PREF_KEYBORAD,true)
+            else  if(position ==0) Preferences.instance!!.saveBooleanPrefValue(Preferences.instance!!.PREF_KEYBORAD,false)
 
-            } else  if(position ==0 && Preferences.instance!!.isCustomKeyboard){
-                Preferences.instance!!.saveBooleanPrefValue(
-                        Preferences.instance!!.PREF_KEYBORAD,false)
-            }
         }
         else if(parent?.id == R.id.messaging_name)
         {
-            if (position ==1 && !Preferences.instance!!.isSmsApp) {
-                Preferences.instance!!.saveBooleanPrefValue(
-                        Preferences.instance!!.PREF_APP,true)
+            if (position ==1) Preferences.instance!!.saveBooleanPrefValue(Preferences.instance!!.PREF_APP,true)
+            else  if(position ==0) Preferences.instance!!.saveBooleanPrefValue(Preferences.instance!!.PREF_APP,false)
 
-            } else  if(position ==0 && Preferences.instance!!.isSmsApp){
-                Preferences.instance!!.saveBooleanPrefValue(
-                        Preferences.instance!!.PREF_APP,false)
-            }
         }
     }
 
@@ -142,7 +132,7 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
     private val clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.delete_account -> {
-                if(CheckConnection.getInstance(requireActivity())!!.isConnectedToInternet) {
+                if(CheckConnection.isConnectedToInternet) {
                     val credential = EmailAuthProvider
                         .getCredential(Preferences.instance!!.userEmailId, Preferences.instance!!.userPass)
                     Config.currentUser?.reauthenticate(credential)?.addOnCompleteListener(requireActivity()) { task ->
@@ -155,17 +145,15 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
                             ActivityStackManager.instance!!.startLoginActivity(Utils.curentActivity!!)
                         }
                         else  Config.appToast(
-                            requireActivity(),
                             task.exception?.message)
 
                     }?.addOnFailureListener(requireActivity()) { task2 ->
                         Config.appToast(
-                            requireActivity(),
                             task2.message)
                     }
 
                 }
-                else Config.appToast(requireActivity(), getString(R.string.check_interent))
+                else Config.appToast( getString(R.string.check_interent))
 
             }
         }

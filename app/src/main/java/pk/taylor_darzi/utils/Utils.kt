@@ -17,6 +17,7 @@ object Utils {
     const val REQUEST_PERMISSIONS_REQUEST_CODE = 35
     var mContext: Context? = null
     var curentActivity: FragmentActivity? = null
+
     fun setCurrentActivity(activity: FragmentActivity) {
         curentActivity = activity
         mContext = activity
@@ -54,7 +55,7 @@ object Utils {
             //appToast(mContext, "hiddenCalled");
         } catch (e: Exception) {
             e.printStackTrace()
-            Config.appToast(Utils.mContext, "hiddenCalled:" + e.message)
+            Config.appToast("hiddenCalled:" + e.message)
         }
     }
 

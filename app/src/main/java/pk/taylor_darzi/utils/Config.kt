@@ -1,11 +1,13 @@
 package pk.taylor_darzi.utils
 
-import android.content.Context
+import android.net.Uri
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import pk.taylor_darzi.dataModels.Customer
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -13,6 +15,7 @@ import java.util.*
 
 
 object Config {
+
     val phonePat = "^[+][0-9]{7,13}\$"
     var LOGIN_GUID = ""
     var User = "user"
@@ -24,8 +27,8 @@ object Config {
     var currentUser: FirebaseUser?= null
     var customersList: ArrayList<Customer>? = ArrayList<Customer>()
     const val DEFAULT_CACHE_SIZE_BYTES = (300 * 1024 * 1024).toLong() // 300 MB
-    fun appToast(mCurrentActivity: Context?, message: String?) {
-        Toast.makeText(mCurrentActivity, message, Toast.LENGTH_SHORT).show()
+    fun appToast( message: String?) {
+        Toast.makeText(Utils.curentActivity!!, message, Toast.LENGTH_SHORT).show()
     }
     fun getFormatedStringDate(date: Date?): String? {
         val sdf = SimpleDateFormat("dd-MM-yyyy")
@@ -43,8 +46,23 @@ object Config {
         }
         return date
     }
+    fun uploadImage(customer: Customer, data: Any) {
+        val filePath = getStorageRef.child(customer.no.toString() + ".jpg")
+        filePath.putFile(Uri.parse("")).addOnCompleteListener   { task  ->
+            if (task.isSuccessful) {
+                appToast("Image stored successfully")
+                filePath.downloadUrl
+                customer.imageUri = filePath.downloadUrl.toString()
+            } else appToast("Image is not stored")
+
+        }.addOnFailureListener {
+            appToast(it.message)
+        }
+    }
     var auth: FirebaseAuth?=null
     var firebaseDb: FirebaseFirestore?=null
+    var storageReference: StorageReference?= null
+
     // Returns singleton instance
     val getFirebaseAuth: FirebaseAuth
         get() {
@@ -62,5 +80,10 @@ object Config {
             firebaseDb!!.firestoreSettings = settings
             return firebaseDb as FirebaseFirestore
         }
-
+    val getStorageRef: StorageReference
+        get() {
+            if (storageReference == null) storageReference = FirebaseStorage.getInstance().reference
+            storageReference?.child("Tailor" + "/"+currentUser!!.uid)
+            return storageReference as StorageReference
+        }
 }
