@@ -7,17 +7,17 @@ plugins {
 }
 
 android {
-    compileSdkVersion 30
-    buildToolsVersion "30.0.3"
+    compileSdk 31
+    //buildToolsVersion "30.0.3"
     buildFeatures {
         viewBinding = true
     }
     defaultConfig {
         applicationId "pk.taylor_darzi"
-        minSdkVersion 24
-        targetSdkVersion 30
-        versionCode 104
-        versionName "1.0.4"
+        minSdk 24
+        targetSdk 31
+        versionCode 105
+        versionName "1.0.5"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
