@@ -151,15 +151,25 @@ class DashBoard : BaseActivity() {
 
     }
     val callback = object : OnBackPressedCallback(true) {
-        val fragment: Fragment= supportFragmentManager.fragments.get(1)
-        val fragmentO: Fragment= supportFragmentManager.fragments.get(2)
+        val fragments = supportFragmentManager.fragments
+        val fragment: Fragment? = if (fragments.isNullOrEmpty()) {
+            null
+        } else {
+            fragments.getOrNull(1)
+        }
+
+        val fragmentO: Fragment? = if (fragments.isNullOrEmpty()) {
+            null
+        } else {
+            fragments.getOrNull(1)
+        }
         override fun handleOnBackPressed() {
-            if (fragment.isResumed) {
+            if (fragment?.isResumed==true) {
                 if ((fragment as CustomersFragnment).doBack()) {
                     isEnabled = false // Disable this callback to allow the default back press behavior
                     finish() // Call the default behavior of Activity.onBackPressed()
                 }
-            } else if (fragmentO.isResumed) {
+            } else if (fragmentO?.isResumed==true) {
                 if ((fragmentO as OrdersFragnment).doBack()) {
                     isEnabled = false // Disable this callback to allow the default back press behavior
                     finish() // Call the default behavior of Activity.onBackPressed()
