@@ -277,21 +277,21 @@
             app:layout_constraintStart_toStartOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <Button
-        android:id="@+id/delete_account"
-        style="@style/bold_16"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="@dimen/_20sdp"
-        android:layout_marginVertical="@dimen/_20sdp"
-        android:background="@drawable/button_background"
-        android:foreground="?attr/selectableItemBackgroundBorderless"
-        android:gravity="center"
-        android:elevation="@dimen/_5sdp"
-        android:tag="1"
-        android:text="@string/delete_acc"
-        app:layout_constraintTop_toBottomOf="@id/messaging_const"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+<!--    <Button-->
+<!--        android:id="@+id/delete_account"-->
+<!--        style="@style/bold_16"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginHorizontal="@dimen/_20sdp"-->
+<!--        android:layout_marginVertical="@dimen/_20sdp"-->
+<!--        android:background="@drawable/button_background"-->
+<!--        android:foreground="?attr/selectableItemBackgroundBorderless"-->
+<!--        android:gravity="center"-->
+<!--        android:elevation="@dimen/_5sdp"-->
+<!--        android:tag="1"-->
+<!--        android:text="@string/delete_acc"-->
+<!--        app:layout_constraintTop_toBottomOf="@id/messaging_const"-->
+<!--        app:layout_constraintStart_toStartOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

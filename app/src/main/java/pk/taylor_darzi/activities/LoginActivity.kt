@@ -41,6 +41,7 @@ class LoginActivity : BaseActivity() {
         binding.loginBtn.setOnClickListener(clickListener)
         binding.register.setOnClickListener(clickListener)
         binding.loginText.setOnClickListener(clickListener)
+        binding.forgottenPassText.setOnClickListener(clickListener)
     }
     public override fun onStart() {
         super.onStart()
@@ -75,7 +76,24 @@ class LoginActivity : BaseActivity() {
                         .addOnCompleteListener(
                             this
                         ) { task ->
-
+                            if (task.isSuccessful)
+                            {
+                                Config.appToast(
+                                    task.result.toString()
+                                )
+                            }
+                            else
+                            {
+                                Config.appToast(
+                                    task.result.toString()
+                                )
+                            }
+                        }.addOnFailureListener(
+                            this
+                        ) { task3 ->
+                            Config.appToast(
+                                task3.message
+                            )
                         }
             }
         }
@@ -287,7 +305,7 @@ class LoginActivity : BaseActivity() {
                         val docIdRef: DocumentReference =
                             Config.firebaseDb!!.collection(Config.User).document(user.uid)
                         docIdRef.get()
-                            .addOnCompleteListener(OnCompleteListener<DocumentSnapshot?> { task ->
+                            .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     val document = task.result
                                     if (document != null) {
@@ -312,7 +330,7 @@ class LoginActivity : BaseActivity() {
                                     }
                                 ActivityStackManager.instance!!.goToDashBoard(mActivity!!)
                                 finish()
-                            })
+                            }
                     } else {
                         Config.appToast( task.exception?.message)
                     }

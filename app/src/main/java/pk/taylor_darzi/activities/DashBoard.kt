@@ -5,6 +5,9 @@ import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_GRANTED
 import android.net.Uri
 import android.os.Bundle
+import android.view.View
+import androidx.activity.OnBackPressedCallback
+import androidx.appcompat.content.res.AppCompatResources
 import androidx.fragment.app.Fragment
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
@@ -38,7 +41,7 @@ class DashBoard : BaseActivity() {
         mActivity = this
         Utils.setCurrentActivity(mActivity as DashBoard)
         Config.getFirebaseAuth
-
+        onBackPressedDispatcher.addCallback(this, callback)
         created = true
 
     }
@@ -49,7 +52,7 @@ class DashBoard : BaseActivity() {
         if(created)
         {
             pagerAdapter = FragmentsAdapter(this)
-            var arrayList : ArrayList<Fragment> = ArrayList()
+            val arrayList : ArrayList<Fragment> = ArrayList()
             arrayList.add(HomeFragnment())
             arrayList.add(CustomersFragnment())
             arrayList.add(OrdersFragnment())
@@ -68,19 +71,19 @@ class DashBoard : BaseActivity() {
         {
             when (postion) {
                 0 -> {
-                    tabIcon.icon = getDrawable(R.drawable.home_selector)
+                    tabIcon.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.home_selector)
                     tabIcon.icon!!.setTintList(getColorStateList(R.color.icon_color_selector))
                 }
                 1 -> {
-                    tabIcon.icon = getDrawable(R.drawable.customer_selector)
+                    tabIcon.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.customer_selector)
                     tabIcon.icon!!.setTintList(getColorStateList(R.color.icon_color_selector))
                 }
                 2 -> {
-                    tabIcon.icon = getDrawable(R.drawable.delivery_selector)
+                    tabIcon.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.delivery_selector)
                     tabIcon.icon!!.setTintList(getColorStateList(R.color.icon_color_selector))
                 }
                 3 -> {
-                    tabIcon.icon = getDrawable(R.drawable.user_selector)
+                    tabIcon.icon = AppCompatResources.getDrawable(applicationContext,R.drawable.user_selector)
                     tabIcon.icon!!.setTintList(getColorStateList(R.color.icon_color_selector))
                 }
             }
@@ -147,22 +150,27 @@ class DashBoard : BaseActivity() {
         binding.viewpager.currentItem= i
 
     }
-    override fun onBackPressed() {
-        var fragment: Fragment= supportFragmentManager.fragments.get(1)
-        var fragmentO: Fragment= supportFragmentManager.fragments.get(2)
-        if(fragment!= null && fragment.isResumed)
-        {
-            if( (fragment as CustomersFragnment).doBack())
-                super.onBackPressed()
+    val callback = object : OnBackPressedCallback(true) {
+        val fragment: Fragment= supportFragmentManager.fragments.get(1)
+        val fragmentO: Fragment= supportFragmentManager.fragments.get(2)
+        override fun handleOnBackPressed() {
+            if (fragment.isResumed) {
+                if ((fragment as CustomersFragnment).doBack()) {
+                    isEnabled = false // Disable this callback to allow the default back press behavior
+                    finish() // Call the default behavior of Activity.onBackPressed()
+                }
+            } else if (fragmentO.isResumed) {
+                if ((fragmentO as OrdersFragnment).doBack()) {
+                    isEnabled = false // Disable this callback to allow the default back press behavior
+                    finish() // Call the default behavior of Activity.onBackPressed()
+                }
+            } else {
+                isEnabled = false // Disable this callback to allow the default back press behavior
+                finish()
+            }
         }
-        else if(fragmentO!= null && fragmentO.isResumed)
-        {
-            if( (fragmentO as OrdersFragnment).doBack())
-                super.onBackPressed()
-        }
-        else
-            super.onBackPressed()
     }
+
     override fun onDestroy() {
         super.onDestroy()
         LoadingProgressDialog.destroy(mActivity)

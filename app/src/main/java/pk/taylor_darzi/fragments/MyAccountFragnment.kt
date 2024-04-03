@@ -88,7 +88,7 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
             }
         }
         binding.emailVal.text = Config.currentUser?.email
-        binding.deleteAccount.setOnClickListener(clickListener)
+        //binding.deleteAccount.setOnClickListener(clickListener)
     }
     override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
 
@@ -129,36 +129,36 @@ class MyAccountFragnment : ParentFragnment(), AdapterView.OnItemSelectedListener
     override fun onNothingSelected(parent: AdapterView<*>?) {
 
     }
-    private val clickListener = View.OnClickListener { view ->
-        when (view.id) {
-            R.id.delete_account -> {
-                if(CheckConnection.isConnectedToInternet) {
-                    val credential = EmailAuthProvider
-                        .getCredential(Preferences.instance!!.userEmailId, Preferences.instance!!.userPass)
-                    Config.currentUser?.reauthenticate(credential)?.addOnCompleteListener(requireActivity()) { task ->
-                        if(task.isSuccessful)
-                        {
-                            docRef = Config.getFirebaseFirestore.collection(Config.User).document(Preferences.instance!!.userAuthId)
-                            docRef?.delete()
-                            Config.currentUser?.delete()
-                            requireActivity().finish()
-                            ActivityStackManager.instance!!.startLoginActivity(Utils.curentActivity!!)
-                        }
-                        else  Config.appToast(
-                            task.exception?.message)
-
-                    }?.addOnFailureListener(requireActivity()) { task2 ->
-                        Config.appToast(
-                            task2.message)
-                    }
-
-                }
-                else Config.appToast( getString(R.string.check_interent))
-
-            }
-        }
-
-    }
+//    private val clickListener = View.OnClickListener { view ->
+//        when (view.id) {
+//            R.id.delete_account -> {
+//                if(CheckConnection.isConnectedToInternet) {
+//                    val credential = EmailAuthProvider
+//                        .getCredential(Preferences.instance!!.userEmailId, Preferences.instance!!.userPass)
+//                    Config.currentUser?.reauthenticate(credential)?.addOnCompleteListener(requireActivity()) { task ->
+//                        if(task.isSuccessful)
+//                        {
+//                            docRef = Config.getFirebaseFirestore.collection(Config.User).document(Preferences.instance!!.userAuthId)
+//                            docRef?.delete()
+//                            Config.currentUser?.delete()
+//                            requireActivity().finish()
+//                            ActivityStackManager.instance!!.startLoginActivity(Utils.curentActivity!!)
+//                        }
+//                        else  Config.appToast(
+//                            task.exception?.message)
+//
+//                    }?.addOnFailureListener(requireActivity()) { task2 ->
+//                        Config.appToast(
+//                            task2.message)
+//                    }
+//
+//                }
+//                else Config.appToast( getString(R.string.check_interent))
+//
+//            }
+//        }
+//
+//    }
     override fun onPause() {
         super.onPause()
         resumed = false

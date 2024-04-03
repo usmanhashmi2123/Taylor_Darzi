@@ -106,6 +106,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.shirtLayoutI.waistVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.hipVal.isEnabled = enable
         binding.customerDataLayout.trouserLayoutI.lengthSVal.isEnabled = enable
+        binding.customerDataLayout.trouserLayoutI.gheraTVal.isEnabled = enable
         binding.customerDataLayout.trouserLayoutI.panchaVal.isEnabled = enable
         binding.customerDataLayout.trouserLayoutI.tpocketCheckbox.isEnabled = enable
         binding.customerDataLayout.extrainfoLayoutI.embVal.isEnabled = enable
@@ -149,6 +150,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.shirtLayoutI.hipVal.setText(naapQameez.ghera)
         var naapShalwar: NaapShalwar = customer.naapShalwar!!
         binding.customerDataLayout.trouserLayoutI.lengthSVal.setText(naapShalwar.shalwarLength)
+        binding.customerDataLayout.trouserLayoutI.gheraTVal.setText(naapShalwar.shalwarGhera)
         binding.customerDataLayout.trouserLayoutI.panchaVal.setText(naapShalwar.pancha)
         binding.customerDataLayout.trouserLayoutI.tpocketCheckbox.isChecked =naapShalwar.pocket
 
@@ -218,6 +220,12 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 focusChangeListener
             binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnEditorActionListener(editor)
 
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnClickListener(clickListener)
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnTouchListener(touchListener)
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnEditorActionListener(editor)
+
             binding.customerDataLayout.trouserLayoutI.panchaVal.setOnClickListener(clickListener)
             binding.customerDataLayout.trouserLayoutI.panchaVal.setOnTouchListener(touchListener)
             binding.customerDataLayout.trouserLayoutI.panchaVal.onFocusChangeListener =
@@ -271,6 +279,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnTouchListener(null)
             binding.customerDataLayout.trouserLayoutI.lengthSVal.onFocusChangeListener = null
             binding.customerDataLayout.trouserLayoutI.lengthSVal.setOnEditorActionListener(null)
+
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnClickListener(null)
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnTouchListener(null)
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.onFocusChangeListener = null
+            binding.customerDataLayout.trouserLayoutI.gheraTVal.setOnEditorActionListener(null)
 
             binding.customerDataLayout.trouserLayoutI.panchaVal.setOnClickListener(null)
             binding.customerDataLayout.trouserLayoutI.panchaVal.setOnTouchListener(null)
@@ -447,7 +460,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 datePickerDialog.show()
             }
             R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_Val, R.id.colar_Val,
-            R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val, R.id.pancha_Val, R.id.emb_Val -> {
+            R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val,R.id.ghera_t_Val, R.id.pancha_Val, R.id.emb_Val -> {
                 showKeyBoard(view as TextInputEditText)
             }
         }
@@ -617,6 +630,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             if(naapShalwar!= null)
             {
                 naapShalwar.shalwarLength = binding.customerDataLayout.trouserLayoutI.lengthSVal.text.toString()
+                naapShalwar.shalwarGhera = binding.customerDataLayout.trouserLayoutI.gheraTVal.text.toString()
                 naapShalwar.pancha = binding.customerDataLayout.trouserLayoutI.panchaVal.text.toString()
                 naapShalwar.pocket = binding.customerDataLayout.trouserLayoutI.tpocketCheckbox.isChecked
 
