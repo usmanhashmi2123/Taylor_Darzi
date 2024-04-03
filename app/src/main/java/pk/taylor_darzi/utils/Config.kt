@@ -26,7 +26,7 @@ object Config {
     var NOTIFICATION_ID = 5000
     var currentUser: FirebaseUser?= null
     var customersList: ArrayList<Customer>? = ArrayList<Customer>()
-    const val DEFAULT_CACHE_SIZE_BYTES = (300 * 1024 * 1024).toLong() // 300 MB
+    private const val DEFAULT_CACHE_SIZE_BYTES = (300 * 1024 * 1024).toLong() // 300 MB
     fun appToast( message: String?) {
         Toast.makeText(Utils.curentActivity!!, message, Toast.LENGTH_SHORT).show()
     }
