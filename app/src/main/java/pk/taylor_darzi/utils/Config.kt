@@ -1,19 +1,22 @@
 package pk.taylor_darzi.utils
 
 import android.net.Uri
+import android.view.View
+import android.widget.ProgressBar
+import android.widget.TextView
 import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import pk.taylor_darzi.dataModels.Customer
 import java.text.ParseException
 import java.text.SimpleDateFormat
-import java.util.*
+import java.util.Date
+import java.util.Locale
 
 
 object Config {
@@ -48,18 +51,28 @@ object Config {
         }
         return date
     }
-    fun uploadImage(customerNo: String, customerName: String, fileUri: Uri,onSuccess: (String) -> Unit) {
+    fun uploadImage(progressBar: ProgressBar, progressTextView: TextView, customerNo: String, customerName: String, fileUri: Uri, onSuccess: (String) -> Unit) {
         getStorageRef
         val filePath = getStorageRef.child("Taylor/$customerName$customerNo.jpg")
         val uploadtask =filePath.putFile(fileUri)
 
-        uploadtask.addOnSuccessListener { taskSnapshot ->
+        uploadtask.addOnProgressListener { taskSnapshot ->
+            val progress = (100.0 * taskSnapshot.bytesTransferred / taskSnapshot.totalByteCount).toInt()
+            progressBar.progress = progress
+            progressTextView.text = "$progress%"
+            progressBar.visibility = View.VISIBLE
+            progressTextView.visibility = View.VISIBLE
+        }.addOnSuccessListener { taskSnapshot ->
             appToast("Image stored successfully")
             taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
                 val downloadUrl = uri.toString()
+                progressBar.visibility = View.GONE
+                progressTextView.visibility = View.GONE
                 onSuccess(downloadUrl)
             }
         }.addOnFailureListener {
+            progressBar.visibility = View.GONE
+            progressTextView.visibility = View.GONE
             appToast(it.message ?: "Upload failed")
         }
     }

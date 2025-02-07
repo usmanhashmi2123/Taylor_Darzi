@@ -37,7 +37,32 @@
             android:src="@drawable/user_selected_svg" />
     </androidx.cardview.widget.CardView>
 
+    <ProgressBar
+        android:id="@+id/progressBar"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:max="100"
+        android:progress="0"
+        android:visibility="gone"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cardview" />
 
+    <!-- TextView to display the upload percentage -->
+    <TextView
+        android:id="@+id/progressTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="0%"
+        style="@style/bold_16"
+        android:visibility="gone"
+        android:elevation="@dimen/_10sdp"
+        app:layout_constraintTop_toBottomOf="@id/progressBar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginTop="@dimen/_5sdp"/>
     <ImageView
         android:id="@+id/edit_pencil"
         android:layout_width="wrap_content"
@@ -71,7 +96,7 @@
         android:padding="@dimen/_10sdp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/cardview">
+        app:layout_constraintTop_toBottomOf="@id/progressTextView">
 
         <TextView
             android:id="@+id/name_user"

@@ -759,12 +759,12 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             else selectedCustomer!!.no = customers+1
         }
 
-        Config.uploadImage(selectedCustomer!!.no.toString(), selectedCustomer!!.name.toString(), uri) { downloadUrl ->
+        Config.uploadImage(binding.customerDataLayout.progressBar, binding.customerDataLayout.progressTextView,selectedCustomer!!.no.toString(), selectedCustomer!!.name.toString(), uri) { downloadUrl ->
 
             selectedCustomer!!.imageUri = downloadUrl
 
         Glide.with(Utils.mContext!!)
-            .load(Uri.parse(selectedCustomer!!.imageUri))
+            .load(Uri.parse(downloadUrl))
             .into(binding.customerDataLayout.customerPic)
 
             imageUriTmp=null
