@@ -107,8 +107,8 @@ class HomeFragnment : ParentFragnment() {
                 Preferences.instance!!.saveStringPrefValue(Preferences.instance!!.PREF_USER_ID, "")
                 Config.getFirebaseAuth.signOut()
                 Config.currentUser = null
-                Config.auth = null
                 Config.firebaseDb = null
+                Config.auth=null
                 ActivityStackManager.instance!!.startLoginActivity(requireActivity())
             }R.id.customers_h -> {
             (activity as DashBoard?)?.fragmentMethod(1)

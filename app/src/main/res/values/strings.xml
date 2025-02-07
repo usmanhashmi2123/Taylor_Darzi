@@ -68,6 +68,11 @@
     <string name="smsMessage">Your suit is ready. Please take your suit and clear the bill =</string>
     <string name="done" translatable="false" >Done</string>
     <string name="permission_rationale" translatable="false">Camera and Storage permission is needed for core functionality</string>
+    <string name="camera">Camera</string>
+    <string name="gallery">Gallery</string>
+    <string name="add_image">Add image</string>
+    <string name="take_pic">Please take a picture</string>
+    <string name="pic_option">How do you want to add an image?</string>
     <string-array name="lang_array" translatable="false">
         <item>English</item>
         <item>‎اردو</item>

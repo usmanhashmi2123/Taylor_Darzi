@@ -57,6 +57,11 @@
     <string name="message_app">پیغام رسانی کی ایپ</string>
     <string name="send">sms بھیجیں</string>
     <string name="error">غلطی</string>
+    <string name="camera">کیمرہ</string>
+    <string name="gallery">گیلری</string>
+    <string name="add_image">تصویر شامل کریں</string>
+    <string name="take_pic">براہ کرم تصویر کھینچیں</string>
+    <string name="pic_option">آپ تصویر کیسے شامل کرنا چاہتے ہیں؟</string>
     <string name="phone_msg">نامعلوم فون نمبر کی شکل۔ نمبر ملک کے کوڈ 92123456789+ کے ساتھ شروع ہونا چاہئے</string>
     <string name="smsMessage">آپ کا سوٹ تیار ہے براہ کرم اپنا سوٹ لےجائیں اور بل کلیر کریں =</string>
 </resources>

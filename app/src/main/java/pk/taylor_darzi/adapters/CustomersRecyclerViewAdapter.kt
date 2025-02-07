@@ -1,10 +1,13 @@
 package pk.taylor_darzi.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import pk.taylor_darzi.dataModels.Customer
 import pk.taylor_darzi.databinding.CustomerItemBinding
+import pk.taylor_darzi.utils.Utils
 
 class CustomersRecyclerViewAdapter(private val onClick: (Customer) -> Unit) : RecyclerView.Adapter<CustomersRecyclerViewAdapter.ViewHolder?>() {
     private var dataList: ArrayList<Customer>? = ArrayList<Customer>()
@@ -32,7 +35,12 @@ class CustomersRecyclerViewAdapter(private val onClick: (Customer) -> Unit) : Re
             itemBinding.nameUser.text = user.name
             itemBinding.phoneUser.text = user.phone
             itemBinding.khataVal.text = user.no.toString()
-            //itemBinding.customerPic
+           user.imageUri?.let { it->
+               Glide.with(Utils.mContext!!)
+                   .load(Uri.parse(it))
+                   .into(itemBinding.customerPic)
+           }
+
             itemBinding.root.setOnClickListener { user.let { onClick(it)} }
         }
 

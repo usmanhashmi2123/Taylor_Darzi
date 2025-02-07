@@ -1,8 +1,10 @@
 package pk.taylor_darzi.adapters
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import pk.taylor_darzi.dataModels.Customer
 import pk.taylor_darzi.databinding.OrderItemBinding
 
@@ -32,6 +34,11 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
             itemBinding.remaVal.text = user.order?.amountRemaining
             itemBinding.khataVal.text = user.no.toString()
             itemBinding.date.text = user.order?.deliveryDate
+            user.imageUri?.let { it->
+                Glide.with(itemBinding.customerPic.context)
+                    .load(Uri.parse(it))
+                    .into(itemBinding.customerPic)
+            }
             itemBinding.deliver.setOnClickListener { user.let { onDelivered(it)} }
             itemBinding.sendSms.setOnClickListener { user.let { sendSms(it)} }
             itemBinding.root.setOnClickListener { user.let { onClick(it)} }

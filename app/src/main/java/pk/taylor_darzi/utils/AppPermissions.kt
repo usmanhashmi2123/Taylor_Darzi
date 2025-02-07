@@ -22,7 +22,6 @@ object AppPermissions {
     const val REQUEST_PERMISSIONS_REQUEST_CODE = 34
     var currentApiVersion = Build.VERSION.SDK_INT
     private val perms = arrayOf(
-            Manifest.permission.ACCESS_MEDIA_LOCATION,
             Manifest.permission.READ_EXTERNAL_STORAGE,
             Manifest.permission.CAMERA
     )

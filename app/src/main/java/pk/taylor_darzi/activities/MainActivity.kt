@@ -34,21 +34,20 @@ class MainActivity : BaseActivity() {
     {
 
         binding.progressCircular.visibility = View.VISIBLE
-            Config.auth!!.signInWithEmailAndPassword(
+            Config.getFirebaseAuth!!.signInWithEmailAndPassword(
                 Preferences.instance!!.userEmailId,
                 Preferences.instance!!.userPass
             )
                 .addOnCompleteListener(this) { task ->
                     binding.progressCircular.visibility = View.GONE
                     if (task.isSuccessful) {
-                        Config.currentUser = Config.auth!!.currentUser
                         Preferences.instance!!.saveStringPrefValue(Preferences.instance!!.PREF_USER_ID, Config.currentUser?.uid)
                         ActivityStackManager.instance!!.goToDashBoard(mActivity!!)
                         finish()
                     } else {
-                        if( Config.auth?.currentUser!= null)
+                        if( Config.getFirebaseAuth?.currentUser!= null)
                         {
-                            Config.currentUser = Config.auth!!.currentUser
+                            Config.currentUser = Config.getFirebaseAuth!!.currentUser
                             Preferences.instance!!.saveStringPrefValue(Preferences.instance!!.PREF_USER_ID, Config.currentUser?.uid)
                             ActivityStackManager.instance!!.goToDashBoard(mActivity!!)
                             finish()

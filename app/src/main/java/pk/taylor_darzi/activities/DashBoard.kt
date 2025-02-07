@@ -184,6 +184,7 @@ class DashBoard : BaseActivity() {
     override fun onDestroy() {
         super.onDestroy()
         LoadingProgressDialog.destroy(mActivity)
+        Config.auth=null
     }
 
 

@@ -255,7 +255,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                         deliver
                     )
                 },
-                { sendSms -> sendSms(sendSms) })
+                { sendMsg -> sendSms(sendMsg,getString(R.string.smsMessage)) })
 
         }
         customersAdapter?.setData(ordersList)
@@ -272,12 +272,12 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         showCustomerInfo(selectedCustomer!!)
 
     }
-    private fun sendSms(customer: Customer) {
+    private fun sendSms(customer: Customer, msg:String) {
         selectedCustomer = customer
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
         val sb = StringBuilder()
         sb.append(Config.currentUser?.displayName).append(" \n")
-        sb.append(getString(R.string.smsMessage))
+        sb.append(msg)
         sb.append(selectedCustomer!!.order!!.amountRemaining)
         CustomDialogue.instance?.showSmsDialog(sb.toString() , selectedCustomer!!.phone)
 

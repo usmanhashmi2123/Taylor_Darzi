@@ -1,14 +1,17 @@
 package pk.taylor_darzi.customViews
 
 import android.app.Dialog
+import android.content.DialogInterface
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.view.Gravity
 import android.view.LayoutInflater
+import android.view.View
 import android.view.Window
 import android.view.WindowManager
 import pk.taylor_darzi.databinding.DialogLayoutBinding
+import pk.taylor_darzi.databinding.ImageDialogueBinding
 import pk.taylor_darzi.utils.Config
 import pk.taylor_darzi.utils.Preferences
 import pk.taylor_darzi.utils.Utils
@@ -113,10 +116,33 @@ class CustomDialogue {
         }
     }
 
-    fun ImageCaptureDialog(mActivity: Any, any: Any) {
+    fun ImageCaptureDialog( dismissListener: ImageCaptureListener) {
+        dismissDialog()
+        dialog = Dialog(Utils.mContext!!)
+        dialog!!.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        dialog!!.window!!.setBackgroundDrawableResource(pk.taylor_darzi.R.color.white_black)
+        val binding = ImageDialogueBinding.inflate(LayoutInflater.from(Utils.mContext!!))
 
+        dialog!!.setContentView(binding.root)
+        dialog!!.setCanceledOnTouchOutside(true)
+
+        binding.mCameraTextView.setOnClickListener {
+            dismissDialog()
+            dismissListener.onDismissed("Camera")
+        }
+        binding.mGalleryTextView.setOnClickListener { v: View? ->
+            dismissDialog()
+            dismissListener.onDismissed("Gallery")      }
+
+        binding.mCancelTextView.setOnClickListener { v: View? -> dismissDialog() }
+
+        dialog!!.setOnDismissListener { dialogInterface: DialogInterface? -> dismissDialog() }
+
+        dialog!!.show()
     }
-
+    interface ImageCaptureListener {
+        fun onDismissed(option: String)
+    }
     companion object {
         var customdialog: CustomDialogue? = null
         val instance: CustomDialogue?

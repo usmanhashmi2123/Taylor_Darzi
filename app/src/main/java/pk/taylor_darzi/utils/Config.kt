@@ -6,8 +6,10 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
+import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
 import pk.taylor_darzi.dataModels.Customer
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -46,30 +48,43 @@ object Config {
         }
         return date
     }
-    fun uploadImage(customer: Customer, data: Any) {
-        val filePath = getStorageRef.child(customer.no.toString() + ".jpg")
-        filePath.putFile(Uri.parse("")).addOnCompleteListener   { task  ->
-            if (task.isSuccessful) {
-                appToast("Image stored successfully")
-                filePath.downloadUrl
-                customer.imageUri = filePath.downloadUrl.toString()
-            } else appToast("Image is not stored")
+    fun uploadImage(customerNo: String, customerName: String, fileUri: Uri,onSuccess: (String) -> Unit) {
+        getStorageRef
+        val filePath = getStorageRef.child("Taylor/$customerName$customerNo.jpg")
+        val uploadtask =filePath.putFile(fileUri)
 
+        uploadtask.addOnSuccessListener { taskSnapshot ->
+            appToast("Image stored successfully")
+            taskSnapshot.metadata?.reference?.downloadUrl?.addOnSuccessListener { uri ->
+                val downloadUrl = uri.toString()
+                onSuccess(downloadUrl)
+            }
         }.addOnFailureListener {
-            appToast(it.message)
+            appToast(it.message ?: "Upload failed")
         }
     }
-    var auth: FirebaseAuth?=null
     var firebaseDb: FirebaseFirestore?=null
-    var storageReference: StorageReference?= null
+    var fbStorage: StorageReference?= null
+    var auth :FirebaseAuth?=null
 
     // Returns singleton instance
     val getFirebaseAuth: FirebaseAuth
         get() {
-            if (auth == null) auth = FirebaseAuth.getInstance()
+            if(auth==null) {
+                auth = FirebaseAuth.getInstance()
+                currentUser = auth?.currentUser
+            }
+
             return auth as FirebaseAuth
         }
-
+    val getStorageRef: StorageReference
+        get() {
+            if (fbStorage == null) {
+                //getFirebaseAuth
+                fbStorage = Firebase.storage.reference
+            }
+            return fbStorage as StorageReference
+        }
     val getFirebaseFirestore: FirebaseFirestore
         get() {
             if (firebaseDb == null) firebaseDb = FirebaseFirestore.getInstance()
@@ -80,10 +95,5 @@ object Config {
             firebaseDb!!.firestoreSettings = settings
             return firebaseDb as FirebaseFirestore
         }
-    val getStorageRef: StorageReference
-        get() {
-            if (storageReference == null) storageReference = FirebaseStorage.getInstance().reference
-            storageReference?.child("Tailor" + "/"+currentUser!!.uid)
-            return storageReference as StorageReference
-        }
+
 }

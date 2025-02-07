@@ -36,7 +36,7 @@ class LoginActivity : BaseActivity() {
         setContentView(binding.root)
         mActivity = this
         Utils.setCurrentActivity(mActivity as LoginActivity)
-        Config.auth!!.useAppLanguage()
+        Config.getFirebaseAuth!!.useAppLanguage()
         binding.createAacBtn.setOnClickListener(clickListener)
         binding.loginBtn.setOnClickListener(clickListener)
         binding.register.setOnClickListener(clickListener)
@@ -47,7 +47,7 @@ class LoginActivity : BaseActivity() {
         super.onStart()
         // Check if user is signed in (non-null) and update UI accordingly.
         if(Config.currentUser == null)
-            Config.currentUser = Config.auth!!.currentUser
+            Config.currentUser = Config.getFirebaseAuth!!.currentUser
 
     }
     override fun onDestroy() {
@@ -72,7 +72,7 @@ class LoginActivity : BaseActivity() {
             }
             R.id.forgotten_Pass_text -> {
                 if (validateEmail(binding.useremailPhone.text.toString()))
-                    Config.auth!!.sendPasswordResetEmail(binding.useremailPhone.text.toString().trim())
+                    Config.getFirebaseAuth!!.sendPasswordResetEmail(binding.useremailPhone.text.toString().trim())
                         .addOnCompleteListener(
                             this
                         ) { task ->
@@ -168,7 +168,7 @@ class LoginActivity : BaseActivity() {
             binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
 
-            Config.auth?.createUserWithEmailAndPassword(
+            Config.getFirebaseAuth?.createUserWithEmailAndPassword(
                 binding.useremailPhone.text.toString().trim(),
                 binding.password2.text.toString()
             )
@@ -274,14 +274,14 @@ class LoginActivity : BaseActivity() {
             binding.progressCircular.visibility = View.VISIBLE
             //if(EMAIL_ADDRESS.matcher(useremail_phone.text.toString().trim()).matches())
 
-            Config.auth?.signInWithEmailAndPassword(
+            Config.getFirebaseAuth?.signInWithEmailAndPassword(
                 binding.useremailPhone.text.toString().trim(),
                 binding.password.text.toString()
             )
                 ?.addOnCompleteListener(this) { task ->
                     binding.progressCircular.visibility = View.GONE
                     if (task.isSuccessful) {
-                        Config.currentUser = Config.auth!!.currentUser
+                        Config.currentUser = Config.getFirebaseAuth!!.currentUser
 
                         Config.getFirebaseFirestore
                         Preferences.instance!!.saveStringPrefValue(

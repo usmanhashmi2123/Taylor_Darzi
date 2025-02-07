@@ -15,17 +15,21 @@ import android.view.inputmethod.EditorInfo
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.TextView.OnEditorActionListener
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.content.FileProvider
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.firestore.FieldValue
 import pk.taylor_darzi.R
 import pk.taylor_darzi.activities.DashBoard
 import pk.taylor_darzi.adapters.CustomersRecyclerViewAdapter
 import pk.taylor_darzi.customViews.CustomAlertDialogue
+import pk.taylor_darzi.customViews.CustomDialogue
 import pk.taylor_darzi.dataModels.*
 import pk.taylor_darzi.databinding.CustomerFragmentBinding
 import pk.taylor_darzi.interfaces.NumPadCommandKeyEvent
@@ -41,8 +45,8 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
     private var customerId = ""
     var selectedCustomer: Customer? =null
     var customersAdapter:CustomersRecyclerViewAdapter?= null
-
-    private var map: Map<String, Customer>? = null
+    var new = false
+    private var imageUriTmp: Uri? = null
 
     val date_Cal = Calendar.getInstance()
     override fun onCreateView(
@@ -68,13 +72,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
 
         return binding.root
     }
-    private val takePictureResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
-        if(success)
-        {
 
-        }
-
-    }
     private val forPermissionsResult = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { permissions ->
 
         var granted = true
@@ -130,6 +128,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
     {
         binding.customerDataLayout.nameUserVal.setText(customer.name)
         binding.customerDataLayout.phoneUserVal.setText(customer.phone)
+        customer.imageUri?.let { it->
+            Glide.with(Utils.mContext!!)
+                .load(Uri.parse(it))
+                .into(binding.customerDataLayout.customerPic)
+        }
         if(isNew)
         {
             binding.customerDataLayout.delete.visibility = View.GONE
@@ -364,7 +367,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             R.id.cardview -> {
               if(AppPermissions.checkPermissions(requireActivity()))
               {
-
+                  showPopUp()
               }
               else AppPermissions.requestPermissions(requireActivity(),forPermissionsResult)
 
@@ -529,7 +532,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         }
 
     }
-    private fun saveCustomer(new: Boolean)
+    private fun saveCustomer(newF: Boolean)
     {
         binding.customerDataLayout.phoneUserVal.error = null
         if(selectedCustomer!= null)
@@ -555,13 +558,14 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 }
             }
 
-            if(new)
+            if(newF)
             {
                 docRef!!.update(Config.Customers, FieldValue.arrayUnion(selectedCustomer)).
                 addOnCompleteListener(
                     requireActivity()
                 ){ task1  ->
                     if (task1.isSuccessful) {
+                        new = false
                         Config.appToast( getString(R.string.added))
                         selectedCustomer = null
                         binding.customerDataLayout.backButton.callOnClick()
@@ -576,6 +580,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 docRef!!.update(Config.Customers, customersList)
                     .addOnCompleteListener(requireActivity()) { task1 ->
                         if (task1.isSuccessful) {
+                            new = false
                             Config.appToast( getString(R.string.updated))
                             selectedCustomer = null
                             binding.customerDataLayout.backButton.callOnClick()
@@ -594,7 +599,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
 
     private fun addData():Boolean
     {
-        var new = false
+
         try{
             if(selectedCustomer == null)
             {
@@ -674,26 +679,33 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         return new
     }
     private fun showPopUp() {
-        /*CustomDialogue.instance?.ImageCaptureDialog(requireActivity()) { message ->
-            if (!message.equalsIgnoreCase(resources.getString(R.string.cancel))) {
-                if (message.equalsIgnoreCase("Camera")) doTakePhoto() else openGallery()
+        CustomDialogue.instance?.ImageCaptureDialog(object : CustomDialogue.ImageCaptureListener {
+            override fun onDismissed(option: String) {
+                when (option) {
+                    "Camera" -> doTakePhoto()
+                    "Gallery" -> openGallery()
+                }
             }
-        }*/
+        })
+
     }
 
     private fun openGallery() {
-
-        //val i = Intent(Intent.ACTION_PICK)
-        //i.setDataAndType(imageUri_Location, "image/*")
-        /*i.addFlags(
+        val i = Intent(Intent.ACTION_PICK)
+        i.type ="image/*"
+        i.addFlags(
             Intent.FLAG_GRANT_READ_URI_PERMISSION
                     or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
         )
-        startActivityForResult(i, Constants.PICK_FROM_FILE_NORMAL)
 
-         */
+        pickPic.launch(PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly))
     }
-
+    private val pickPic: ActivityResultLauncher<PickVisualMediaRequest> =
+        registerForActivityResult(ActivityResultContracts.PickVisualMedia()) { result ->
+            if (result != null) {
+                saveUploadImage(result)
+            }
+        }
     private fun doTakePhoto() {
         try {
             Intent(MediaStore.ACTION_IMAGE_CAPTURE).also { takePictureIntent ->
@@ -706,29 +718,84 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                     photoFile?.also {
                         val photoURI: Uri = FileProvider.getUriForFile(requireActivity(), "pk.taylor_darzi.fileprovider", it)
                         takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI)
-                            takePictureResult.launch(photoURI)
+                        imageUriTmp =photoURI
+                        takePictureResult.launch(photoURI)
 
                     }
 
                 }
             }
-          /*  val intent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-            intent.addFlags(
-                Intent.FLAG_GRANT_READ_URI_PERMISSION
-                        or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
-            )
-            if (imageUri_Location != null) intent.putExtra(
-                MediaStore.EXTRA_OUTPUT,
-                imageUri_Location
-            )
-            startForActivityResult.launch(intent, Constants.PICK_FROM_CAMERA.ordinal)*/
+
+
         } catch (e: java.lang.Exception) {
             e.printStackTrace()
 
         }
     }
+    private val takePictureResult = registerForActivityResult(ActivityResultContracts.TakePicture()) { success ->
+        if(success)
+        {
+            saveUploadImage(imageUriTmp!!)
+        }
+
+
+    }
+    private  fun saveUploadImage(uri: Uri)
+    {
+        if(selectedCustomer == null)
+        {
+            new = true
+
+            selectedCustomer = Customer(
+                binding.customerDataLayout.nameUserVal.text.toString(),
+                binding.customerDataLayout.phoneUserVal.text.toString(),
+                (customers + 1),
+                Order(),
+                NaapQameez(),
+                NaapShalwar(),
+                ExtraInfo(),
+            )
+            if(!customersList.isNullOrEmpty()) selectedCustomer!!.no = customersList?.get(customersList!!.size - 1)!!.no+1
+            else selectedCustomer!!.no = customers+1
+        }
+
+        Config.uploadImage(selectedCustomer!!.no.toString(), selectedCustomer!!.name.toString(), uri) { downloadUrl ->
+
+            selectedCustomer!!.imageUri = downloadUrl
+
+        Glide.with(Utils.mContext!!)
+            .load(Uri.parse(selectedCustomer!!.imageUri))
+            .into(binding.customerDataLayout.customerPic)
+
+            imageUriTmp=null
+            if(!new)
+            {
+                for ((index, customer) in customersList!!.withIndex()) {
+                    var id = customer.name+"_"+customer.phone+"_"+ customer.no
+                    if(customerId.equals(id))
+                    {
+                        customersList!!.set(index, selectedCustomer!!)
+                        break
+                    }
+                }
+                docRef!!.update(Config.Customers, customersList)
+                    .addOnCompleteListener(requireActivity()) { task1 ->
+                        if (task1.isSuccessful) {
+                            new = false
+                            Config.appToast( getString(R.string.updated))
+                        } else Config.appToast( "failed to update")
+                    }.addOnFailureListener(requireActivity()){ task ->
+                        Config.appToast(
+                            task.message
+                        )
+                    }
+            }
+
+        }
+    }
+
     private fun showKeyBoard(field: TextInputEditText) {
-        if (binding.keyboard.visibility !== View.VISIBLE) {
+        if (!binding.keyboard.isVisible) {
             Utils.hideKeyboard(requireActivity())
             Utils.hideNativeKeyboard(requireActivity())
             binding.keyboard.setFiled(field, 0, this)
