@@ -17,12 +17,13 @@
     <string name="inch">Inch</string>
     <string name="naap">Measurements</string>
     <string name="naap_no">Measurement no</string>
-
+    <string name="send">Send</string>
     <string name="naap_Q">Measurement shirt</string>
     <string name="length_Q">Shirt length</string>
     <string name="length_b">Arm length</string>
     <string name="shldr_to_shldr">Shoulder width</string>
     <string name="shoulder">Shoulder</string>
+    <string name="kuff">Kuff</string>
     <string name="colar">Colar</string>
     <string name="chest">Chest</string>
     <string name="waist">Waist</string>
@@ -71,7 +72,7 @@
     <string name="smsMessage">Your suit is ready. Please take your suit and clear the bill =</string>
     <string name="readyMessage">Your suit is ready. Please visit Stylish Tailor in Anarkali Bazaar, Khushab, to collect it.</string>
     <string name="remainingAmount">Amount=</string>
-    <string name="totslsuits">Suits =</string>
+    <string name="totalsuits">Suits =</string>
     <string name="total">Total</string>
     <string name="Wapsi">Return=</string>
     <string name="done" translatable="false" >Done</string>

@@ -98,6 +98,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.remVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.lengthQVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.lengthBVal.isEnabled = enable
+        binding.customerDataLayout.shirtLayoutI.kuffVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.shoulderWVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.shoulderVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.colarVal.isEnabled = enable
@@ -109,6 +110,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.trouserLayoutI.panchaVal.isEnabled = enable
         binding.customerDataLayout.trouserLayoutI.tpocketCheckbox.isEnabled = enable
         binding.customerDataLayout.extrainfoLayoutI.embVal.isEnabled = enable
+        binding.customerDataLayout.extrainfoLayoutI.suitsVal.isEnabled = enable
         binding.customerDataLayout.extrainfoLayoutI.spocketCheckbox.isEnabled = enable
         binding.customerDataLayout.extrainfoLayoutI.fpocketCheckbox.isEnabled = enable
         binding.customerDataLayout.extrainfoLayoutI.notesVal.isEnabled = enable
@@ -147,6 +149,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         var naapQameez: NaapQameez = customer.naapQameez!!
         binding.customerDataLayout.shirtLayoutI.lengthQVal.setText(naapQameez.shirtLength)
         binding.customerDataLayout.shirtLayoutI.lengthBVal.setText(naapQameez.armLength)
+        binding.customerDataLayout.shirtLayoutI.kuffVal.setText(naapQameez.kuflink)
         binding.customerDataLayout.shirtLayoutI.shoulderWVal.setText(naapQameez.shoulderLength)
         binding.customerDataLayout.shirtLayoutI.shoulderVal.setText(naapQameez.shoulder)
         binding.customerDataLayout.shirtLayoutI.colarVal.setText(naapQameez.colarSize)
@@ -163,6 +166,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.wasoolVal.setText(order.amountRcvd)
         binding.customerDataLayout.remVal.setText(order.amountRemaining)
         binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text = order.deliveryDate
+        binding.customerDataLayout.extrainfoLayoutI.suitsVal.setText(order.suits)
 
         var extraInfo: ExtraInfo = customer.extraInfo!!
         binding.customerDataLayout.extrainfoLayoutI.embVal.setText(extraInfo.karhaiNo)
@@ -188,6 +192,12 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.shirtLayoutI.lengthBVal.onFocusChangeListener =
                 focusChangeListener
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
+
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnClickListener(clickListener)
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnTouchListener(touchListener)
+            binding.customerDataLayout.shirtLayoutI.kuffVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnEditorActionListener(editor)
 
             binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnClickListener(clickListener)
             binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnTouchListener(touchListener)
@@ -248,6 +258,12 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.extrainfoLayoutI.embVal.onFocusChangeListener =
                 focusChangeListener
             binding.customerDataLayout.extrainfoLayoutI.embVal.setOnEditorActionListener(editor)
+
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnClickListener(clickListener)
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnTouchListener(touchListener)
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnEditorActionListener(editor)
         }
         else
         {
@@ -260,6 +276,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnTouchListener(null)
             binding.customerDataLayout.shirtLayoutI.lengthBVal.onFocusChangeListener = null
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnEditorActionListener(null)
+
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnClickListener(null)
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnTouchListener(null)
+            binding.customerDataLayout.shirtLayoutI.kuffVal.onFocusChangeListener = null
+            binding.customerDataLayout.shirtLayoutI.kuffVal.setOnEditorActionListener(null)
 
             binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnClickListener(null)
             binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnTouchListener(null)
@@ -310,6 +331,13 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.extrainfoLayoutI.embVal.setOnTouchListener(null)
             binding.customerDataLayout.extrainfoLayoutI.embVal.onFocusChangeListener = null
             binding.customerDataLayout.extrainfoLayoutI.embVal.setOnEditorActionListener(null)
+
+
+
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnClickListener(null)
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnTouchListener(null)
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.onFocusChangeListener = null
+            binding.customerDataLayout.extrainfoLayoutI.suitsVal.setOnEditorActionListener(null)
         }
         binding.searchValue.addTextChangedListener(textWatcher)
         binding.searchValue.setOnEditorActionListener(OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
@@ -475,7 +503,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 }
                 datePickerDialog.show()
             }
-            R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_w_Val,  R.id.shoulder_Val,R.id.colar_Val,
+            R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_w_Val,  R.id.shoulder_Val,R.id.colar_Val,R.id.suits_Val, R.id.kuff_val,
             R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val,R.id.ghera_t_Val, R.id.pancha_Val, R.id.emb_Val -> {
                 showKeyBoard(view as TextInputEditText)
             }
@@ -638,6 +666,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             {
                 naapQameez.shirtLength = binding.customerDataLayout.shirtLayoutI.lengthQVal.text.toString()
                 naapQameez.armLength = binding.customerDataLayout.shirtLayoutI.lengthBVal.text.toString()
+                naapQameez.kuflink = binding.customerDataLayout.shirtLayoutI.kuffVal.text.toString()
                 naapQameez.shoulderLength = binding.customerDataLayout.shirtLayoutI.shoulderWVal.text.toString()
                 naapQameez.shoulder = binding.customerDataLayout.shirtLayoutI.shoulderVal.text.toString()
                 naapQameez.colarSize = binding.customerDataLayout.shirtLayoutI.colarVal.text.toString()
@@ -660,6 +689,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 order.amountRcvd = binding.customerDataLayout.wasoolVal.text.toString()
                 order.amountRemaining = binding.customerDataLayout.remVal.text.toString()
                 order.deliveryDate = binding.customerDataLayout.extrainfoLayoutI.wapsiVal.text.toString()
+                order.suits = binding.customerDataLayout.extrainfoLayoutI.suitsVal.text.toString()
 
             }
             var extraInfo: ExtraInfo = selectedCustomer!!.extraInfo!!

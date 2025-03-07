@@ -18,11 +18,14 @@
     <string name="naap">ناپ</string>
     <string name="naap_no">ناپ نمبر</string>
 
+    <string name="send">بھیجیں</string>
+
     <string name="naap_Q">ناپ قمیض</string>
     <string name="length_Q">لمبائی قمیض</string>
     <string name="length_b">لمبائی بازو</string>
     <string name="shldr_to_shldr">تیرہ</string>
     <string name="shoulder">کندھا</string>
+    <string name="kuff">کف</string>
     <string name="colar">کالر</string>
     <string name="chest">سینہ</string>
     <string name="waist">کمر</string>
@@ -70,6 +73,6 @@
     <string name="readyMessage">اپ کا سوٹ تیار ہو گیا ہے اپ سٹائلش ٹیلر انارکلی بازار خوشاب سے ا کر وصول کر لیں</string>
     <string name="remainingAmount">رقم=</string>
     <string name="Wapsi">واپسی=</string>
-    <string name="totslsuits"> سوٹ کی تعداد=</string>
+    <string name="totalsuits"> سوٹ کی تعداد=</string>
     <string name="total">تعداد</string>
 </resources>

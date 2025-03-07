@@ -77,6 +77,13 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 focusChangeListener
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
 
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.kuffVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnEditorActionListener(editor)
+
+
             binding.customerDataI.shirtLayoutI.shoulderWVal.setOnClickListener(clickListener)
             binding.customerDataI.shirtLayoutI.shoulderWVal.setOnTouchListener(touchListener)
             binding.customerDataI.shirtLayoutI.shoulderWVal.onFocusChangeListener =
@@ -125,6 +132,12 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             binding.customerDataI.extrainfoLayoutI.embVal.setOnTouchListener(touchListener)
             binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener = focusChangeListener
             binding.customerDataI.extrainfoLayoutI.embVal.setOnEditorActionListener(editor)
+
+
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnClickListener(clickListener)
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnTouchListener(touchListener)
+            binding.customerDataI.extrainfoLayoutI.suitsVal.onFocusChangeListener = focusChangeListener
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnEditorActionListener(editor)
         }
         else
         {
@@ -137,6 +150,11 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnTouchListener(null)
             binding.customerDataI.shirtLayoutI.lengthBVal.onFocusChangeListener = null
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.kuffVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.kuffVal.setOnEditorActionListener(null)
 
             binding.customerDataI.shirtLayoutI.shoulderWVal.setOnClickListener(null)
             binding.customerDataI.shirtLayoutI.shoulderWVal.setOnTouchListener(null)
@@ -182,6 +200,11 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             binding.customerDataI.extrainfoLayoutI.embVal.setOnTouchListener(null)
             binding.customerDataI.extrainfoLayoutI.embVal.onFocusChangeListener = null
             binding.customerDataI.extrainfoLayoutI.embVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnClickListener(null)
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnTouchListener(null)
+            binding.customerDataI.extrainfoLayoutI.suitsVal.onFocusChangeListener = null
+            binding.customerDataI.extrainfoLayoutI.suitsVal.setOnEditorActionListener(null)
         }
         if (binding.ordersDataShow.isVisible)
             getData()
@@ -290,8 +313,8 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         val sb = StringBuilder()
         sb.append(Config.currentUser?.displayName).append(" \n")
         sb.append(msg)
-        if(!suits.isNullOrBlank())sb.append("\n${getString(R.string.remainingAmount)} $amountRemaining")
-        if(!amountRemaining.isNullOrBlank())sb.append("\n${getString(R.string.totslsuits)} $suits")
+        if(!suits.isNullOrBlank())sb.append("\n${getString(R.string.totalsuits)} $suits")
+        if(!amountRemaining.isNullOrBlank())sb.append("\n${getString(R.string.remainingAmount)} $amountRemaining")
         if(!returnDate.isNullOrBlank())sb.append("\n${getString(R.string.wapsi)} $returnDate")
         CustomDialogue.instance?.showSmsDialog(sb.toString() , selectedCustomer!!.phone)
 
@@ -301,6 +324,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         selectedCustomer = deliver
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
         selectedCustomer!!.order?.deliveryDate =""
+        selectedCustomer!!.order?.suits =""
         selectedCustomer!!.order?.amountRcvd = (Utils.getAmount(selectedCustomer!!.order!!.amountRemaining)+Utils.getAmount(
             selectedCustomer!!.order!!.amountRcvd)).toString()
         selectedCustomer!!.order?.amountRemaining =""
@@ -314,6 +338,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         binding.customerDataI.remVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.lengthQVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.lengthBVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.kuffVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.shoulderWVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.shoulderVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.colarVal.isEnabled = enable
@@ -324,6 +349,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         binding.customerDataI.trouserLayoutI.panchaVal.isEnabled = enable
         binding.customerDataI.trouserLayoutI.tpocketCheckbox.isEnabled = enable
         binding.customerDataI.extrainfoLayoutI.embVal.isEnabled = enable
+        binding.customerDataI.extrainfoLayoutI.suitsVal.isEnabled = enable
         binding.customerDataI.extrainfoLayoutI.spocketCheckbox.isEnabled = enable
         binding.customerDataI.extrainfoLayoutI.fpocketCheckbox.isEnabled = enable
         binding.customerDataI.extrainfoLayoutI.notesVal.isEnabled = enable
@@ -348,6 +374,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         var naapQameez: NaapQameez = customer.naapQameez!!
         binding.customerDataI.shirtLayoutI.lengthQVal.setText(naapQameez.shirtLength)
         binding.customerDataI.shirtLayoutI.lengthBVal.setText(naapQameez.armLength)
+        binding.customerDataI.shirtLayoutI.kuffVal.setText(naapQameez.armLength)
         binding.customerDataI.shirtLayoutI.shoulderWVal.setText(naapQameez.shoulderLength)
         binding.customerDataI.shirtLayoutI.shoulderVal.setText(naapQameez.shoulder)
         binding.customerDataI.shirtLayoutI.colarVal.setText(naapQameez.colarSize)
@@ -363,6 +390,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         binding.customerDataI.wasoolVal.setText(order.amountRcvd)
         binding.customerDataI.remVal.setText(order.amountRemaining)
         binding.customerDataI.extrainfoLayoutI.wapsiVal.text = order.deliveryDate
+        binding.customerDataI.extrainfoLayoutI.suitsVal.setText(order.suits)
 
         var extraInfo: ExtraInfo = customer.extraInfo!!
         binding.customerDataI.extrainfoLayoutI.embVal.setText(extraInfo.karhaiNo)
@@ -413,6 +441,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             var naapQameez: NaapQameez = selectedCustomer!!.naapQameez!!
             naapQameez.shirtLength = binding.customerDataI.shirtLayoutI.lengthQVal.text.toString()
             naapQameez.armLength = binding.customerDataI.shirtLayoutI.lengthBVal.text.toString()
+            naapQameez.kuflink = binding.customerDataI.shirtLayoutI.kuffVal.text.toString()
             naapQameez.shoulderLength = binding.customerDataI.shirtLayoutI.shoulderWVal.text.toString()
             naapQameez.shoulder = binding.customerDataI.shirtLayoutI.shoulderVal.text.toString()
             naapQameez.colarSize = binding.customerDataI.shirtLayoutI.colarVal.text.toString()
@@ -428,6 +457,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             order.amountRcvd = binding.customerDataI.wasoolVal.text.toString()
             order.amountRemaining = binding.customerDataI.remVal.text.toString()
             order.deliveryDate = binding.customerDataI.extrainfoLayoutI.wapsiVal.text.toString()
+            order.suits = binding.customerDataI.extrainfoLayoutI.suitsVal.text.toString()
 
             var extraInfo: ExtraInfo = selectedCustomer!!.extraInfo!!
             extraInfo.karhaiNo = binding.customerDataI.extrainfoLayoutI.embVal.text.toString()
@@ -549,7 +579,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 }
                 datePickerDialog.show()
             }
-            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_w_Val,R.id.shoulder_Val, R.id.colar_Val,
+            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_w_Val,R.id.shoulder_Val, R.id.colar_Val,R.id.suits_Val, R.id.kuff_val,
             R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val, R.id.pancha_Val, R.id.emb_Val -> {
                 showKeyBoard(view as TextInputEditText)
             }

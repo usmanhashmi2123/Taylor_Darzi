@@ -32,6 +32,7 @@ class OrdersRecyclerViewAdapter(val onClick: (Customer) -> Unit, val onDelivered
             itemBinding.phoneUser.text = user.phone
             itemBinding.wasooliVal.text = user.order?.amountRcvd
             itemBinding.remaVal.text = user.order?.amountRemaining
+            itemBinding.suitsVal.text = user.order?.suits
             itemBinding.khataVal.text = user.no.toString()
             itemBinding.date.text = user.order?.deliveryDate
             user.imageUri?.let { it->
