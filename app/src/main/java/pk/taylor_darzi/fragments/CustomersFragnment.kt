@@ -98,6 +98,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         binding.customerDataLayout.remVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.lengthQVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.lengthBVal.isEnabled = enable
+        binding.customerDataLayout.shirtLayoutI.shoulderWVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.shoulderVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.colarVal.isEnabled = enable
         binding.customerDataLayout.shirtLayoutI.chestVal.isEnabled = enable
@@ -146,7 +147,8 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         var naapQameez: NaapQameez = customer.naapQameez!!
         binding.customerDataLayout.shirtLayoutI.lengthQVal.setText(naapQameez.shirtLength)
         binding.customerDataLayout.shirtLayoutI.lengthBVal.setText(naapQameez.armLength)
-        binding.customerDataLayout.shirtLayoutI.shoulderVal.setText(naapQameez.shoulderLength)
+        binding.customerDataLayout.shirtLayoutI.shoulderWVal.setText(naapQameez.shoulderLength)
+        binding.customerDataLayout.shirtLayoutI.shoulderVal.setText(naapQameez.shoulder)
         binding.customerDataLayout.shirtLayoutI.colarVal.setText(naapQameez.colarSize)
         binding.customerDataLayout.shirtLayoutI.chestVal.setText(naapQameez.chest)
         binding.customerDataLayout.shirtLayoutI.waistVal.setText(naapQameez.waist)
@@ -186,6 +188,12 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.shirtLayoutI.lengthBVal.onFocusChangeListener =
                 focusChangeListener
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
+
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnClickListener(clickListener)
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnTouchListener(touchListener)
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnEditorActionListener(editor)
 
             binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnClickListener(clickListener)
             binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnTouchListener(touchListener)
@@ -252,6 +260,11 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnTouchListener(null)
             binding.customerDataLayout.shirtLayoutI.lengthBVal.onFocusChangeListener = null
             binding.customerDataLayout.shirtLayoutI.lengthBVal.setOnEditorActionListener(null)
+
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnClickListener(null)
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnTouchListener(null)
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.onFocusChangeListener = null
+            binding.customerDataLayout.shirtLayoutI.shoulderWVal.setOnEditorActionListener(null)
 
             binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnClickListener(null)
             binding.customerDataLayout.shirtLayoutI.shoulderVal.setOnTouchListener(null)
@@ -462,7 +475,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
                 }
                 datePickerDialog.show()
             }
-            R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_Val, R.id.colar_Val,
+            R.id.length_q_Val, R.id.length_b_Val, R.id.shoulder_w_Val,  R.id.shoulder_Val,R.id.colar_Val,
             R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val,R.id.ghera_t_Val, R.id.pancha_Val, R.id.emb_Val -> {
                 showKeyBoard(view as TextInputEditText)
             }
@@ -625,7 +638,8 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
             {
                 naapQameez.shirtLength = binding.customerDataLayout.shirtLayoutI.lengthQVal.text.toString()
                 naapQameez.armLength = binding.customerDataLayout.shirtLayoutI.lengthBVal.text.toString()
-                naapQameez.shoulderLength = binding.customerDataLayout.shirtLayoutI.shoulderVal.text.toString()
+                naapQameez.shoulderLength = binding.customerDataLayout.shirtLayoutI.shoulderWVal.text.toString()
+                naapQameez.shoulder = binding.customerDataLayout.shirtLayoutI.shoulderVal.text.toString()
                 naapQameez.colarSize = binding.customerDataLayout.shirtLayoutI.colarVal.text.toString()
                 naapQameez.chest = binding.customerDataLayout.shirtLayoutI.chestVal.text.toString()
                 naapQameez.waist = binding.customerDataLayout.shirtLayoutI.waistVal.text.toString()

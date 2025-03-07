@@ -70,7 +70,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toTopOf="@id/name_user"/>
     <Button
-        android:id="@+id/send_sms"
+        android:id="@+id/booking_msg"
         style="@style/medium_10"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,9 +82,26 @@
         android:gravity="center"
         android:paddingHorizontal="@dimen/_6sdp"
         android:shadowColor="@color/gray"
-        android:text="@string/send"
+        android:text="@string/booking"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/ready_msg"/>
+    <Button
+        android:id="@+id/ready_msg"
+        style="@style/medium_10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/_2sdp"
+        android:layout_marginVertical="@dimen/_2sdp"
+        android:background="@drawable/button_background"
+        android:foreground="?attr/selectableItemBackgroundBorderless"
+        android:elevation="@dimen/_10sdp"
+        android:gravity="center"
+        android:paddingHorizontal="@dimen/_3sdp"
+        android:shadowColor="@color/gray"
+        android:text="@string/ready"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/booking_msg"
         app:layout_constraintBottom_toTopOf="@id/phone_user"/>
     <TextView
         android:id="@+id/name_user"

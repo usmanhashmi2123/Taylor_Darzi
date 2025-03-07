@@ -51,16 +51,13 @@ class CustomDialogue {
                 if(!binding.sms.text.isNullOrBlank())
                 {
                     try {
-
-
                             var no = binding.smsNo.text.toString().trim()
 
                             if(Preferences.instance!!.isSmsApp)
                             {
                                 val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                    type = "text/plain"
-                                    data = Uri.parse("smsto:" + no)  // This ensures only SMS apps respond
-                                    putExtra("sms_body", message)
+                                    setDataAndType(Uri.parse("smsto:" + no) ,"text/plain")
+                                    putExtra("sms_body", binding.sms.text)
                                 }
                                 if (intent.resolveActivity(Utils.curentActivity!!.packageManager) != null) {
                                     Utils.curentActivity!!.startActivity(intent)
@@ -79,9 +76,8 @@ class CustomDialogue {
 
                                 } catch (e: PackageManager.NameNotFoundException) {
                                     val intent = Intent(Intent.ACTION_SENDTO).apply {
-                                        type = "text/plain"
-                                        data = Uri.parse("smsto:" + no)  // This ensures only SMS apps respond
-                                        putExtra("sms_body", message)
+                                        setDataAndType(Uri.parse("smsto:" + no) ,"text/plain")
+                                        putExtra("sms_body", binding.sms.text)
                                     }
                                     if (intent.resolveActivity(Utils.curentActivity!!.packageManager) != null) {
                                         Utils.curentActivity!!.startActivity(intent)

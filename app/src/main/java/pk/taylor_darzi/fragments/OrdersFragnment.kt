@@ -77,6 +77,12 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 focusChangeListener
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(editor)
 
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnClickListener(clickListener)
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnTouchListener(touchListener)
+            binding.customerDataI.shirtLayoutI.shoulderWVal.onFocusChangeListener =
+                focusChangeListener
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnEditorActionListener(editor)
+
             binding.customerDataI.shirtLayoutI.shoulderVal.setOnClickListener(clickListener)
             binding.customerDataI.shirtLayoutI.shoulderVal.setOnTouchListener(touchListener)
             binding.customerDataI.shirtLayoutI.shoulderVal.onFocusChangeListener =
@@ -131,6 +137,11 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnTouchListener(null)
             binding.customerDataI.shirtLayoutI.lengthBVal.onFocusChangeListener = null
             binding.customerDataI.shirtLayoutI.lengthBVal.setOnEditorActionListener(null)
+
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnClickListener(null)
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnTouchListener(null)
+            binding.customerDataI.shirtLayoutI.shoulderWVal.onFocusChangeListener = null
+            binding.customerDataI.shirtLayoutI.shoulderWVal.setOnEditorActionListener(null)
 
             binding.customerDataI.shirtLayoutI.shoulderVal.setOnClickListener(null)
             binding.customerDataI.shirtLayoutI.shoulderVal.setOnTouchListener(null)
@@ -255,7 +266,8 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                         deliver
                     )
                 },
-                { sendMsg -> sendSms(sendMsg,getString(R.string.smsMessage)) })
+                { bookingMsg -> sendSms(bookingMsg,getString(R.string.smsMessage),bookingMsg.order?.amountRemaining, bookingMsg.order?.suits,bookingMsg.order?.deliveryDate) },
+                { readyMsg -> sendSms(readyMsg,getString(R.string.readyMessage),readyMsg.order?.amountRemaining, readyMsg.order?.suits, null) })
 
         }
         customersAdapter?.setData(ordersList)
@@ -272,13 +284,15 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         showCustomerInfo(selectedCustomer!!)
 
     }
-    private fun sendSms(customer: Customer, msg:String) {
+    private fun sendSms(customer: Customer, msg:String, amountRemaining:String?, suits:String?, returnDate:String?) {
         selectedCustomer = customer
         customerId = selectedCustomer?.name+"_"+selectedCustomer?.phone+"_"+selectedCustomer?.no
         val sb = StringBuilder()
         sb.append(Config.currentUser?.displayName).append(" \n")
         sb.append(msg)
-        sb.append(selectedCustomer!!.order!!.amountRemaining)
+        if(!suits.isNullOrBlank())sb.append("\n${getString(R.string.remainingAmount)} $amountRemaining")
+        if(!amountRemaining.isNullOrBlank())sb.append("\n${getString(R.string.totslsuits)} $suits")
+        if(!returnDate.isNullOrBlank())sb.append("\n${getString(R.string.wapsi)} $returnDate")
         CustomDialogue.instance?.showSmsDialog(sb.toString() , selectedCustomer!!.phone)
 
     }
@@ -300,6 +314,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         binding.customerDataI.remVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.lengthQVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.lengthBVal.isEnabled = enable
+        binding.customerDataI.shirtLayoutI.shoulderWVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.shoulderVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.colarVal.isEnabled = enable
         binding.customerDataI.shirtLayoutI.chestVal.isEnabled = enable
@@ -333,7 +348,8 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         var naapQameez: NaapQameez = customer.naapQameez!!
         binding.customerDataI.shirtLayoutI.lengthQVal.setText(naapQameez.shirtLength)
         binding.customerDataI.shirtLayoutI.lengthBVal.setText(naapQameez.armLength)
-        binding.customerDataI.shirtLayoutI.shoulderVal.setText(naapQameez.shoulderLength)
+        binding.customerDataI.shirtLayoutI.shoulderWVal.setText(naapQameez.shoulderLength)
+        binding.customerDataI.shirtLayoutI.shoulderVal.setText(naapQameez.shoulder)
         binding.customerDataI.shirtLayoutI.colarVal.setText(naapQameez.colarSize)
         binding.customerDataI.shirtLayoutI.chestVal.setText(naapQameez.chest)
         binding.customerDataI.shirtLayoutI.waistVal.setText(naapQameez.waist)
@@ -397,7 +413,8 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             var naapQameez: NaapQameez = selectedCustomer!!.naapQameez!!
             naapQameez.shirtLength = binding.customerDataI.shirtLayoutI.lengthQVal.text.toString()
             naapQameez.armLength = binding.customerDataI.shirtLayoutI.lengthBVal.text.toString()
-            naapQameez.shoulderLength = binding.customerDataI.shirtLayoutI.shoulderVal.text.toString()
+            naapQameez.shoulderLength = binding.customerDataI.shirtLayoutI.shoulderWVal.text.toString()
+            naapQameez.shoulder = binding.customerDataI.shirtLayoutI.shoulderVal.text.toString()
             naapQameez.colarSize = binding.customerDataI.shirtLayoutI.colarVal.text.toString()
             naapQameez.chest = binding.customerDataI.shirtLayoutI.chestVal.text.toString()
             naapQameez.waist = binding.customerDataI.shirtLayoutI.waistVal.text.toString()
@@ -532,7 +549,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 }
                 datePickerDialog.show()
             }
-            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_Val, R.id.colar_Val,
+            R.id.length_q_Val, R.id.length_b_Val,  R.id.shoulder_w_Val,R.id.shoulder_Val, R.id.colar_Val,
             R.id.chest_Val, R.id.waist_Val, R.id.hip_Val, R.id.length_s_Val, R.id.pancha_Val, R.id.emb_Val -> {
                 showKeyBoard(view as TextInputEditText)
             }

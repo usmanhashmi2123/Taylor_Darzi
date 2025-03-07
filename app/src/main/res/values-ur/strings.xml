@@ -21,7 +21,8 @@
     <string name="naap_Q">ناپ قمیض</string>
     <string name="length_Q">لمبائی قمیض</string>
     <string name="length_b">لمبائی بازو</string>
-    <string name="shoulder">تیرہ</string>
+    <string name="shldr_to_shldr">تیرہ</string>
+    <string name="shoulder">کندھا</string>
     <string name="colar">کالر</string>
     <string name="chest">سینہ</string>
     <string name="waist">کمر</string>
@@ -34,6 +35,7 @@
     <string name="pancha">پائنچہ</string>
     <string name="down_pocket">جیب</string>
     <string name="embroidery">نمبر کڑھائ</string>
+    <string name="suits">سوٹ </string>
     <string name="wapsi">واپسی کی تاریخ</string>
     <string name="details">دیگر تفصیل</string>
     <string name="clear_key">clear</string>
@@ -55,7 +57,8 @@
     <string name="customer">گاہک</string>
     <string name="message">پیغام لکھیں</string>
     <string name="message_app">پیغام رسانی کی ایپ</string>
-    <string name="send">sms بھیجیں</string>
+    <string name="booking">بکنگ کا Msg</string>
+    <string name="ready">سوٹ تیار ہے کا Msg</string>
     <string name="error">غلطی</string>
     <string name="camera">کیمرہ</string>
     <string name="gallery">گیلری</string>
@@ -63,5 +66,10 @@
     <string name="take_pic">براہ کرم تصویر کھینچیں</string>
     <string name="pic_option">آپ تصویر کیسے شامل کرنا چاہتے ہیں؟</string>
     <string name="phone_msg">نامعلوم فون نمبر کی شکل۔ نمبر ملک کے کوڈ 92123456789+ کے ساتھ شروع ہونا چاہئے</string>
-    <string name="smsMessage">آپ کا سوٹ تیار ہے براہ کرم اپنا سوٹ لےجائیں اور بل کلیر کریں =</string>
+    <string name="smsMessage">سوٹ سلائی  کروانے کے لیے اپ نے ہماری شاپ کا انتخاب کیا انشاءاللہ ہم اپ کی امیدوں پر پورا اتریں گے</string>
+    <string name="readyMessage">اپ کا سوٹ تیار ہو گیا ہے اپ سٹائلش ٹیلر انارکلی بازار خوشاب سے ا کر وصول کر لیں</string>
+    <string name="remainingAmount">رقم=</string>
+    <string name="Wapsi">واپسی=</string>
+    <string name="totslsuits"> سوٹ کی تعداد=</string>
+    <string name="total">تعداد</string>
 </resources>
