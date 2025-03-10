@@ -3,6 +3,8 @@ package pk.taylor_darzi.fragments
 import android.app.DatePickerDialog
 import android.content.DialogInterface
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.KeyEvent
 import android.view.LayoutInflater
 import android.view.View
@@ -38,7 +40,7 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             private var customerId = ""
     var selectedCustomer: Customer? =null
     private var resumed = false
-    var customersAdapter: OrdersRecyclerViewAdapter?= null
+    var ordersAdapter: OrdersRecyclerViewAdapter?= null
     val date_Cal = Calendar.getInstance()
     private var ordersList: ArrayList<Customer> = ArrayList<Customer>()
     override fun onCreateView(
@@ -56,6 +58,8 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
         binding.customerDataI.extrainfoLayoutI.save.setOnClickListener(clickListener)
         binding.customerDataI.extrainfoLayoutI.wapsiVal.setOnClickListener(clickListener)
         binding.customerDataI.extrainfoLayoutI.wapsiConst.setOnClickListener(clickListener)
+        binding.resetSearch.setOnClickListener(clickListener)
+        binding.searchIcon.setOnClickListener(clickListener)
        
         return binding.root
     }
@@ -206,8 +210,22 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             binding.customerDataI.extrainfoLayoutI.suitsVal.onFocusChangeListener = null
             binding.customerDataI.extrainfoLayoutI.suitsVal.setOnEditorActionListener(null)
         }
+        binding.searchValue.addTextChangedListener(textWatcher)
+        binding.searchValue.setOnEditorActionListener(OnEditorActionListener { v: TextView, actionId: Int, event: KeyEvent? ->
+            if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                actionId == EditorInfo.IME_ACTION_DONE
+            ) {
+                loadSearch(v.text.toString())
+                Utils.hideKeyboard(requireActivity())
+                true
+            }
+            false
+        })
         if (binding.ordersDataShow.isVisible)
             getData()
+    }
+    private fun loadSearch(querry: String) {
+        ordersAdapter?.filter(querry)
     }
     override fun onPause() {
         super.onPause()
@@ -280,9 +298,9 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             requireActivity(), RecyclerView.VERTICAL,
             false
         )
-        if(customersAdapter== null)
+        if(ordersAdapter== null)
         {
-            customersAdapter = OrdersRecyclerViewAdapter(
+            ordersAdapter = OrdersRecyclerViewAdapter(
                 { customer -> adapterOnClick(customer) },
                 { deliver ->
                     onDelivered(
@@ -293,9 +311,9 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 { readyMsg -> sendSms(readyMsg,getString(R.string.readyMessage),readyMsg.order?.amountRemaining, readyMsg.order?.suits, null) })
 
         }
-        customersAdapter?.setData(ordersList)
-        binding.recyclerViewOrders.adapter = customersAdapter
-        customersAdapter?.notifyDataSetChanged()
+        ordersAdapter?.setData(ordersList)
+        binding.recyclerViewOrders.adapter = ordersAdapter
+        ordersAdapter?.notifyDataSetChanged()
     }
 
     private fun adapterOnClick(customer: Customer) {
@@ -506,6 +524,32 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
             showKeyBoard((v as TextInputEditText))
         }
     }
+    var textWatcher: TextWatcher = object : TextWatcher {
+        override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+        override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
+        override fun afterTextChanged(query: Editable) {
+            if (query.isBlank()) resetSearch(true)
+            else resetSearch(false)
+
+            loadSearch(query.toString())
+        }
+    }
+
+    private fun resetSearch(reset: Boolean) {
+        if(reset)
+        {
+            if (!binding.searchValue.text.toString().isNullOrBlank()
+            ) {
+                binding.searchValue.removeTextChangedListener(textWatcher)
+                binding.searchValue.setText("")
+                binding.searchValue.addTextChangedListener(textWatcher)
+            }
+
+            Utils.hideKeyboard(requireActivity())
+            binding.resetSearch.visibility =View.GONE
+        }
+        else  binding.resetSearch.visibility =View.VISIBLE
+    }
     private val clickListener = View.OnClickListener { view ->
         when (view.id) {
             R.id.edit_pencil -> {
@@ -540,6 +584,20 @@ class OrdersFragnment : ParentFragnment(),  fragmentbackEvents, NumPadCommandKey
                 if (binding.customerDataI.trouserLayoutI.root.isVisible) binding.customerDataI.trouserLayoutI.root.visibility =
                     View.GONE
                 else binding.customerDataI.trouserLayoutI.root.visibility = View.VISIBLE
+            }
+            R.id.reset_search -> {
+                binding.searchValue.setText("")
+                resetSearch(true)
+            }
+            R.id.search_icon -> {
+                if (!binding.searchValue.text.toString().isNullOrBlank()
+                ) {
+                    loadSearch(binding.searchValue.text.toString())
+                    Utils.hideKeyboard(requireActivity())
+                } else {
+                    binding.searchValue.requestFocus()
+                    Utils.showKeyboard(requireActivity(), binding.searchValue)
+                }
             }
             R.id.back_button -> {
                 if(binding.keyboard.visibility == View.VISIBLE) binding.keyboard.visibility =View.GONE

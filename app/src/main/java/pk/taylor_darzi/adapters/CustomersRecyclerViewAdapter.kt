@@ -72,7 +72,9 @@ class CustomersRecyclerViewAdapter(private val onClick: (Customer) -> Unit) : Re
                 for (customer in dataList!!)
                 {
                     var phone = customer.phone.replace("+92","0")
-                    if(customer.name!!.lowercase().contains(querry.lowercase()) || phone.lowercase().contains(querry.lowercase()) || customer.phone.lowercase().contains(querry.lowercase()))
+                    if(customer.name!!.lowercase().contains(querry.lowercase())
+                        || phone.lowercase().contains(querry.lowercase())
+                        || customer.phone.lowercase().contains(querry.lowercase()))
                         filteredList.add(customer)
 
                 }

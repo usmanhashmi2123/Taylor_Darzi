@@ -514,7 +514,7 @@ class CustomersFragnment : ParentFragnment() , fragmentbackEvents, NumPadCommand
         override fun beforeTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         override fun onTextChanged(charSequence: CharSequence, i: Int, i1: Int, i2: Int) {}
         override fun afterTextChanged(query: Editable) {
-            if (query.isNullOrBlank()) resetSearch(true)
+            if (query.isBlank()) resetSearch(true)
             else resetSearch(false)
 
             loadSearch(query.toString())
