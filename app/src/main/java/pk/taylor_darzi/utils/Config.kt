@@ -5,13 +5,14 @@ import android.view.View
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import com.google.firebase.Firebase
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.FirebaseFirestoreSettings
-import com.google.firebase.ktx.Firebase
+import com.google.firebase.firestore.PersistentCacheSettings
 import com.google.firebase.storage.StorageReference
-import com.google.firebase.storage.ktx.storage
+import com.google.firebase.storage.storage
 import pk.taylor_darzi.dataModels.Customer
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -102,8 +103,11 @@ object Config {
         get() {
             if (firebaseDb == null) firebaseDb = FirebaseFirestore.getInstance()
             val settings = FirebaseFirestoreSettings.Builder()
-                .setPersistenceEnabled(true)
-                .setCacheSizeBytes(DEFAULT_CACHE_SIZE_BYTES)
+                .setLocalCacheSettings(
+                    PersistentCacheSettings.newBuilder()
+                        .setSizeBytes(100 * 1024 * 1024)
+                        .build()
+                )
                 .build()
             firebaseDb!!.firestoreSettings = settings
             return firebaseDb as FirebaseFirestore
